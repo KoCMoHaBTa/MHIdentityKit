@@ -32,7 +32,7 @@
 		E69D5F001ED85C740099EE36 /* Collection+ResponseVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EFF1ED85C740099EE36 /* Collection+ResponseVerifier.swift */; };
 		E69D5F021ED85CEB0099EE36 /* DefaultCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */; };
 		E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
-		E69D5F061ED85D3A0099EE36 /* AccessTokenAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F051ED85D3A0099EE36 /* AccessTokenAuthorizer.swift */; };
+		E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */; };
 		E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,7 +77,7 @@
 		E69D5EFF1ED85C740099EE36 /* Collection+ResponseVerifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+ResponseVerifier.swift"; sourceTree = "<group>"; };
 		E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultCredentialsProvider.swift; sourceTree = "<group>"; };
 		E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryIdentityStorage.swift; sourceTree = "<group>"; };
-		E69D5F051ED85D3A0099EE36 /* AccessTokenAuthorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenAuthorizer.swift; sourceTree = "<group>"; };
+		E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BearerAccessTokenAuthorizer.swift; sourceTree = "<group>"; };
 		E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHIdentityKitError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -221,7 +221,7 @@
 			children = (
 				E69D5EF81ED85C240099EE36 /* RequestAuthorizer.swift */,
 				E69D5EF71ED85C240099EE36 /* ClientHTTPBasicAuthorizer.swift */,
-				E69D5F051ED85D3A0099EE36 /* AccessTokenAuthorizer.swift */,
+				E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */,
 			);
 			path = RequestAuthorizer;
 			sourceTree = "<group>";
@@ -357,7 +357,7 @@
 				998405CE1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */,
 				E69D5EFA1ED85C240099EE36 /* RequestAuthorizer.swift in Sources */,
-				E69D5F061ED85D3A0099EE36 /* AccessTokenAuthorizer.swift in Sources */,
+				E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

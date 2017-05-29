@@ -13,12 +13,11 @@ import Foundation
 public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     public let tokenEndpoint: URL
-    public let clientID: String
-    public let secret: String
     public let credentialsProvider: CredentialsProvider
     public let scope: Scope?
     public let networkClient: NetworkClient
     public let storage: IdentityStorage
+    public let clientAuthorizer: RequestAuthorizer
     
     public private(set) var accessTokenResponse: AccessTokenResponse? {
         
@@ -49,83 +48,25 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     //MARK: - Init
     
-    public init(tokenEndpoint: URL, clientID: String, secret: String, credentialsProvider: CredentialsProvider, scope: Scope? = nil, networkClient: NetworkClient = DefaultNetoworkClient(), storage: IdentityStorage) {
+    public init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope? = nil, networkClient: NetworkClient = DefaultNetoworkClient(), storage: IdentityStorage, clientAuthorizer: RequestAuthorizer) {
         
         self.tokenEndpoint = tokenEndpoint
-        self.clientID = clientID
-        self.secret = secret
         self.credentialsProvider = credentialsProvider
         self.scope = scope
         
         self.networkClient = networkClient
         self.storage = storage
+        self.clientAuthorizer = clientAuthorizer
     }
     
     public convenience init(tokenEndpoint: URL, clientID: String, secret: String, username: String, password: String, scope: Scope? = nil, storage: IdentityStorage) {
         
-        self.init(tokenEndpoint: tokenEndpoint, clientID: clientID, secret: secret, credentialsProvider: DefaultCredentialsProvider(username: username, password: password), scope: scope, storage: storage)
+        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: DefaultCredentialsProvider(username: username, password: password), scope: scope, storage: storage, clientAuthorizer: ClientHTTPBasicAuthorizer(clientID: clientID, secret: secret))
     }
     
     //MARK: - AuthorizationGrantFlow
     
     public func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
-        
-        //try to refresh the access token first
-        if self.canRefreshAccessToken {
-            
-            self.refreshAccessToken(handler: { (response, error) in
-                
-                self.accessTokenResponse = response
-                
-                if response == nil {
-                    
-                    self.authenticate(handler: handler)
-                }
-                else {
-                    
-                    handler(response, error)
-                }
-            })
-        }
-        else {
-            
-            self.requestAccessToken(handler: { (response, error) in
-                
-                self.accessTokenResponse = response
-                handler(response, error)
-            })
-        }
-    }
-    
-    public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
-        
-        do {
-            
-            //check if we have access token
-            guard let accessTokenResponse = self.accessTokenResponse else {
-                
-                throw MHIdentityKitError.authorizationFailed(reason: .clientNotAuthenticated)
-            }
-            
-            //check if the access token has expired
-            guard accessTokenResponse.isExpired == false else {
-                
-                throw MHIdentityKitError.authorizationFailed(reason: .tokenExpired)
-            }
-            
-            var request = request
-            let authorizationHeader = self.buildAuthorizationHeader(from: accessTokenResponse)
-            request.setValue(authorizationHeader, forHTTPHeaderField: "Authorization")
-        }
-        catch {
-            
-            handler(request, error)
-        }
-    }
-    
-    //MARK: - Authorization
-    
-    private func requestAccessToken(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
         self.credentialsProvider.credentials { [unowned self] (username, password) in
             
@@ -134,104 +75,72 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
             request.httpMethod = "POST"
             request.httpBody = AccessTokenRequest(username: username, password: password, scope: self.scope).dictionary.urlEncodedParametersData
             
-            do {
+            self.clientAuthorizer.authorize(request: request, handler: { (request, error) in
                 
-                //try to build the authentication header
-                let authenticationHeader = try self.buildAuthenticationHeader(clientID: self.clientID, secret: self.secret)
-                request.setValue(authenticationHeader, forHTTPHeaderField: "Authorization")
-            }
-            catch {
-                
-                DispatchQueue.main.async {
+                guard error == nil else {
                     
                     handler(nil, error)
+                    return
                 }
                 
-                return
-            }
-            
-            //perform the request
-            self.networkClient.perform(request: request, handler: { (data, response, error) in
-                
-                do {
+                //perform the request
+                self.networkClient.perform(request: request, handler: { (data, response, error) in
                     
-                    //if there is an error - throw it
-                    if let error = error {
+                    do {
                         
-                        throw error
-                    }
-                    
-                    //if response is unknown - throw an error
-                    guard let response = response as? HTTPURLResponse else {
+                        //if there is an error - throw it
+                        if let error = error {
+                            
+                            throw error
+                        }
                         
-                        throw MHIdentityKitError.authenticationFailed(reason: .unknownURLResponse)
-                    }
-                    
-                    //parse the data
-                    guard
-                    let data = data,
-                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                    else {
+                        //if response is unknown - throw an error
+                        guard let response = response as? HTTPURLResponse else {
+                            
+                            throw MHIdentityKitError.authenticationFailed(reason: .unknownURLResponse)
+                        }
                         
-                        throw MHIdentityKitError.authenticationFailed(reason: .unableToParseAccessToken)
-                    }
-                    
-                    //if the error is one of the defined in the OAuth2 framework - throw it
-                    if let error = ErrorResponse(json: json) {
+                        //parse the data
+                        guard
+                        let data = data,
+                        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                        else {
+                            
+                            throw MHIdentityKitError.authenticationFailed(reason: .unableToParseAccessToken)
+                        }
                         
-                        throw error
-                    }
-                    
-                    //make sure the response code is success 2xx
-                    guard (200..<300).contains(response.statusCode) else {
+                        //if the error is one of the defined in the OAuth2 framework - throw it
+                        if let error = ErrorResponse(json: json) {
+                            
+                            throw error
+                        }
                         
-                        throw MHIdentityKitError.authenticationFailed(reason: .unknownHTTPResponse(code: response.statusCode))
-                    }
-                    
-                    //parse the access token
-                    let accessTokenResponse = AccessTokenResponse(json: json)
-                    
-                    DispatchQueue.main.async {
+                        //make sure the response code is success 2xx
+                        guard (200..<300).contains(response.statusCode) else {
+                            
+                            throw MHIdentityKitError.authenticationFailed(reason: .unknownHTTPResponse(code: response.statusCode))
+                        }
                         
-                        handler(accessTokenResponse, nil)
-                    }
-                }
-                catch {
-                    
-                    DispatchQueue.main.async {
+                        //parse the access token
+                        let accessTokenResponse = AccessTokenResponse(json: json)
                         
-                        handler(nil, error)
+                        DispatchQueue.main.async {
+                            
+                            handler(accessTokenResponse, nil)
+                        }
                     }
-                }
+                    catch {
+                        
+                        DispatchQueue.main.async {
+                            
+                            handler(nil, error)
+                        }
+                    }
+                })
             })
-        }
-    }
-    
-    private func refreshAccessToken(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
-        
-        
-    }
-    
-    ///Build the header needed to authorize a request
-    private func buildAuthorizationHeader(from response: AccessTokenResponse) -> String {
-        
-        //eg. "Bearer xyz123asd"
-        let header = response.tokenType + " " + response.accessToken
-        return header
-    }
-    
-    //MARK: - Authentication
-    
-    ///Build the header needed to sign the authentication request
-    private func buildAuthenticationHeader(clientID: String, secret: String) throws -> String {
-        
-        guard let client = (clientID + ":" + secret).data(using: .utf8)?.base64EncodedString() else {
             
-            throw MHIdentityKitError.authenticationFailed(reason: .buildAuthenticationHeaderFailed)
+            
         }
-        
-        let header = "Basic " + client
-        return header
     }
 }
 

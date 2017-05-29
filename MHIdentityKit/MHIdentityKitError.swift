@@ -54,16 +54,23 @@ extension MHIdentityKitError {
     
     public enum Reason {
         
+        case general(message: String)
         case clientNotAuthenticated
         case tokenExpired
         case buildAuthenticationHeaderFailed
         case unknownURLResponse
         case unableToParseAccessToken
         case unknownHTTPResponse(code: Int)
+        case invalidRequestURL
+        case invalidContentType
+        case invalidRequestMethod
         
         private func expand() -> (failureReason: String?, recoverySuggestion: String?) {
             
             switch self {
+                
+                case .general(let message):
+                    return (message, nil)
                 
                 case .clientNotAuthenticated:
                     
@@ -96,6 +103,18 @@ extension MHIdentityKitError {
                 case .unknownHTTPResponse(let code):
                     let format = NSLocalizedString("Unknown HTTP response with code: %@", comment: "The localized error description returned when the response code is not sucess 2xx and no other has been handled")
                     let reason = String(format: format, code)
+                    return (reason, nil)
+                
+                case .invalidRequestURL:
+                    let reason = NSLocalizedString("The request has invalid URL", comment: "The localized error description returned when a URLRequest has invalid or nil URL")
+                    return (reason, nil)
+                
+                case .invalidContentType:
+                    let reason = NSLocalizedString("Invalid Content-Type.", comment: "The localized error description returned when a URLRequest has invalid or nil Content-Type header field")
+                    return (reason, nil)
+                
+                case .invalidRequestMethod:
+                    let reason = NSLocalizedString("Invalid request HTTP method.", comment: "The localized error description returned when a URLRequest has invalid or nil HTTP method")
                     return (reason, nil)
             }
         }
