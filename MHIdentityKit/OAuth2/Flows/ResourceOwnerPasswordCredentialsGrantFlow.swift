@@ -88,61 +88,34 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
                     
                     do {
                         
-                        //if there is an error - throw it
-                        if let error = error {
-                            
-                            throw error
-                        }
-                        
-                        //if response is unknown - throw an error
-                        guard let response = response as? HTTPURLResponse else {
-                            
-                            throw MHIdentityKitError.authenticationFailed(reason: .unknownURLResponse)
-                        }
-                        
-                        //parse the data
-                        guard
-                        let data = data,
-                        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                        else {
-                            
-                            throw MHIdentityKitError.authenticationFailed(reason: .unableToParseAccessToken)
-                        }
-                        
-                        //if the error is one of the defined in the OAuth2 framework - throw it
-                        if let error = ErrorResponse(json: json) {
-                            
-                            throw error
-                        }
-                        
-                        //make sure the response code is success 2xx
-                        guard (200..<300).contains(response.statusCode) else {
-                            
-                            throw MHIdentityKitError.authenticationFailed(reason: .unknownHTTPResponse(code: response.statusCode))
-                        }
-                        
-                        //parse the access token
-                        let accessTokenResponse = AccessTokenResponse(json: json)
+                        let accessTokenResponse = try AccessTokenResponseHandler().handle(data: data, response: response, error: error)
                         
                         DispatchQueue.main.async {
                             
                             handler(accessTokenResponse, nil)
                         }
                     }
+                    catch let error as LocalizedError {
+                        
+                        DispatchQueue.main.async {
+                            
+                            handler(nil, MHIdentityKitError.authenticationFailed(reason: error))
+                        }
+                    }
                     catch {
                         
                         DispatchQueue.main.async {
                             
-                            handler(nil, error)
+                            handler(nil, MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: error)))
                         }
                     }
                 })
             })
-            
-            
         }
     }
 }
+
+
 
 //MARK: - Models
 

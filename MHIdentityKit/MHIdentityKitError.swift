@@ -11,8 +11,14 @@ import Foundation
 public enum MHIdentityKitError: LocalizedError {
     
     case general(description: String, reason: String?)
-    case authorizationFailed(reason: Reason)
-    case authenticationFailed(reason: Reason)
+    case authorizationFailed(reason: LocalizedError)
+    case authenticationFailed(reason: LocalizedError)
+    
+    init(error: Error) {
+        
+        let error = error as NSError
+        self = .general(description: error.localizedDescription, reason: error.localizedFailureReason)
+    }
     
     private func expand() -> (errorDescription: String?, failureReason: String?, recoverySuggestion: String?) {
         
@@ -52,7 +58,7 @@ public enum MHIdentityKitError: LocalizedError {
 
 extension MHIdentityKitError {
     
-    public enum Reason {
+    public enum Reason: LocalizedError {
         
         case general(message: String)
         case clientNotAuthenticated
@@ -60,6 +66,7 @@ extension MHIdentityKitError {
         case buildAuthenticationHeaderFailed
         case unknownURLResponse
         case unableToParseAccessToken
+        case unableToParseData
         case unknownHTTPResponse(code: Int)
         case invalidRequestURL
         case invalidContentType
@@ -97,7 +104,11 @@ extension MHIdentityKitError {
                     return (reason, nil)
                 
                 case .unableToParseAccessToken:
-                    let reason = NSLocalizedString("Unable to parse access token response", comment: "The localized error description returned when the received access token response canot be read and/or parsed")
+                    let reason = NSLocalizedString("Unable to parse access token data", comment: "The localized error description returned when the received access token response canot be read and/or parsed")
+                    return (reason, nil)
+                
+                case .unableToParseData:
+                    let reason = NSLocalizedString("Unable to parse data", comment: "The localized error description returned when the received data canot be read and/or parsed")
                     return (reason, nil)
                 
                 case .unknownHTTPResponse(let code):
@@ -130,5 +141,3 @@ extension MHIdentityKitError {
         }
     }
 }
-
-

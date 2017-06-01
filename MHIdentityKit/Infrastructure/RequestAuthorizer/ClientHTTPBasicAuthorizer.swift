@@ -18,7 +18,7 @@ public struct ClientHTTPBasicAuthorizer: RequestAuthorizer {
         
         guard let client = (clientID + ":" + secret).data(using: .utf8)?.base64EncodedString() else {
             
-            let error = MHIdentityKitError.authorizationFailed(reason: .buildAuthenticationHeaderFailed)
+            let error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.buildAuthenticationHeaderFailed)
             handler(request, error)
             return
         }

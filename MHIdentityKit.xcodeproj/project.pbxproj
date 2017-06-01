@@ -15,6 +15,7 @@
 		995CD1CE1E9E50670024BFA4 /* Dictionary+URLEncodedParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1CD1E9E50670024BFA4 /* Dictionary+URLEncodedParameters.swift */; };
 		995CD1E61E9E69450024BFA4 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */; };
 		998405CE1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998405CD1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift */; };
+		E61974881EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */; };
 		E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA01ED6B226000D7853 /* GrantType.swift */; };
@@ -58,6 +59,7 @@
 		995CD1CD1E9E50670024BFA4 /* Dictionary+URLEncodedParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+URLEncodedParameters.swift"; sourceTree = "<group>"; };
 		995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		998405CD1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlow.swift; sourceTree = "<group>"; };
+		E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseHandler.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				E683DBA01ED6B226000D7853 /* GrantType.swift */,
 				E683DBA21ED6B327000D7853 /* Scope.swift */,
 				E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */,
+				E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */,
 				995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */,
 				E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */,
 				9954AE701E9D248400F2A73D /* Flows */,
@@ -355,6 +358,7 @@
 				E69D5EFC1ED85C480099EE36 /* DefaultNetoworkClient.swift in Sources */,
 				E69D5EF61ED85C150099EE36 /* ResponseVerifier.swift in Sources */,
 				998405CE1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
+				E61974881EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift in Sources */,
 				E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */,
 				E69D5EFA1ED85C240099EE36 /* RequestAuthorizer.swift in Sources */,
 				E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */,

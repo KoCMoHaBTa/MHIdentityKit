@@ -36,14 +36,14 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
                 //make sure the request content type is correct
                 guard request.value(forHTTPHeaderField: "Content-Type") == "application/x-www-form-urlencoded" else {
                     
-                    error = MHIdentityKitError.authorizationFailed(reason: .invalidContentType)
+                    error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidContentType)
                     return
                 }
             
                 //make sure the request method is supported
                 guard let method = request.httpMethod, method != "GET" else {
                 
-                    error = MHIdentityKitError.authorizationFailed(reason: .invalidRequestMethod)
+                    error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestMethod)
                     return
                 }
                 
@@ -69,7 +69,7 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
                 //make sure the request has an URL
                 guard let url = request.url else {
                     
-                    error = MHIdentityKitError.authorizationFailed(reason: .invalidRequestURL)
+                    error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestURL)
                     return
                 }
                 

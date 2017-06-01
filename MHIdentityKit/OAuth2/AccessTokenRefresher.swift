@@ -38,7 +38,29 @@ public class AccessTokenRefresher {
             
             self.networkClient.perform(request: request) { (data, response, error) in
                 
-                
+                do {
+                    
+                    let accessTokenResponse = try AccessTokenResponseHandler().handle(data: data, response: response, error: error)
+                    
+                    DispatchQueue.main.async {
+                        
+                        handler(accessTokenResponse, nil)
+                    }
+                }
+                catch let error as LocalizedError {
+                    
+                    DispatchQueue.main.async {
+                        
+                        handler(nil, MHIdentityKitError.authenticationFailed(reason: error))
+                    }
+                }
+                catch {
+                    
+                    DispatchQueue.main.async {
+                        
+                        handler(nil, MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: error)))
+                    }
+                }
             }
         }
     }
