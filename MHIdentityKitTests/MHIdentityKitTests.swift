@@ -9,6 +9,8 @@
 import XCTest
 @testable import MHIdentityKit
 
+extension String: Error {}
+
 class MHIdentityKitTests: XCTestCase {
     
     override func setUp() {

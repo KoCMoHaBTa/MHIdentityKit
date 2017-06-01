@@ -25,6 +25,13 @@ public struct ErrorResponse: Error {
     public let description: String?
     public let uri: String?
     
+    init(code: Code, description: String? = nil, uri: String? = nil) {
+        
+        self.code = code
+        self.description = description
+        self.uri = uri
+    }
+    
     init?(json: [String: Any]) {
         
         guard

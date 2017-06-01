@@ -113,7 +113,7 @@ extension MHIdentityKitError {
                 
                 case .unknownHTTPResponse(let code):
                     let format = NSLocalizedString("Unknown HTTP response with code: %@", comment: "The localized error description returned when the response code is not sucess 2xx and no other has been handled")
-                    let reason = String(format: format, code)
+                    let reason = String(format: format, "\(code)")
                     return (reason, nil)
                 
                 case .invalidRequestURL:

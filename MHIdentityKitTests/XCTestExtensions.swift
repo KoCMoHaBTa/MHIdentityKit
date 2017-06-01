@@ -11,6 +11,7 @@ import XCTest
 
 extension XCTestCase {
     
+    ///Performs an expectation with a given description, timeout and handler. You should fulfil the expectation within the handler in the given timeout timeframe
     public func performExpectation(description: String = "XCTestCase Default Expectation", timeout: TimeInterval = 2, handler: (_ expectation: XCTestExpectation) -> Void) {
         
         let expectation = self.expectation(description: description)
@@ -78,6 +79,79 @@ extension XCTestExpectation {
         
         guard self.areAllConditionsFulfulled else {
             
+            return
+        }
+        
+        self.fulfill()
+    }
+}
+
+extension XCTestExpectation {
+    
+    ///Fulfils the receiver upon throwing the provided Equatable Error object within the handler.
+    public func fulfilOnThrowing<E>(_ expectedError: E, _ errorThrowableCode: () throws -> Void) where E: Error, E: Equatable {
+        
+        do {
+            
+            try errorThrowableCode()
+        }
+        catch let error as E {
+            
+            XCTAssertEqual(error, expectedError)
+            self.fulfill()
+            return
+        }
+        catch {
+            
+            XCTFail()
+        }
+        
+        XCTFail()
+    }
+    
+    ///Fulfils the receiver upon throwing the provided Error object within the handler. The equality condition is met by comparing the localizedDescription of the expected error and the error thrown.
+    public func fulfilOnThrowing<E>(_ expectedError: E, _ errorThrowableCode: () throws -> Void) where E: Error {
+        
+        do {
+            
+            try errorThrowableCode()
+        }
+        catch {
+            
+            XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
+            self.fulfill()
+            return
+        }
+        
+        XCTFail()
+    }
+    
+    ///Fulfiles the receicver upon throwin any kind of error within the handler.
+    public func fulfilOnThrowing(_ errorThrowableCode: () throws -> Void) {
+        
+        do {
+            
+            try errorThrowableCode()
+        }
+        catch {
+            
+            self.fulfill()
+            return
+        }
+        
+        XCTFail()
+    }
+    
+    ///Fulfils the receiver if there is no error thrown withing the handler
+    public func fulfilUnlessThrowing(_ errorThrowableCode: () throws -> Void) {
+        
+        do {
+            
+            try errorThrowableCode()
+        }
+        catch {
+            
+            XCTFail()
             return
         }
         

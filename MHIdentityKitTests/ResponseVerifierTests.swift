@@ -7,11 +7,8 @@
 //
 
 import Foundation
-
 import XCTest
 @testable import MHIdentityKit
-
-extension String: Error {}
 
 class ResponseVerifierTests: XCTestCase {
     
