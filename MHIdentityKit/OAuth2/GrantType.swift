@@ -12,4 +12,5 @@ public enum GrantType: String {
     
     case password = "password"
     case refreshToken = "refresh_token"
+    case clientCredentials = "client_credentials"
 }
