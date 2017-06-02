@@ -21,6 +21,8 @@
 		E619748E1EE15EAD00DAFC15 /* CredentialsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E619748D1EE15EAD00DAFC15 /* CredentialsProviderTests.swift */; };
 		E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */; };
 		E61974921EE160F000DAFC15 /* RequestAuthorizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */; };
+		E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */; };
+		E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */; };
 		E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA01ED6B226000D7853 /* GrantType.swift */; };
@@ -66,6 +68,8 @@
 		E619748D1EE15EAD00DAFC15 /* CredentialsProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsProviderTests.swift; sourceTree = "<group>"; };
 		E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityStorageTests.swift; sourceTree = "<group>"; };
 		E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAuthorizerTests.swift; sourceTree = "<group>"; };
+		E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenRefreshRequest.swift; sourceTree = "<group>"; };
+		E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAccessTokenRefresher.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -160,6 +164,8 @@
 				E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */,
 				995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */,
 				E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */,
+				E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */,
+				E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */,
 				9954AE701E9D248400F2A73D /* Flows */,
 			);
 			path = OAuth2;
@@ -337,9 +343,11 @@
 			files = (
 				995CD1E61E9E69450024BFA4 /* ErrorResponse.swift in Sources */,
 				E69D5EF21ED85BFC0099EE36 /* IdentityStorage.swift in Sources */,
+				E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */,
 				E69D5F021ED85CEB0099EE36 /* DefaultCredentialsProvider.swift in Sources */,
 				E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */,
 				E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */,
+				E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */,
 				9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */,
 				E69D5EEC1ED85BA30099EE36 /* NetworkClient.swift in Sources */,
