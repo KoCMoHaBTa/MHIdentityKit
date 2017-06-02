@@ -18,6 +18,8 @@
 		E61974881EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */; };
 		E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974891EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift */; };
 		E619748C1EE1520C00DAFC15 /* ClientCredentialsGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E619748B1EE1520C00DAFC15 /* ClientCredentialsGrantFlow.swift */; };
+		E619748E1EE15EAD00DAFC15 /* CredentialsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E619748D1EE15EAD00DAFC15 /* CredentialsProviderTests.swift */; };
+		E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */; };
 		E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA01ED6B226000D7853 /* GrantType.swift */; };
@@ -60,6 +62,8 @@
 		E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseHandler.swift; sourceTree = "<group>"; };
 		E61974891EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseHandlerTests.swift; sourceTree = "<group>"; };
 		E619748B1EE1520C00DAFC15 /* ClientCredentialsGrantFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlow.swift; sourceTree = "<group>"; };
+		E619748D1EE15EAD00DAFC15 /* CredentialsProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsProviderTests.swift; sourceTree = "<group>"; };
+		E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityStorageTests.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 				E683DCA71ED426BE0075B03B /* XCTestExtensions.swift */,
 				9954AE531E9D169700F2A73D /* MHIdentityKitTests.swift */,
 				E61974891EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift */,
+				E619748D1EE15EAD00DAFC15 /* CredentialsProviderTests.swift */,
+				E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */,
 				9954AE551E9D169700F2A73D /* Info.plist */,
 			);
 			path = MHIdentityKitTests;
@@ -355,6 +361,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E683DCA81ED426BE0075B03B /* XCTestExtensions.swift in Sources */,
+				E619748E1EE15EAD00DAFC15 /* CredentialsProviderTests.swift in Sources */,
+				E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */,
 				E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */,
 				9954AE541E9D169700F2A73D /* MHIdentityKitTests.swift in Sources */,
 			);

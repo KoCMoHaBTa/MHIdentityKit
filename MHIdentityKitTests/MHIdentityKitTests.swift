@@ -23,55 +23,6 @@ class MHIdentityKitTests: XCTestCase {
         super.tearDown()
     }
     
-//    func testExample() {
-//        // This is an example of a functional test case.
-//        // Use XCTAssert and related functions to verify your tests produce the correct results.
-//        
-//        let url = URL(string: "https://api-vapt-int.onebigsplash.com/feed/newsfeed")!
-//        let request = URLRequest(url: url)
-//        
-//        let tokenUrl = URL(string: "https://account-vapt-int.onebigsplash.com/connect/token")!
-//        let clientID = "introclient"
-//        let secret = "intsecret"
-//        let username = "admin"
-//        let password = "123456"
-//        let flow = ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: tokenUrl, clientID: clientID, secret: secret, username: username, password: password)
-//        
-////        self.performExpectation { (expectation) in
-////            
-////
-////
-////            
-////            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-////                
-////                let string = String(data: data ?? Data(), encoding: .utf8)
-////                print("")
-////            }
-////            
-////            task.resume()
-////        }
-//        
-//        self.performExpectation { (expectation) in
-//            
-//            flow.authorize(request: request) { (request, error) in
-//                
-//                XCTAssertNotNil(error)
-//                
-//                if case Optional.some(MHIdentityKitError.authorizationFailed(reason: .clientNotAuthenticated)) = error {} else { XCTFail() }
-//                
-//                expectation.fulfill()
-//            }
-//        }
-//        
-//        self.performExpectation { (expectation) in
-//            
-//            flow.authenticate(handler: { (tokenResponse, error) in
-//                
-//                print("")
-//            })
-//        }
-//    }
-    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
