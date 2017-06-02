@@ -12,9 +12,9 @@ import XCTest
 
 class RequestAuthorizerTests: XCTestCase {
     
-    func testClientHTTPBasicAuthorizer() {
+    func testHTTPBasicAuthorizer() {
         
-        let authorizer: RequestAuthorizer = ClientHTTPBasicAuthorizer(clientID: "tun", secret: "tps")
+        let authorizer: RequestAuthorizer = HTTPBasicAuthorizer(username: "tun", password: "tps")
         let request = URLRequest(url: URL(string: "http://foo.bar")!)
         
         self.performExpectation { (e) in
