@@ -53,7 +53,8 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
             
                 //if there is body - load it
                 if let data = request.httpBody,
-                let string = String(data: data, encoding: .utf8) {
+                let string = String(data: data, encoding: .utf8),
+                string.isEmpty == false {
                     
                     body = string + "&"
                 }
@@ -67,25 +68,28 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
             case .query:
                 
                 //make sure the request has an URL
-                guard let url = request.url else {
+                guard
+                let url = request.url,
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+                else {
                     
                     error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestURL)
                     return
                 }
                 
-                var urlString = url.absoluteString
-            
-                //if there is no query - start by adding '?'
-                if url.query == nil {
+                var query = components.query ?? ""
+                
+                if query.isEmpty == false {
                     
-                    urlString = urlString + "?"
+                    query = query + "&"
                 }
-            
-                //a the parameter
-                urlString = urlString + "&" + ["access_token": self.token].urlEncodedParametersString
+                
+                query = query + "access_token=\(self.token)"
+                components.query = query
+                
             
                 //update the request URL
-                request.url = URL(string: urlString)
+                request.url = components.url
         }
     }
 }
