@@ -47,3 +47,38 @@ extension Dictionary {
         return self.urlEncodedParametersString.data(using: .utf8)
     }
 }
+
+extension String {
+    
+    var urlDecodedParameters: [String: String] {
+        
+        let pairs = self.components(separatedBy: "&")
+        let parameters = pairs.reduce([:]) { (result, pair) -> [String: String] in
+            
+            let components = pair.components(separatedBy: "=")
+            
+            guard
+            components.count == 2,
+            let key = components.first?.removingPercentEncoding,
+            let value = components.last?.removingPercentEncoding
+            else {
+                
+                return result
+            }
+            
+            var result = result
+            result[key] = value
+            return result
+        }
+        
+        return parameters
+    }
+}
+
+extension Data {
+    
+    var urlDecodedParameters: [String: String]? {
+        
+        return String(data: self, encoding: .utf8)?.urlDecodedParameters
+    }
+}
