@@ -12,6 +12,6 @@ import Foundation
 public protocol NetworkClient {
     
     ///Performs a request and execute a completion handler when it is done
-    func perform(request: URLRequest, handler: @escaping (Data?, URLResponse?, Error?) -> Void)
+    func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void)
 }
 

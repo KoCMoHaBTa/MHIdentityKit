@@ -13,14 +13,14 @@ extension String: Error {}
 
 class TestNetworkClient: NetworkClient {
     
-    let handler: (URLRequest, (Data?, URLResponse?, Error?) -> Void) -> Void
+    let handler: (URLRequest, (NetworkResponse) -> Void) -> Void
     
-    init(handler: @escaping (URLRequest, (Data?, URLResponse?, Error?) -> Void) -> Void) {
+    init(handler: @escaping (URLRequest, (NetworkResponse) -> Void) -> Void) {
         
         self.handler = handler
     }
     
-    func perform(request: URLRequest, handler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+    func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void) {
         
         self.handler(request, handler)
     }

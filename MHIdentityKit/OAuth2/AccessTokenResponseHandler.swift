@@ -14,23 +14,23 @@ import Foundation
 ///Handles an HTTP response in attempt to produce an access token or error as defined
 public struct AccessTokenResponseHandler {
     
-    public func handle(data: Data?, response: URLResponse?, error: Error?) throws -> AccessTokenResponse {
+    public func handle(response networkResponse: NetworkResponse) throws -> AccessTokenResponse {
         
         //if there is an error - throw it
-        if let error = error {
+        if let error = networkResponse.error {
             
             throw error
         }
         
         //if response is unknown - throw an error
-        guard let response = response as? HTTPURLResponse else {
+        guard let response = networkResponse.response as? HTTPURLResponse else {
             
             throw MHIdentityKitError.Reason.unknownURLResponse
         }
         
         //parse the data
         guard
-        let data = data,
+        let data = networkResponse.data,
         let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         else {
             

@@ -18,7 +18,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
             
             e.fulfilOnThrowing("err", { 
                 
-                _ = try AccessTokenResponseHandler().handle(data: nil, response: nil, error: "err")
+                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: nil, error: "err"))
             })
         }
         
@@ -26,7 +26,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
             
             e.fulfilOnThrowing(MHIdentityKitError.Reason.unknownURLResponse, {
                 
-                _ = try AccessTokenResponseHandler().handle(data: nil, response: nil, error: nil)
+                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: nil, error: nil))
             })
         }
         
@@ -34,7 +34,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
             
             e.fulfilOnThrowing(MHIdentityKitError.Reason.unknownURLResponse, {
                 
-                _ = try AccessTokenResponseHandler().handle(data: nil, response: URLResponse(), error: nil)
+                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: URLResponse(), error: nil))
             })
         }
         
@@ -43,7 +43,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
             e.fulfilOnThrowing(MHIdentityKitError.Reason.unableToParseData, {
                 
                 let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(data: nil, response: response, error: nil)
+                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: response, error: nil))
             })
         }
         
@@ -53,7 +53,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
                 
                 let data = "{\"error\":\"invalid_grant\"}".data(using: .utf8)
                 let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(data: data, response: response, error: nil)
+                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
             })
         }
         
@@ -63,7 +63,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
                 
                 let data = "{}".data(using: .utf8)
                 let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(data: data, response: response, error: nil)
+                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
             })
         }
         
@@ -73,7 +73,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
                 
                 let data = "{}".data(using: .utf8)
                 let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(data: data, response: response, error: nil)
+                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
             })
         }
         
@@ -83,7 +83,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
                 
                 let data = "{\"access_token\":\"gg\", \"token_type\":\"Bearer\", \"expires_in\": 1234, \"refresh_token\":\"rtgg\", \"scope\":\"read write\"}".data(using: .utf8)
                 let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-                let accessTokenResponse = try AccessTokenResponseHandler().handle(data: data, response: response, error: nil)
+                let accessTokenResponse = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
                 XCTAssertEqual(accessTokenResponse.accessToken, "gg")
                 XCTAssertEqual(accessTokenResponse.tokenType, "Bearer")
                 XCTAssertEqual(accessTokenResponse.expiresIn, 1234)

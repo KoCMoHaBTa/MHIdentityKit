@@ -35,11 +35,11 @@ extension AuthorizationGrantFlow {
             }
             
             //perform the request
-            networkClient.perform(request: request, handler: { (data, response, error) in
+            networkClient.perform(request: request, handler: { (response) in
                 
                 do {
                     
-                    let accessTokenResponse = try AccessTokenResponseHandler().handle(data: data, response: response, error: error)
+                    let accessTokenResponse = try AccessTokenResponseHandler().handle(response: response)
                     
                     DispatchQueue.main.async {
                         

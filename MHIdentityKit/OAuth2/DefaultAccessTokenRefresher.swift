@@ -35,11 +35,11 @@ public class DefaultAccessTokenRefresher: AccessTokenRefresher {
                 return
             }
             
-            self.networkClient.perform(request: request) { (data, response, error) in
+            self.networkClient.perform(request: request) { (response) in
                 
                 do {
                     
-                    let accessTokenResponse = try AccessTokenResponseHandler().handle(data: data, response: response, error: error)
+                    let accessTokenResponse = try AccessTokenResponseHandler().handle(response: response)
                     
                     DispatchQueue.main.async {
                         

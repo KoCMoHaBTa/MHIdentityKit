@@ -48,7 +48,8 @@ class AuthorizationGrantFlowTests: XCTestCase {
                 let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
                 let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
                 
-                handler(data, response, nil)
+                
+                handler(NetworkResponse(data: data, response: response, error: nil))
             }
             
             ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: self.tokenEndpoint, credentialsProvider: self.credentialsProvider, scope: self.scope, clientAuthorizer: self.clientAuthorizer, networkClient: netoworkClient).authenticate { (response, error) in
@@ -96,7 +97,7 @@ class AuthorizationGrantFlowTests: XCTestCase {
                 let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234}".data(using: .utf8)
                 let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
                 
-                handler(data, response, nil)
+                handler(NetworkResponse(data: data, response: response, error: nil))
             }
             
             ClientCredentialsGrantFlow(tokenEndpoint: self.tokenEndpoint, scope: self.scope, networkClient: netoworkClient, clientAuthorizer: self.clientAuthorizer).authenticate(handler: { (response, error) in
