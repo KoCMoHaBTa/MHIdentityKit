@@ -15,25 +15,30 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     public let tokenEndpoint: URL
     public let credentialsProvider: CredentialsProvider
     public let scope: Scope?
-    public let networkClient: NetworkClient
     public let clientAuthorizer: RequestAuthorizer
+    public let networkClient: NetworkClient
 
     //MARK: - Init
     
-    public init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope? = nil, networkClient: NetworkClient = DefaultNetoworkClient(), clientAuthorizer: RequestAuthorizer) {
+    /**
+     Creates an instance of the receiver.
+
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter credentialsProvider: A credentials provider used to retrieve username and password in order authenticate the client. This could be your login view controller for example.
+     - parameter scope: The scope of the access request.
+     - parameter clientAuthorizer: An authorizer used to authorize the authentication request. Usually an instance of HTTPBasicAuthorizer with your clientID and secret.
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     */
+    
+    public init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = DefaultNetoworkClient()) {
         
         self.tokenEndpoint = tokenEndpoint
         self.credentialsProvider = credentialsProvider
         self.scope = scope
-        
-        self.networkClient = networkClient
         self.clientAuthorizer = clientAuthorizer
+        self.networkClient = networkClient
     }
-    
-//    public convenience init(tokenEndpoint: URL, clientID: String, secret: String, username: String, password: String, scope: Scope? = nil) {
-//        
-//        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: DefaultCredentialsProvider(username: username, password: password), scope: scope, clientAuthorizer: ClientHTTPBasicAuthorizer(clientID: clientID, secret: secret))
-//    }
     
     //MARK: - AuthorizationGrantFlow
     
@@ -55,6 +60,49 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     }
 }
 
+extension ResourceOwnerPasswordCredentialsGrantFlow {
+    
+    /**
+     Creates an instance of the receiver.
+     
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter credentialsProvider: A credentials provider used to retrieve username and password in order authenticate the client. This could be your login view controller for example.
+     - parameter scope: The scope of the access request.
+     - parameter clientID: The client id used to autheorize the authentication request.
+     - parameter secret: The secret used to autheorize the authentication request.
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     */
+    
+    public convenience init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = DefaultNetoworkClient()) {
+        
+        let clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
+        
+        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+    }
+    
+    /**
+     Creates an instance of the receiver.
+     
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter username: The username used for authentication.
+     - parameter password: The password used for authentication.
+     - parameter scope: The scope of the access request.
+     - parameter clientID: The client id used to autheorize the authentication request.
+     - parameter secret: The secret used to autheorize the authentication request.
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     - note: It is highly recommended to implement your own CredentialsProvider and use it instead of providing username and password directly. This way you could implement a loginc screen as a CredentialsProvider and allow the user to enter their username and password when needed.
+     */
+    
+    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = DefaultNetoworkClient()) {
+        
+        let credentialsProvider = DefaultCredentialsProvider(username: username, password: password)
+        let clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
+        
+        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+    }
+}
 
 
 //MARK: - Models

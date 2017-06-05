@@ -51,8 +51,7 @@ class AuthorizationGrantFlowTests: XCTestCase {
                 handler(data, response, nil)
             }
             
-            
-            ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: self.tokenEndpoint, credentialsProvider: self.credentialsProvider, scope: self.scope, networkClient: netoworkClient, clientAuthorizer: self.clientAuthorizer).authenticate { (response, error) in
+            ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: self.tokenEndpoint, credentialsProvider: self.credentialsProvider, scope: self.scope, clientAuthorizer: self.clientAuthorizer, networkClient: netoworkClient).authenticate { (response, error) in
                 
                 XCTAssertNotNil(response)
                 XCTAssertNil(error)
