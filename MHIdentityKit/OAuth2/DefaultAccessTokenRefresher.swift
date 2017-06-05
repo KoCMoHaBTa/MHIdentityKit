@@ -64,3 +64,11 @@ public class DefaultAccessTokenRefresher: AccessTokenRefresher {
         }
     }
 }
+
+extension DefaultAccessTokenRefresher {
+    
+    public convenience init(tokenEndpoint: URL, clientID: String, secret: String) {
+        
+        self.init(tokenEndpoint: tokenEndpoint, networkClient: DefaultNetoworkClient(), clientAuthorizer: HTTPBasicAuthorizer(clientID: clientID, secret: secret))
+    }
+}
