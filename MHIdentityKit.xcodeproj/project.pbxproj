@@ -23,6 +23,7 @@
 		E61974921EE160F000DAFC15 /* RequestAuthorizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */; };
 		E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */; };
 		E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */; };
+		E61974A91EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974A81EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift */; };
 		E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA01ED6B226000D7853 /* GrantType.swift */; };
@@ -70,6 +71,7 @@
 		E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAuthorizerTests.swift; sourceTree = "<group>"; };
 		E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenRefreshRequest.swift; sourceTree = "<group>"; };
 		E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAccessTokenRefresher.swift; sourceTree = "<group>"; };
+		E61974A81EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationGrantFlowTests.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				E619748D1EE15EAD00DAFC15 /* CredentialsProviderTests.swift */,
 				E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */,
 				E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */,
+				E61974A81EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift */,
 				9954AE551E9D169700F2A73D /* Info.plist */,
 			);
 			path = MHIdentityKitTests;
@@ -375,6 +378,7 @@
 				E619748E1EE15EAD00DAFC15 /* CredentialsProviderTests.swift in Sources */,
 				E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */,
 				E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */,
+				E61974A91EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift in Sources */,
 				E61974921EE160F000DAFC15 /* RequestAuthorizerTests.swift in Sources */,
 				9954AE541E9D169700F2A73D /* MHIdentityKitTests.swift in Sources */,
 			);

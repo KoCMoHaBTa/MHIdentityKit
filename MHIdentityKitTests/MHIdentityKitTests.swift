@@ -11,23 +11,27 @@ import XCTest
 
 extension String: Error {}
 
+class TestNetworkClient: NetworkClient {
+    
+    let handler: (URLRequest, (Data?, URLResponse?, Error?) -> Void) -> Void
+    
+    init(handler: @escaping (URLRequest, (Data?, URLResponse?, Error?) -> Void) -> Void) {
+        
+        self.handler = handler
+    }
+    
+    func perform(request: URLRequest, handler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        
+        self.handler(request, handler)
+    }
+}
+
 class MHIdentityKitTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testScope() {
+        
+        XCTAssertEqual(Scope(value: "read write").components, ["read", "write"])
+        XCTAssertEqual(Scope(components: ["read", "write"]).value, "read write")
+        
     }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }
