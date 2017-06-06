@@ -17,6 +17,15 @@ public struct AccessTokenResponse {
     public let refreshToken: String?
     public let scope: Scope?
     
+    init(accessToken: String, tokenType: String, expiresIn: TimeInterval?, refreshToken: String?, scope: Scope?) {
+        
+        self.accessToken = accessToken
+        self.tokenType = tokenType
+        self.expiresIn = expiresIn
+        self.refreshToken = refreshToken
+        self.scope = scope
+    }
+    
     ///The date when this object has been created - used to determine whenever the access token has expired
     private let responseCreationDate = Date()
     
