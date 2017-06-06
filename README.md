@@ -7,7 +7,7 @@
 Development in progress ...
 
 - [ ] Infrastructure
-    - [ ] Automatic identity management
+    - [X] Automatic identity management
     - [x] Default network client
     - [x] Default In-Memory credentials provider
     - [x] In-Memory identity storage  

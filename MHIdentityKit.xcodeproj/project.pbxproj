@@ -25,6 +25,9 @@
 		E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */; };
 		E61974A91EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974A81EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift */; };
 		E61974AB1EE5635200DAFC15 /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
+		E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */; };
+		E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
+		E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */; };
 		E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA01ED6B226000D7853 /* GrantType.swift */; };
@@ -74,6 +77,9 @@
 		E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAccessTokenRefresher.swift; sourceTree = "<group>"; };
 		E61974A81EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationGrantFlowTests.swift; sourceTree = "<group>"; };
 		E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponse.swift; sourceTree = "<group>"; };
+		E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityManager.swift; sourceTree = "<group>"; };
+		E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManager.swift; sourceTree = "<group>"; };
+		E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManagerTests.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -155,6 +161,7 @@
 				E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */,
 				E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */,
 				E61974A81EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift */,
+				E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */,
 				9954AE551E9D169700F2A73D /* Info.plist */,
 			);
 			path = MHIdentityKitTests;
@@ -190,12 +197,22 @@
 			isa = PBXGroup;
 			children = (
 				995CD1CD1E9E50670024BFA4 /* Dictionary+URLEncodedParameters.swift */,
+				E61974AC1EE5682300DAFC15 /* IdentityManager */,
 				E69D5EEA1ED85B870099EE36 /* NetworkClient */,
 				E69D5EEE1ED85BBF0099EE36 /* CredentialsProvider */,
 				E69D5EEF1ED85BCF0099EE36 /* IdentityStorage */,
 				E69D5EF01ED85BEB0099EE36 /* RequestAuthorizer */,
 			);
 			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		E61974AC1EE5682300DAFC15 /* IdentityManager */ = {
+			isa = PBXGroup;
+			children = (
+				E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */,
+				E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */,
+			);
+			path = IdentityManager;
 			sourceTree = "<group>";
 		};
 		E69D5EEA1ED85B870099EE36 /* NetworkClient */ = {
@@ -356,8 +373,10 @@
 				E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */,
 				9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */,
+				E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */,
 				E69D5EEC1ED85BA30099EE36 /* NetworkClient.swift in Sources */,
 				E683DBA31ED6B327000D7853 /* Scope.swift in Sources */,
+				E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */,
 				E69D5EF91ED85C240099EE36 /* HTTPBasicAuthorizer.swift in Sources */,
 				E69D5EF41ED85C030099EE36 /* CredentialsProvider.swift in Sources */,
 				9954AE6D1E9D1E8000F2A73D /* MHIdentityKit.swift in Sources */,
@@ -382,6 +401,7 @@
 				E619748E1EE15EAD00DAFC15 /* CredentialsProviderTests.swift in Sources */,
 				E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */,
 				E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */,
+				E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */,
 				E61974A91EE53B5E00DAFC15 /* AuthorizationGrantFlowTests.swift in Sources */,
 				E61974921EE160F000DAFC15 /* RequestAuthorizerTests.swift in Sources */,
 				9954AE541E9D169700F2A73D /* MHIdentityKitTests.swift in Sources */,
