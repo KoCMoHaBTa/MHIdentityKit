@@ -88,7 +88,7 @@ open class OAuth2IdentityManager: IdentityManager {
         self.flow.authenticate(handler: handler)
     }
     
-    open func authorize(request: URLRequest, forceAuthenticate: Bool = false, handler: @escaping (URLRequest, Error?) -> Void) {
+    open func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
         
         if forceAuthenticate == false, let response = self.accessTokenResponse, response.isExpired == false   {
             

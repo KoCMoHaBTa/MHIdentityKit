@@ -24,3 +24,20 @@ public protocol IdentityManager {
     
     func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void)
 }
+
+extension IdentityManager {
+    
+    /**
+     Authorizes an instance of URLRequest.
+     
+     Upon success, in the callback handler, the provided request will be authorized, otherwise the original request will be provided.
+     
+     - parameter request: The request to authorize.
+     - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
+     */
+    
+    public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+        
+        self.authorize(request: request, forceAuthenticate: false, handler: handler)
+    }
+}
