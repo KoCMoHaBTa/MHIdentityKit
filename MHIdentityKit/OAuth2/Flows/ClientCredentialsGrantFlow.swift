@@ -13,15 +13,25 @@ public class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
     
     public let tokenEndpoint: URL
     public let scope: Scope?
-    public let networkClient: NetworkClient
     public let clientAuthorizer: RequestAuthorizer
+    public let networkClient: NetworkClient
     
-    public init(tokenEndpoint: URL, scope: Scope? = nil, networkClient: NetworkClient = DefaultNetoworkClient(), clientAuthorizer: RequestAuthorizer) {
+    /**
+     Creates an instance of the receiver.
+     
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter scope: The scope of the access request.
+     - parameter clientAuthorizer: An authorizer used to authorize the authentication request. Usually an instance of HTTPBasicAuthorizer with your clientID and secret.
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     */
+    
+    public init(tokenEndpoint: URL, scope: Scope? = nil, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = DefaultNetoworkClient()) {
         
         self.tokenEndpoint = tokenEndpoint
         self.scope = scope
-        self.networkClient = networkClient
         self.clientAuthorizer = clientAuthorizer
+        self.networkClient = networkClient
     }
     
     public func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
