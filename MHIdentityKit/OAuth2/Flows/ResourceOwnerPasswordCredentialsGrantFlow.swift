@@ -46,7 +46,7 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
         
         self.willAuthenticate()
         
-        self.credentialsProvider.credentials { [unowned self] (username, password) in
+        self.credentialsProvider.credentials { (username, password) in
             
             //build the request
             var request = URLRequest(url: self.tokenEndpoint)
