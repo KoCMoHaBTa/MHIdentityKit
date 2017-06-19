@@ -44,6 +44,8 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     public func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
+        self.willAuthenticate()
+        
         self.credentialsProvider.credentials { [unowned self] (username, password) in
             
             //build the request
@@ -52,6 +54,8 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
             request.httpBody = AccessTokenRequest(username: username, password: password, scope: self.scope).dictionary.urlEncodedParametersData
             
             self.authorizeAndPerform(request: request, using: self.clientAuthorizer, and: self.networkClient, handler: { (accessTokenResponse, error) in
+                
+                self.didFinishAuthenticating(with: accessTokenResponse, error: error)
                 
                 //any validation logic can go here
                 handler(accessTokenResponse, error)

@@ -36,6 +36,8 @@ public class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
     
     public func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
+        self.willAuthenticate()
+        
         //build the request
         var request = URLRequest(url: self.tokenEndpoint)
         request.httpMethod = "POST"
@@ -47,9 +49,13 @@ public class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
             //A refresh token SHOULD NOT be included
             guard accessTokenResponse?.refreshToken == nil else {
                 
-                handler(nil, MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse))
+                let error = MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse)
+                self.didFinishAuthenticating(with: accessTokenResponse, error: error)
+                handler(nil, error)
                 return
             }
+            
+            self.didFinishAuthenticating(with: accessTokenResponse, error: error)
             
             //any validation logic can go here
             handler(accessTokenResponse, error)
