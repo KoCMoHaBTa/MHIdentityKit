@@ -28,6 +28,7 @@
 		E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */; };
 		E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
 		E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */; };
+		E645850D1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */; };
 		E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA01ED6B226000D7853 /* GrantType.swift */; };
@@ -80,6 +81,7 @@
 		E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityManager.swift; sourceTree = "<group>"; };
 		E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManager.swift; sourceTree = "<group>"; };
 		E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManagerTests.swift; sourceTree = "<group>"; };
+		E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsIdentityStorage.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 			children = (
 				E69D5EF11ED85BFC0099EE36 /* IdentityStorage.swift */,
 				E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */,
+				E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */,
 			);
 			path = IdentityStorage;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E645850D1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift in Sources */,
 				995CD1E61E9E69450024BFA4 /* ErrorResponse.swift in Sources */,
 				E69D5EF21ED85BFC0099EE36 /* IdentityStorage.swift in Sources */,
 				E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */,
