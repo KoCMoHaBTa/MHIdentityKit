@@ -179,4 +179,21 @@ class OAuth2IdentityManagerTests: XCTestCase {
             })
         }
     }
+    
+    func testSynchronousAuthorization() {
+        
+        class Flow: AuthorizationGrantFlow {
+            
+            func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
+            }
+        }
+        
+        let manager = OAuth2IdentityManager(flow: Flow(), refresher: nil, storage: InMemoryIdentityStorage(), authorizationMethod: .header)        
+        
+        let request = try! URLRequest(url: URL(string: "http://foo.bar")!).authorized(using: manager)
+        
+        XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer tat1")
+    }
 }

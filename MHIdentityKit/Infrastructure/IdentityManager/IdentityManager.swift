@@ -53,3 +53,75 @@ extension IdentityManager {
         }
     }
 }
+
+extension URLRequest {
+    
+    /**
+     Authorize the receiver using a given identity manager.
+     
+     Upon success, in the callback handler, the provided request will be an authorized copy of the receiver, otherwise a copy of the original receiver will be provided.
+     
+     - note: The implementation of this method simply calls `authorize` on the `authorizer`. For more information see `URLRequestAuthorizer`.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
+     
+     */
+    public func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false, handler: @escaping (URLRequest, Error?) -> Void) {
+        
+        identityManager.authorize(request: self, forceAuthenticate: forceAuthenticate, handler: handler)
+    }
+    
+    /**
+     Synchronously authorize the receiver using a given identity manager.
+     
+     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: An authorization error.
+     - returns: An authorized copy of the recevier.
+     */
+    public func authorized(using identityManager: IdentityManager, forceAuthenticate: Bool = false) throws -> URLRequest {
+        
+        var request = self
+        var error: Error? = nil
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        DispatchQueue(label: bundleIdentifier + ".authorization", qos: .default).async {
+            
+            self.authorize(using: identityManager, forceAuthenticate: forceAuthenticate, handler: { (r, e) in
+                
+                request = r
+                error = e
+                
+                semaphore.signal()
+            })
+        }
+        
+        semaphore.wait()
+        
+        guard error == nil else {
+            
+            throw error!
+        }
+        
+        return request
+    }
+    
+    /**
+     Synchronously authorize the receiver using a given identity manager.
+     
+     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: An authorization error.
+     */
+    
+    public mutating func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false) throws {
+        
+        try self = self.authorized(using: identityManager, forceAuthenticate: forceAuthenticate)
+    }
+}

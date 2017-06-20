@@ -39,6 +39,59 @@ extension URLRequest {
         
         authorizer.authorize(request: self, handler: handler)
     }
+    
+    /**
+     Synchronously authorize the receiver using a given authorizer.
+     
+     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: An authorization error.
+     - returns: An authorized copy of the recevier.
+     */
+    public func authorized(using authorizer: RequestAuthorizer) throws -> URLRequest {
+        
+        var request = self
+        var error: Error? = nil
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        DispatchQueue(label: bundleIdentifier + ".authorization", qos: .default).async {
+            
+            self.authorize(using: authorizer, handler: { (r, e) in
+                
+                request = r
+                error = e
+                
+                semaphore.signal()
+            })
+        }
+        
+        semaphore.wait()
+        
+        guard error == nil else {
+            
+            throw error!
+        }
+        
+        return request
+    }
+    
+    /**
+     Synchronously authorize the receiver using a given authorizer.
+     
+     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: An authorization error.
+     */
+    
+    public mutating func authorize(using authorizer: RequestAuthorizer) throws {
+        
+        try self = self.authorized(using: authorizer)
+    }
 }
 
 //a potentual implementation would be one that sets client id and secret into URL as query parameters
