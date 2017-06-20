@@ -24,6 +24,8 @@ open class OAuth2IdentityManager: IdentityManager {
     //used to provide an authorizer that authorize the request using the provided access token response
     open let tokenAuthorizerProvider: (AccessTokenResponse) -> RequestAuthorizer
     
+    private let queue = DispatchQueue(label: bundleIdentifier + ".OAuth2IdentityManager", qos: .default)
+    
     /**
      Creates an instnce of the receiver.
      
@@ -90,26 +92,38 @@ open class OAuth2IdentityManager: IdentityManager {
     
     open func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
         
-        if forceAuthenticate == false, let response = self.accessTokenResponse, response.isExpired == false   {
+        self.queue.async {
             
-            self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
-            return
-        }
-        
-        self.authenticate(forced: forceAuthenticate) { (response, error) in
-            
-            self.accessTokenResponse = response
-            
-            guard
-            error == nil,
-            let response = response
-            else {
+            if forceAuthenticate == false, let response = self.accessTokenResponse, response.isExpired == false   {
                 
-                handler(request, error)
+                self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
                 return
             }
             
-            self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            self.authenticate(forced: forceAuthenticate) { (response, error) in
+                
+                defer {
+                    
+                    semaphore.signal()
+                }
+                
+                self.accessTokenResponse = response
+                
+                guard
+                error == nil,
+                let response = response
+                else {
+                    
+                    handler(request, error)
+                    return
+                }
+                
+                self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
+            }
+            
+            semaphore.wait()
         }
     }
 }

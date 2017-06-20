@@ -196,4 +196,54 @@ class OAuth2IdentityManagerTests: XCTestCase {
         
         XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer tat1")
     }
+    
+    func testSerialAuthorizationBehaviour() {
+        
+        //if multiple authorization calls are made - only 1 should perform authentication :):)
+        
+        class Flow: AuthorizationGrantFlow {
+            
+            let e: XCTestExpectation
+            private var callCount = 0
+            
+            init(e: XCTestExpectation) {
+                
+                self.e = e
+            }
+            
+            func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                e.fulfill()
+                callCount += 1
+                
+                guard callCount == 1 else {
+                    
+                    XCTFail()
+                    return
+                }
+                
+                DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + (2 * Double(NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
+                    
+                    handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 1234, refreshToken: "trt2", scope: nil), nil)
+                }
+            }
+        }
+        
+        self.performExpectation(timeout: 4) { (e) in
+            
+            e.expectedFulfillmentCount = 5
+            
+            let manager = OAuth2IdentityManager(flow: Flow(e: e), refresher: nil, storage: InMemoryIdentityStorage(), authorizationMethod: .header)
+            
+            for _ in 0..<4 {
+                
+                manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), handler: { (request, error) in
+                    
+                    XCTAssertNil(error)
+                    XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer tat1")
+                    e.fulfill()
+                })
+            }
+        }
+    }
 }
