@@ -55,13 +55,24 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //MARK: - IdentityManager
     
+    private func performAuthentication(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+        
+        self.postWillAuthenticateNotification()
+        
+        self.flow.authenticate { (response, error) in
+            
+            self.didFinishAuthenticating(with: response, error: error)
+            handler(response, error)
+        }
+    }
+    
     private func authenticate(forced: Bool, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
         //force authenticate
         if forced {
             
             //authenticate
-            self.flow.authenticate(handler: handler)
+            self.performAuthentication(handler: handler)
             return
         }
         
@@ -75,7 +86,7 @@ open class OAuth2IdentityManager: IdentityManager {
                 if self?.forceAuthenticateOnRefreshError == true && error != nil {
                     
                     //authenticate
-                    self?.flow.authenticate(handler: handler)
+                    self?.performAuthentication(handler: handler)
                     return
                 }
                 
@@ -85,9 +96,9 @@ open class OAuth2IdentityManager: IdentityManager {
             
             return
         }
-
+        
         //authenticate
-        self.flow.authenticate(handler: handler)
+        self.performAuthentication(handler: handler)
     }
     
     open func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
@@ -150,3 +161,48 @@ extension OAuth2IdentityManager {
         self.init(flow: flow, refresher: refresher, storage: storage, tokenAuthorizerProvider: tokenAuthorizerProvider)
     }
 }
+
+extension OAuth2IdentityManager {
+    
+    public static let willAuthenticate = Notification.Name(rawValue: bundleIdentifier + ".OAuth2IdentityManager.willAuthenticate")
+    public static let didAuthenticate = Notification.Name(rawValue: bundleIdentifier + ".OAuth2IdentityManager.didAuthenticate")
+    public static let didFailToAuthenticate = Notification.Name(rawValue: bundleIdentifier + ".OAuth2IdentityManager.didFailToAuthenticate")
+    
+    public static let accessTokenResponseUserInfoKey = "accessTokenResponse"
+    public static let errorUserInfoKey = "error"
+    
+    ///notify that authentication will begin
+    func postWillAuthenticateNotification() {
+        
+        let notification = Notification(name: type(of: self).willAuthenticate, object: self, userInfo: nil)
+        NotificationQueue.default.enqueue(notification, postingStyle: .now)
+    }
+    
+    ///notify that authentication has finished
+    func didFinishAuthenticating(with accessTokenResponse: AccessTokenResponse?, error: Error?) {
+        
+        var userInfo = [AnyHashable: Any]()
+        userInfo[type(of: self).accessTokenResponseUserInfoKey] = accessTokenResponse
+        userInfo[type(of: self).errorUserInfoKey] = error
+        
+        if error == nil {
+            
+            let notification = Notification(name: type(of: self).didAuthenticate, object: self, userInfo: userInfo)
+            NotificationQueue.default.enqueue(notification, postingStyle: .now)
+        }
+        else {
+            
+            let notification = Notification(name: type(of: self).didFailToAuthenticate, object: self, userInfo: userInfo)
+            NotificationQueue.default.enqueue(notification, postingStyle: .now)
+        }
+    }
+}
+
+extension Notification.Name {
+    
+    public static let OAuth2IdentityManagerWillAuthenticate = OAuth2IdentityManager.willAuthenticate
+    public static let OAuth2IdentityManagerDidAuthenticate = OAuth2IdentityManager.didAuthenticate
+    public static let OAuth2IdentityManagerDidFailToAuthenticate = OAuth2IdentityManager.didFailToAuthenticate
+}
+
+

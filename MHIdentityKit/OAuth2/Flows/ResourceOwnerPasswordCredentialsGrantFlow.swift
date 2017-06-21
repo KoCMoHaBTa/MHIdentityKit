@@ -46,17 +46,13 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
         
         self.credentialsProvider.credentials { (username, password) in
             
-            self.willAuthenticate()
-            
             //build the request
             var request = URLRequest(url: self.tokenEndpoint)
             request.httpMethod = "POST"
             request.httpBody = AccessTokenRequest(username: username, password: password, scope: self.scope).dictionary.urlEncodedParametersData
             
             self.authorizeAndPerform(request: request, using: self.clientAuthorizer, and: self.networkClient, handler: { (accessTokenResponse, error) in
-                
-                self.didFinishAuthenticating(with: accessTokenResponse, error: error)
-                
+                                
                 //any validation logic can go here
                 handler(accessTokenResponse, error)
             })

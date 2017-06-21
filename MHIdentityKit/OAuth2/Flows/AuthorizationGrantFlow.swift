@@ -21,32 +21,6 @@ public protocol AuthorizationGrantFlow {
 
 extension AuthorizationGrantFlow {
     
-    ///notify that authentication will begin
-    func willAuthenticate() {
-        
-        NotificationCenter.default.post(name: .AuthorizationGrantFlowWillAuthenticate, object: self, userInfo: nil)
-    }
-    
-    ///notify that authentication has finished
-    func didFinishAuthenticating(with accessTokenResponse: AccessTokenResponse?, error: Error?) {
-        
-        var userInfo = [AnyHashable: Any]()
-        userInfo[AccessTokenResponseUserInfoKey] = accessTokenResponse
-        userInfo[ErrorUserInfoKey] = error
-        
-        if error == nil {
-            
-            NotificationCenter.default.post(name: .AuthorizationGrantFlowDidAuthenticate, object: self, userInfo: userInfo)
-        }
-        else {
-            
-            NotificationCenter.default.post(name: .AuthorizationGrantFlowDidFailToAuthenticate, object: self, userInfo: userInfo)
-        }
-    }
-}
-
-extension AuthorizationGrantFlow {
-    
     ///Authorize and perform a request using a given authorizer and network client
     //This method exsist in order to reduce bilerplate code within flow implementations
     func authorizeAndPerform(request: URLRequest, using authoriser: RequestAuthorizer, and networkClient: NetworkClient, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
