@@ -184,6 +184,13 @@ open class OAuth2IdentityManager: IdentityManager {
             semaphore.wait()
         }
     }
+    
+    open func revokeAuthenticationState() {
+        
+        self.accessTokenResponse = nil
+        
+        //TODO: implement token revocation trough server
+    }
 }
 
 extension OAuth2IdentityManager {

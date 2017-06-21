@@ -23,6 +23,9 @@ public protocol IdentityManager {
      */
     
     func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void)
+    
+    ///Clears any authentication state, leading to next authorization to require authentication. (eg Logout)
+    func revokeAuthenticationState()
 }
 
 extension IdentityManager {
