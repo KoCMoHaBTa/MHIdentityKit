@@ -44,9 +44,9 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     public func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
-        self.willAuthenticate()
-        
         self.credentialsProvider.credentials { (username, password) in
+            
+            self.willAuthenticate()
             
             //build the request
             var request = URLRequest(url: self.tokenEndpoint)
