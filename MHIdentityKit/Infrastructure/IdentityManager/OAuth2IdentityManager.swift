@@ -46,7 +46,7 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //MARK: - Configuration
     
-    ///Controls whenver an authorization should be forced if a refresh fails. If `true`, when a refresh token fails, an authentication will be performed automatically using the flow provided. If `false` an error will be returned. Default to `true`.
+    ///Controls whenver an authentication should be forced if a refresh fails. If `true`, when a refresh token fails, an authentication will be performed automatically using the flow provided. If `false` an error will be returned. Default to `true`.
     open var forceAuthenticateOnRefreshError = true
     
     //MARK: - State
