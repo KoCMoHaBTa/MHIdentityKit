@@ -198,7 +198,7 @@ extension OAuth2IdentityManager {
      
      */
     
-    public convenience init(flow: AuthorizationGrantFlow, refresher: AccessTokenRefresher?, storage: IdentityStorage, authorizationMethod: BearerAccessTokenAuthorizer.AuthorizationMethod = .header) {
+    public convenience init(flow: AuthorizationGrantFlow, refresher: AccessTokenRefresher?, storage: IdentityStorage?, authorizationMethod: BearerAccessTokenAuthorizer.AuthorizationMethod = .header) {
         
         let tokenAuthorizerProvider = { (response: AccessTokenResponse) -> RequestAuthorizer in
             
