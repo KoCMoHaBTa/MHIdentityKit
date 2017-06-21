@@ -60,7 +60,37 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //MARK: - State
     
-    private var accessTokenResponse: AccessTokenResponse?
+    private static let refreshTokenKey = bundleIdentifier + ".OAuth2IdentityManager.refresh_token"
+    private static let scopeValueKey = bundleIdentifier + ".OAuth2IdentityManager.scope_value"
+    
+    private var accessTokenResponse: AccessTokenResponse? {
+        
+        didSet {
+            
+            self.storage[type(of: self).refreshTokenKey] = self.accessTokenResponse?.refreshToken
+            self.storage[type(of: self).scopeValueKey] = self.accessTokenResponse?.scope?.value
+        }
+    }
+    
+    private var refreshToken: String? {
+    
+        return self.accessTokenResponse?.refreshToken ?? self.storage[type(of: self).refreshTokenKey]
+    }
+    
+    private var scope: Scope? {
+        
+        if let scope = self.accessTokenResponse?.scope {
+            
+            return scope
+        }
+        
+        if let value = self.storage[type(of: self).scopeValueKey] {
+            
+            return Scope(value: value)
+        }
+        
+        return nil
+    }
     
     //MARK: - IdentityManager
     
@@ -86,9 +116,9 @@ open class OAuth2IdentityManager: IdentityManager {
         }
         
         //refresh if possible
-        if let refreshToken = self.accessTokenResponse?.refreshToken {
+        if let refreshToken = self.refreshToken {
             
-            let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: self.accessTokenResponse?.scope)
+            let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: self.scope)
             self.refresher?.refresh(using: request, handler: { [weak self] (response, error) in
                 
                 //if force authentication is enabled upon refresh error
