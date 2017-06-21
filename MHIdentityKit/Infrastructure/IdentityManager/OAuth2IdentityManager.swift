@@ -49,6 +49,15 @@ open class OAuth2IdentityManager: IdentityManager {
     ///Controls whenver an authentication should be forced if a refresh fails. If `true`, when a refresh token fails, an authentication will be performed automatically using the flow provided. If `false` an error will be returned. Default to `true`.
     open var forceAuthenticateOnRefreshError = true
     
+    /***
+     Controls whenever an authorization should be retried if an authentication fails. If `true`, when an authentication fails - the authorization will be retried automatically untill there is a successfull authentication. If `false` an error will be returned. Default to `false`. 
+     
+     - note: This behaviour is needed when the authorization requires user input, like in the `ResourceOwnerPasswordCredentialsGrantFlow` where the `CredentialsProvider` is a login screen. As opposite it is not needed when user input is not involved, because it could lead to infinite loop of authorizations.
+     
+     */
+    
+    open var retryAuthorizationOnAuthenticationError = false
+    
     //MARK: - State
     
     private var accessTokenResponse: AccessTokenResponse?
@@ -127,7 +136,15 @@ open class OAuth2IdentityManager: IdentityManager {
                 let response = response
                 else {
                     
-                    handler(request, error)
+                    if self.retryAuthorizationOnAuthenticationError == true {
+                        
+                        self.authorize(request: request, forceAuthenticate: forceAuthenticate, handler: handler)
+                    }
+                    else {
+                        
+                        handler(request, error)
+                    }
+                    
                     return
                 }
                 
