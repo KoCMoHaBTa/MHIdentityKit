@@ -19,7 +19,7 @@ open class OAuth2IdentityManager: IdentityManager {
     open let refresher: AccessTokenRefresher?
     
     //used to store state, like the refresh token
-    open let storage: IdentityStorage
+    open let storage: IdentityStorage?
     
     //used to provide an authorizer that authorize the request using the provided access token response
     open let tokenAuthorizerProvider: (AccessTokenResponse) -> RequestAuthorizer
@@ -36,7 +36,7 @@ open class OAuth2IdentityManager: IdentityManager {
      
      */
     
-    public init(flow: AuthorizationGrantFlow, refresher: AccessTokenRefresher?, storage: IdentityStorage, tokenAuthorizerProvider: @escaping (AccessTokenResponse) -> RequestAuthorizer) {
+    public init(flow: AuthorizationGrantFlow, refresher: AccessTokenRefresher?, storage: IdentityStorage?, tokenAuthorizerProvider: @escaping (AccessTokenResponse) -> RequestAuthorizer) {
         
         self.flow = flow
         self.refresher = refresher
@@ -67,14 +67,14 @@ open class OAuth2IdentityManager: IdentityManager {
         
         didSet {
             
-            self.storage[type(of: self).refreshTokenKey] = self.accessTokenResponse?.refreshToken
-            self.storage[type(of: self).scopeValueKey] = self.accessTokenResponse?.scope?.value
+            self.storage?[type(of: self).refreshTokenKey] = self.accessTokenResponse?.refreshToken
+            self.storage?[type(of: self).scopeValueKey] = self.accessTokenResponse?.scope?.value
         }
     }
     
     private var refreshToken: String? {
     
-        return self.accessTokenResponse?.refreshToken ?? self.storage[type(of: self).refreshTokenKey]
+        return self.accessTokenResponse?.refreshToken ?? self.storage?[type(of: self).refreshTokenKey]
     }
     
     private var scope: Scope? {
@@ -84,7 +84,7 @@ open class OAuth2IdentityManager: IdentityManager {
             return scope
         }
         
-        if let value = self.storage[type(of: self).scopeValueKey] {
+        if let value = self.storage?[type(of: self).scopeValueKey] {
             
             return Scope(value: value)
         }

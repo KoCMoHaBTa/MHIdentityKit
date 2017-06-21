@@ -13,6 +13,10 @@ public class InMemoryIdentityStorage: IdentityStorage {
     
     private var storage: [String: String] = [:]
     
+    public init() {
+        
+    }
+    
     public func set(_ value: String?, forKey key: String) {
         
         self.storage[key] = value
