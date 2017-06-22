@@ -116,10 +116,11 @@ open class OAuth2IdentityManager: IdentityManager {
         }
         
         //refresh if possible
-        if let refreshToken = self.refreshToken {
+        if let refresher = self.refresher,
+        let refreshToken = self.refreshToken {
             
             let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: self.scope)
-            self.refresher?.refresh(using: request, handler: { [weak self] (response, error) in
+            refresher.refresh(using: request, handler: { [weak self] (response, error) in
                 
                 //if force authentication is enabled upon refresh error
                 if self?.forceAuthenticateOnRefreshError == true && error != nil {
