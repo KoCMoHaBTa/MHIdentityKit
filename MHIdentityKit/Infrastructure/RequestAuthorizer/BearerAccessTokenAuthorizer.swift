@@ -13,8 +13,8 @@ import Foundation
 ///Authorizes a request using a bearer access token
 public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
     
-    public let token: String
-    public let method: AuthorizationMethod
+    public var token: String
+    public var method: AuthorizationMethod
     
     public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
         

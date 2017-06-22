@@ -11,8 +11,8 @@ import Foundation
 ///Authorizes a request using HTTP Basic authentication scheme
 public struct HTTPBasicAuthorizer: RequestAuthorizer {
     
-    public let username: String
-    public let password: String
+    public var username: String
+    public var password: String
     
     public init(username: String, password: String) {
         

@@ -21,9 +21,9 @@ public struct ErrorResponse: Error {
         case invalidScope = "invalid_scope"
     }
     
-    public let code: Code
-    public let description: String?
-    public let uri: String?
+    public var code: Code
+    public var description: String?
+    public var uri: String?
     
     init(code: Code, description: String? = nil, uri: String? = nil) {
         

@@ -11,11 +11,11 @@ import Foundation
 //https://tools.ietf.org/html/rfc6749#section-5.1
 public struct AccessTokenResponse {
     
-    public let accessToken: String
-    public let tokenType: String
-    public let expiresIn: TimeInterval?
-    public let refreshToken: String?
-    public let scope: Scope?
+    public var accessToken: String
+    public var tokenType: String
+    public var expiresIn: TimeInterval?
+    public var refreshToken: String?
+    public var scope: Scope?
     
     init(accessToken: String, tokenType: String, expiresIn: TimeInterval?, refreshToken: String?, scope: Scope?) {
         

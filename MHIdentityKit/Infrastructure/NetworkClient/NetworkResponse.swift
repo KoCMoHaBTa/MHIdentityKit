@@ -10,7 +10,7 @@ import Foundation
 
 public struct NetworkResponse {
     
-    let data: Data?
-    let response: URLResponse?
-    let error: Error?
+    public var data: Data?
+    public var response: URLResponse?
+    public var error: Error?
 }

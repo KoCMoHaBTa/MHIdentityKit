@@ -26,6 +26,9 @@ public protocol IdentityManager {
     
     ///Clears any authentication state, leading to next authorization to require authentication. (eg Logout)
     func revokeAuthenticationState()
+    
+    ///Clears any authorization state, leading to next authorization to require refresh or authentication. (eg revoke the access token only)
+    func revokeAuthorizationState()
 }
 
 extension IdentityManager {

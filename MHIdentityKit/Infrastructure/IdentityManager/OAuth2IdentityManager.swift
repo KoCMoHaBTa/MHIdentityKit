@@ -130,6 +130,8 @@ open class OAuth2IdentityManager: IdentityManager {
             let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: self.scope)
             refresher.refresh(using: request, handler: { [weak self] (response, error) in
                 
+                //TODO: authentication should be performed if the error is one of the oauth2 errors - there is no need to reauthenticate (eg show login screen) if the server returns error 500 or there is no internet connection
+                
                 //if force authentication is enabled upon refresh error
                 if self?.forceAuthenticateOnRefreshError == true && error != nil {
                     
@@ -206,6 +208,11 @@ open class OAuth2IdentityManager: IdentityManager {
         self.accessTokenResponse = nil
         
         //TODO: implement token revocation trough server
+    }
+    
+    open func revokeAuthorizationState() {
+        
+        self.accessTokenResponse?.expiresIn = 0
     }
 }
 
