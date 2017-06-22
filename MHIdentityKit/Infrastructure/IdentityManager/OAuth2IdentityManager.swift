@@ -24,7 +24,15 @@ open class OAuth2IdentityManager: IdentityManager {
     //used to provide an authorizer that authorize the request using the provided access token response
     open let tokenAuthorizerProvider: (AccessTokenResponse) -> RequestAuthorizer
     
-    private let queue = DispatchQueue(label: bundleIdentifier + ".OAuth2IdentityManager", qos: .default)
+    //    private let queue = DispatchQueue(label: bundleIdentifier + ".OAuth2IdentityManager", qos: .default)
+    private lazy var queue: OperationQueue = {
+        
+        let queue = OperationQueue()
+        queue.name = bundleIdentifier + ".OAuth2IdentityManager"
+        queue.maxConcurrentOperationCount = 1
+        
+        return queue
+    }()
     
     /**
      Creates an instnce of the receiver.
@@ -50,7 +58,7 @@ open class OAuth2IdentityManager: IdentityManager {
     open var forceAuthenticateOnRefreshError = true
     
     /***
-     Controls whenever an authorization should be retried if an authentication fails. If `true`, when an authentication fails - the authorization will be retried automatically untill there is a successfull authentication. If `false` an error will be returned. Default to `false`. 
+     Controls whenever an authorization should be retried if an authentication fails. If `true`, when an authentication fails - the authorization will be retried automatically untill there is a successfull authentication. If `false` an error will be returned. Default to `false`.
      
      - note: This behaviour is needed when the authorization requires user input, like in the `ResourceOwnerPasswordCredentialsGrantFlow` where the `CredentialsProvider` is a login screen. As opposite it is not needed when user input is not involved, because it could lead to infinite loop of authorizations.
      
@@ -73,7 +81,7 @@ open class OAuth2IdentityManager: IdentityManager {
     }
     
     private var refreshToken: String? {
-    
+        
         return self.accessTokenResponse?.refreshToken ?? self.storage?[type(of: self).refreshTokenKey]
     }
     
@@ -141,35 +149,26 @@ open class OAuth2IdentityManager: IdentityManager {
         self.performAuthentication(handler: handler)
     }
     
-    open func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
+    private func performAuthorization(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
         
-        self.queue.async {
+        if forceAuthenticate == false, let response = self.accessTokenResponse, response.isExpired == false   {
             
-            if forceAuthenticate == false, let response = self.accessTokenResponse, response.isExpired == false   {
-                
-                self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
-                return
-            }
+            self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
+            return
+        }
+        
+        self.authenticate(forced: forceAuthenticate) { (response, error) in
             
-            let semaphore = DispatchSemaphore(value: 0)
+            self.accessTokenResponse = response
             
-            self.authenticate(forced: forceAuthenticate) { (response, error) in
-                
-                defer {
-                    
-                    semaphore.signal()
-                }
-                
-                self.accessTokenResponse = response
-                
-                guard
+            guard
                 error == nil,
                 let response = response
                 else {
                     
                     if self.retryAuthorizationOnAuthenticationError == true {
                         
-                        self.authorize(request: request, forceAuthenticate: forceAuthenticate, handler: handler)
+                        self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: handler)
                     }
                     else {
                         
@@ -177,10 +176,26 @@ open class OAuth2IdentityManager: IdentityManager {
                     }
                     
                     return
-                }
-                
-                self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
             }
+            
+            self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
+        }
+    }
+    
+    //MARK: - IdentityManager
+    
+    open func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
+        
+        self.queue.addOperation {
+            
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: { (request, error) in
+                
+                handler(request, error)
+                
+                semaphore.signal()
+            })
             
             semaphore.wait()
         }
