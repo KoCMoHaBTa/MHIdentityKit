@@ -132,8 +132,12 @@ open class OAuth2IdentityManager: IdentityManager {
                 
                 //TODO: authentication should be performed if the error is one of the oauth2 errors - there is no need to reauthenticate (eg show login screen) if the server returns error 500 or there is no internet connection
                 
-                //if force authentication is enabled upon refresh error
-                if self?.forceAuthenticateOnRefreshError == true && error != nil {
+                //if force authentication is enabled upon refresh error, and the error returned is ErrorResponse - perform a new authentication
+                if self?.forceAuthenticateOnRefreshError == true,
+                let error = error,
+                case MHIdentityKitError.authenticationFailed(let reason) = error,
+                case MHIdentityKitError.wrapped(let wrappedError) = reason,
+                wrappedError is ErrorResponse {
                     
                     //authenticate
                     self?.performAuthentication(handler: handler)
@@ -161,25 +165,24 @@ open class OAuth2IdentityManager: IdentityManager {
         
         self.authenticate(forced: forceAuthenticate) { (response, error) in
             
-            self.accessTokenResponse = response
-            
             guard
-                error == nil,
-                let response = response
+            error == nil,
+            let response = response
+            else {
+                
+                if self.retryAuthorizationOnAuthenticationError == true && error is ErrorResponse {
+                    
+                    self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: handler)
+                }
                 else {
                     
-                    if self.retryAuthorizationOnAuthenticationError == true {
-                        
-                        self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: handler)
-                    }
-                    else {
-                        
-                        handler(request, error)
-                    }
-                    
-                    return
+                    handler(request, error)
+                }
+                
+                return
             }
             
+            self.accessTokenResponse = response
             self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
         }
     }

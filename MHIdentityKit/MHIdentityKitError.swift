@@ -10,19 +10,23 @@ import Foundation
 
 public enum MHIdentityKitError: LocalizedError {
     
+    case wrapped(error: Error)
     case general(description: String, reason: String?)
     case authorizationFailed(reason: LocalizedError)
     case authenticationFailed(reason: LocalizedError)
     
     init(error: Error) {
         
-        let error = error as NSError
-        self = .general(description: error.localizedDescription, reason: error.localizedFailureReason)
+        self = .wrapped(error: error)
     }
     
     private func expand() -> (errorDescription: String?, failureReason: String?, recoverySuggestion: String?) {
         
         switch self {
+            
+            case .wrapped(let error):
+                let error = error as NSError
+                return (error.localizedDescription, error.localizedFailureReason, nil)
             
             case .general(let description, let reason):
                 return (description, reason, nil)

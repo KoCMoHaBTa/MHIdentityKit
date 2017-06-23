@@ -46,7 +46,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
                     }
                     else {
                         
-                        handler(nil, "simulate error")
+                        handler(nil, ErrorResponse(code: .invalidGrant))
                     }
                 }
             }
@@ -74,7 +74,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
                     else {
                         
                         XCTAssertEqual(requestModel.refreshToken, "trt3")
-                        handler(nil, "simulate error")
+                        handler(nil, MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant))))
                     }
                 }
             }
@@ -132,7 +132,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             
             func refresh(using requestModel: AccessTokenRefreshRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
                 
-                handler(nil, "refresh error")
+                handler(nil, MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant))))
             }
         }
         
@@ -173,7 +173,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
             manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), handler: { (request, error) in
                 
                 XCTAssertNotNil(error)
-                XCTAssertEqual(error as? String, "refresh error")
                 XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
                 e.fulfill()
             })
