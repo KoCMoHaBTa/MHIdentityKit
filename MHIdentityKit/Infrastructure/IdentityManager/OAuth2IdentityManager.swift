@@ -205,14 +205,20 @@ open class OAuth2IdentityManager: IdentityManager {
     
     open func revokeAuthenticationState() {
         
-        self.accessTokenResponse = nil
-        
-        //TODO: implement token revocation trough server
+        self.queue.addOperation {
+            
+            self.accessTokenResponse = nil
+            
+            //TODO: implement token revocation trough server
+        }
     }
     
     open func revokeAuthorizationState() {
         
-        self.accessTokenResponse?.expiresIn = 0
+        self.queue.addOperation {
+            
+            self.accessTokenResponse?.expiresIn = 0
+        }
     }
 }
 
