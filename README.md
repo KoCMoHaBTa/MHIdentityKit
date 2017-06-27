@@ -137,7 +137,7 @@ If you find any issues or just have questions - don't hesitate to report and/or 
     - [x] Default network client
     - [x] Default In-Memory credentials provider
     - [x] In-Memory identity storage  
-    - [ ] Keychain identity storage  
+    - [x] Keychain identity storage  
     - [x] [Authorizing requests using Basic HTTP scheme](https://tools.ietf.org/html/rfc2617#section-2)
     - [x] [Authorizing requests using Bearer access token](https://tools.ietf.org/html/rfc6750#section-2)
 
