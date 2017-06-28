@@ -8,4 +8,4 @@
 
 import Foundation
 
-public let bundleIdentifier = Bundle(for: OAuth2IdentityManager.self).bundleIdentifier!
+let bundleIdentifier = Bundle(for: OAuth2IdentityManager.self).bundleIdentifier!
