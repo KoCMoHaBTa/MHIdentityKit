@@ -29,6 +29,9 @@ public protocol IdentityManager {
     
     ///Clears any authorization state, leading to next authorization to require refresh or authentication. (eg revoke the access token only)
     func revokeAuthorizationState()
+    
+    ///Validates a network response based on whenever it requires authorization or not. Returns true if the response is valid and does not require authorization, otherwise return false. Default implementation checks whenever the HTTP status code != 401 for a valid response.
+    var responseValidator: NetworkResponseValidator { get }
 }
 
 extension IdentityManager {
@@ -131,3 +134,52 @@ extension URLRequest {
         try self = self.authorized(using: identityManager, forceAuthenticate: forceAuthenticate)
     }
 }
+
+extension IdentityManager {
+    
+    var responseValidator: NetworkResponseValidator {
+        
+        return AnyNetworkResponseValidator(handler: { (response) -> Bool in
+            
+            return (response.response as? HTTPURLResponse)?.statusCode != 401
+        })
+    }
+    
+    /**
+     Performs a request and validates if the response requires authentication.
+     
+     - parameter request: The request to be performed
+     - parameter networkClient: The client that should perform the request. Default to internal system client.
+     - parameter retryAttempts: The number of times to retry the request if the validation fails.
+     - parameter validator: The validator, used to determine if a request must be reauthorized with forced authentication and retried, based on the network response. Default to `responseValidator` if nil is passed.
+     - parameter forceAuthenticate: Whenver to force authentication during authorization. Default to false.
+     - parameter completion: The completion handler called when the request completes.
+     
+     - note: The implementation of this menthod, simple checks if the HTTP response status code is 401 Unauthorized and if so - authorizes the request again by forcing the authentication. Then the request is retried.
+     */
+    
+    public func perform(_ request: URLRequest, using networkClient: NetworkClient = DefaultNetoworkClient(), retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false, completion: @escaping (NetworkResponse) -> Void) {
+        
+        self.authorize(request: request, forceAuthenticate: forceAuthenticate) { (request, error) in
+            
+            guard error == nil else {
+                
+                completion(NetworkResponse(data: nil, response: nil, error: error))
+                return
+            }
+            
+            networkClient.perform(request: request, handler: { (response) in
+                
+                let validator = validator ?? self.responseValidator
+                if validator.validate(response) == false && retryAttempts > 0 {
+                    
+                    self.perform(request, using: networkClient, retryAttempts: retryAttempts - 1, validator: validator, forceAuthenticate: true, completion: completion)
+                    return
+                }
+                
+                completion(response)
+            })
+        }
+    }
+}
+

@@ -245,4 +245,121 @@ class OAuth2IdentityManagerTests: XCTestCase {
             }
         }
     }
+    
+    func testPerformingRequestsUsingStandartResponseValidator() {
+        
+        struct Flow: AuthorizationGrantFlow {
+            
+            let e: XCTestExpectation
+            
+            func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                e.fulfill()
+                handler(nil, nil)
+            }
+        }
+        
+        struct NClient: NetworkClient {
+            
+            let e: XCTestExpectation
+            var statusCode: Int
+            
+            func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void) {
+                
+                e.fulfill()
+                handler(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
+            }
+        }
+        
+        self.performExpectation { (e) in
+            
+            e.expectedFulfillmentCount = 12
+            
+            let manager: IdentityManager = OAuth2IdentityManager(flow: Flow(e: e), refresher: nil, storage: InMemoryIdentityStorage(), authorizationMethod: .header)
+            
+            var networkClient = NClient(e: e, statusCode: 111)
+            
+            //performing sohuld honor the instanace type
+            //total of 3 fulfils should occur - 1 for flow, 1 for client and 1 for perform completion
+            manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3, completion: { (response) in
+                
+                e.fulfill()
+            })
+            
+            //set the status code to fail
+            networkClient.statusCode = 401
+            
+            //3 x retry attemtps (9) = 10 fulfils
+            
+            manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3, completion: { (response) in
+                
+                e.fulfill()
+            })
+        }
+    }
+    
+    func testPerformingRequestsUsingCustomResponseValidator() {
+        
+        struct Flow: AuthorizationGrantFlow {
+            
+            let e: XCTestExpectation
+            
+            func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                e.fulfill()
+                handler(nil, nil)
+            }
+        }
+        
+        struct NClient: NetworkClient {
+            
+            let e: XCTestExpectation
+            var statusCode: Int
+            
+            func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void) {
+                
+                e.fulfill()
+                handler(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
+            }
+        }
+        
+        self.performExpectation { (e) in
+            
+            e.expectedFulfillmentCount = 12
+            
+            let m = OAuth2IdentityManager(flow: Flow(e: e), refresher: nil, storage: InMemoryIdentityStorage(), authorizationMethod: .header)
+            let manager: IdentityManager = m
+            
+            //set a custom response validator
+            m.responseValidator = AnyNetworkResponseValidator(handler: { (response) -> Bool in
+                
+                return (response.response as? HTTPURLResponse)?.statusCode != 123
+            })
+            
+            var networkClient = NClient(e: e, statusCode: 111)
+            
+            //performing sohuld honor the instanace type
+            //total of 3 fulfils should occur - 1 for flow, 1 for client and 1 for perform completion
+            manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3, completion: { (response) in
+                
+                e.fulfill()
+            })
+            
+            //set the status code to fail
+            networkClient.statusCode = 123
+            
+            //3 x retry attemtps (9) = 10 fulfils
+            
+            manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3, completion: { (response) in
+                
+                e.fulfill()
+            })
+        }
+    }
 }
+
+
+
+
+
+

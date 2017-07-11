@@ -223,6 +223,18 @@ open class OAuth2IdentityManager: IdentityManager {
             self.accessTokenResponse?.expiresIn = 0
         }
     }
+    
+    open lazy var responseValidator: NetworkResponseValidator = {
+       
+        struct PlaceholderIdentityManager: IdentityManager {
+            
+            func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {}
+            func revokeAuthenticationState() {}
+            func revokeAuthorizationState() {}
+        }
+        
+        return PlaceholderIdentityManager().responseValidator
+    }()
 }
 
 extension OAuth2IdentityManager {
