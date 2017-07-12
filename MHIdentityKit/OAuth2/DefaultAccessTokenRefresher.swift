@@ -35,7 +35,7 @@ public class DefaultAccessTokenRefresher: AccessTokenRefresher {
                 return
             }
             
-            self.networkClient.perform(request: request) { (response) in
+            self.networkClient.perform(request) { (response) in
                 
                 do {
                     

@@ -35,7 +35,7 @@ extension AuthorizationGrantFlow {
             }
             
             //perform the request
-            networkClient.perform(request: request, handler: { (response) in
+            networkClient.perform(request) { (response) in
                 
                 do {
                     
@@ -53,7 +53,7 @@ extension AuthorizationGrantFlow {
                         handler(nil, error)
                     }
                 }
-            })
+            }
         }
     }
 }

@@ -168,7 +168,7 @@ extension IdentityManager {
                 return
             }
             
-            networkClient.perform(request: request, handler: { (response) in
+            networkClient.perform(request) { (response) in
                 
                 let validator = validator ?? self.responseValidator
                 if validator.validate(response) == false && retryAttempts > 0 {
@@ -178,7 +178,7 @@ extension IdentityManager {
                 }
                 
                 completion(response)
-            })
+            }
         }
     }
 }

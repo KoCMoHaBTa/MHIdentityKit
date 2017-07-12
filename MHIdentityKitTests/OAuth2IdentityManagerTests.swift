@@ -264,10 +264,10 @@ class OAuth2IdentityManagerTests: XCTestCase {
             let e: XCTestExpectation
             var statusCode: Int
             
-            func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void) {
+            func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
                 
                 e.fulfill()
-                handler(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
+                completion(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
             }
         }
         
@@ -316,10 +316,10 @@ class OAuth2IdentityManagerTests: XCTestCase {
             let e: XCTestExpectation
             var statusCode: Int
             
-            func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void) {
+            func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
                 
                 e.fulfill()
-                handler(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
+                completion(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
             }
         }
         

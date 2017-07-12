@@ -11,7 +11,7 @@ import Foundation
 ///A default implementation of a NetworkClient, used internally
 class DefaultNetoworkClient: NetworkClient {
     
-    func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void) {
+    func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
         
         let application = UIApplication.shared
         var id = UIBackgroundTaskInvalid
@@ -21,7 +21,7 @@ class DefaultNetoworkClient: NetworkClient {
             let reason = NSLocalizedString("Backgorund time has expired.", comment: "The reason of the network error produced when the background time has expired")
             let error = MHIdentityKitError.general(description: description, reason: reason)
             
-            handler(NetworkResponse(data: nil, response: nil, error: error))
+            completion(NetworkResponse(data: nil, response: nil, error: error))
             application.endBackgroundTask(id)
             id = UIBackgroundTaskInvalid
         }
@@ -29,7 +29,7 @@ class DefaultNetoworkClient: NetworkClient {
         let ssions = URLSession(configuration: .ephemeral)
         let task = ssions.dataTask(with: request) { (data, response, error) in
             
-            handler(NetworkResponse(data: data, response: response, error: error))
+            completion(NetworkResponse(data: data, response: response, error: error))
             application.endBackgroundTask(id)
             id = UIBackgroundTaskInvalid
         }

@@ -20,9 +20,9 @@ class TestNetworkClient: NetworkClient {
         self.handler = handler
     }
     
-    func perform(request: URLRequest, handler: @escaping (NetworkResponse) -> Void) {
+    func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
         
-        self.handler(request, handler)
+        self.handler(request, completion)
     }
 }
 
