@@ -51,7 +51,7 @@ extension IdentityManager {
     }
     
     ///Performs forced authentication on a placeholder request. Can be used when you want to authenticate in advance, without authorizing a particular request
-    public func forceAuthenticate(handler: ((Error?) -> Void)?) {
+    public func forceAuthenticate(handler: ((Error?) -> Void)? = nil) {
         
         let placeholderURL = URL(string: "http://foo.bar")!
         let placeholderRequest = URLRequest(url: placeholderURL)
