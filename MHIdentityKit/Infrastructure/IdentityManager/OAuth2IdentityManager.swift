@@ -231,9 +231,11 @@ open class OAuth2IdentityManager: IdentityManager {
             func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {}
             func revokeAuthenticationState() {}
             func revokeAuthorizationState() {}
+            
+            static let defaultResponseValidator = PlaceholderIdentityManager().responseValidator
         }
         
-        return PlaceholderIdentityManager().responseValidator
+        return PlaceholderIdentityManager.defaultResponseValidator
     }()
 }
 
