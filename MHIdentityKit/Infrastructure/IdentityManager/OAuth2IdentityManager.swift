@@ -25,7 +25,7 @@ open class OAuth2IdentityManager: IdentityManager {
     open let tokenAuthorizerProvider: (AccessTokenResponse) -> RequestAuthorizer
     
     //    private let queue = DispatchQueue(label: bundleIdentifier + ".OAuth2IdentityManager", qos: .default)
-    private lazy var queue: OperationQueue = {
+    private var queue: OperationQueue = {
         
         let queue = OperationQueue()
         queue.name = bundleIdentifier + ".OAuth2IdentityManager"
@@ -224,7 +224,7 @@ open class OAuth2IdentityManager: IdentityManager {
         }
     }
     
-    open lazy var responseValidator: NetworkResponseValidator = {
+    open var responseValidator: NetworkResponseValidator = {
        
         struct PlaceholderIdentityManager: IdentityManager {
             
