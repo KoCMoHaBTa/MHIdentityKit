@@ -82,7 +82,15 @@ open class OAuth2IdentityManager: IdentityManager {
     
     private var refreshToken: String? {
         
-        return self.accessTokenResponse?.refreshToken ?? self.storage?[type(of: self).refreshTokenKey]
+        let refreshToken = self.accessTokenResponse?.refreshToken ?? self.storage?[type(of: self).refreshTokenKey]
+        
+        //if token is empty string - ignore it
+        if refreshToken?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true {
+            
+            return nil
+        }
+        
+        return refreshToken
     }
     
     private var scope: Scope? {
