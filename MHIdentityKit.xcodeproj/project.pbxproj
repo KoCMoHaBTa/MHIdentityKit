@@ -389,11 +389,12 @@
 				TargetAttributes = {
 					9954AE441E9D169700F2A73D = {
 						CreatedOnToolsVersion = 8.3.1;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					9954AE4D1E9D169700F2A73D = {
 						CreatedOnToolsVersion = 8.3.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						TestTargetID = E68221AB1F7703B700193B48;
 					};
@@ -677,7 +678,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -696,7 +697,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -708,7 +709,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKitTestsHost.app/MHIdentityKitTestsHost";
 			};
 			name = Debug;
@@ -721,7 +722,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKitTestsHost.app/MHIdentityKitTestsHost";
 			};
 			name = Release;

@@ -37,3 +37,5 @@ class DefaultNetoworkClient: NetworkClient {
         task.resume()
     }
 }
+
+public let _defaultNetworkClient: NetworkClient = DefaultNetoworkClient()

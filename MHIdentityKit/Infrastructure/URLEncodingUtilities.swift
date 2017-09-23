@@ -39,7 +39,7 @@ extension Dictionary {
         
         //remove the first `&` character
         let index = result.index(result.startIndex, offsetBy: 1)
-        result = result.substring(from: index)
+        result = String(result[index ..< result.endIndex])
         
         return result
     }

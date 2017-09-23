@@ -14,7 +14,7 @@ public class DefaultAccessTokenRefresher: AccessTokenRefresher {
     public let networkClient: NetworkClient
     public let clientAuthorizer: RequestAuthorizer
     
-    public init(tokenEndpoint: URL, networkClient: NetworkClient = DefaultNetoworkClient(), clientAuthorizer: RequestAuthorizer) {
+    public init(tokenEndpoint: URL, networkClient: NetworkClient = _defaultNetworkClient, clientAuthorizer: RequestAuthorizer) {
         
         self.tokenEndpoint = tokenEndpoint
         self.networkClient = networkClient

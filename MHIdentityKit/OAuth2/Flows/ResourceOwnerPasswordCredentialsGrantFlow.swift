@@ -31,7 +31,7 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
      
      */
     
-    public init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = DefaultNetoworkClient()) {
+    public init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = _defaultNetworkClient) {
         
         self.tokenEndpoint = tokenEndpoint
         self.credentialsProvider = credentialsProvider
@@ -74,7 +74,7 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
      
      */
     
-    public convenience init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = DefaultNetoworkClient()) {
+    public convenience init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = _defaultNetworkClient) {
         
         let clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
         
@@ -95,7 +95,7 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
      - note: It is highly recommended to implement your own CredentialsProvider and use it instead of providing username and password directly. This way you could implement a loginc screen as a CredentialsProvider and allow the user to enter their username and password when needed.
      */
     
-    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = DefaultNetoworkClient()) {
+    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = _defaultNetworkClient) {
         
         let credentialsProvider = DefaultCredentialsProvider(username: username, password: password)
         let clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)

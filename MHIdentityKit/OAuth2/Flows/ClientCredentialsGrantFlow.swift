@@ -26,7 +26,7 @@ public class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
      
      */
     
-    public init(tokenEndpoint: URL, scope: Scope? = nil, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = DefaultNetoworkClient()) {
+    public init(tokenEndpoint: URL, scope: Scope? = nil, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = _defaultNetworkClient) {
         
         self.tokenEndpoint = tokenEndpoint
         self.scope = scope
