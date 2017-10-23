@@ -11,6 +11,8 @@ import Foundation
 ///A default implementation of a NetworkClient, used internally
 class DefaultNetoworkClient: NetworkClient {
     
+    private let session = URLSession(configuration: .ephemeral)
+    
     func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
         
         let application = UIApplication.shared
@@ -26,8 +28,7 @@ class DefaultNetoworkClient: NetworkClient {
             id = UIBackgroundTaskInvalid
         }
         
-        let ssions = URLSession(configuration: .ephemeral)
-        let task = ssions.dataTask(with: request) { (data, response, error) in
+        let task = self.session.dataTask(with: request) { (data, response, error) in
             
             completion(NetworkResponse(data: data, response: response, error: error))
             application.endBackgroundTask(id)
