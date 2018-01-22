@@ -37,6 +37,11 @@ class DefaultNetoworkClient: NetworkClient {
         
         task.resume()
     }
+    
+    deinit {
+        
+        self.session.invalidateAndCancel()
+    }
 }
 
 public let _defaultNetworkClient: NetworkClient = DefaultNetoworkClient()
