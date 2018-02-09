@@ -110,14 +110,21 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
 extension ResourceOwnerPasswordCredentialsGrantFlow {
     
     //https://tools.ietf.org/html/rfc6749#section-4.3.2
-    fileprivate struct AccessTokenRequest {
+    public struct AccessTokenRequest {
         
-        let grantType: GrantType = .password
-        let username: String
-        let password: String
-        let scope: Scope?
+        public let grantType: GrantType = .password
+        public var username: String
+        public var password: String
+        public var scope: Scope?
         
-        var dictionary: [String: Any] {
+        public init(username: String, password: String, scope: Scope? = nil) {
+            
+            self.username = username
+            self.password = password
+            self.scope = scope
+        }
+        
+        public var dictionary: [String: Any] {
             
             var dictionary = [String: Any]()
             dictionary["grant_type"] = self.grantType.rawValue

@@ -63,12 +63,17 @@ public class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
 extension ClientCredentialsGrantFlow {
     
     //https://tools.ietf.org/html/rfc6749#section-4.4.2
-    fileprivate struct AccessTokenRequest {
+    public struct AccessTokenRequest {
         
-        let grantType: GrantType = .clientCredentials
-        let scope: Scope?
+        public let grantType: GrantType = .clientCredentials
+        public var scope: Scope?
         
-        var dictionary: [String: Any] {
+        public init(scope: Scope? = nil) {
+         
+            self.scope = scope
+        }
+        
+        public var dictionary: [String: Any] {
             
             var dictionary = [String: Any]()
             dictionary["grant_type"] = self.grantType.rawValue
