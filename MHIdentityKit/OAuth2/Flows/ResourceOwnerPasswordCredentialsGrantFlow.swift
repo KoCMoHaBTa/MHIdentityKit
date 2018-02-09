@@ -40,6 +40,75 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
         self.networkClient = networkClient
     }
     
+    //MARK: - Flow logic
+    
+    open func parameters(from accessTokenRequest: AccessTokenRequest) -> [String: Any] {
+        
+        return accessTokenRequest.dictionary
+    }
+    
+    open func urlRequest(from accessTokenRequest: AccessTokenRequest) -> URLRequest {
+        
+        var request = URLRequest(url: self.tokenEndpoint)
+        request.httpMethod = "POST"
+        request.httpBody = self.parameters(from: accessTokenRequest).urlEncodedParametersData
+        
+        return request
+    }
+    
+    open func authorize(_ request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+        
+        self.clientAuthorizer.authorize(request: request, handler: handler)
+    }
+    
+    open func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
+        
+        self.networkClient.perform(request, completion: completion)
+    }
+    
+    open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
+        
+        return try AccessTokenResponseHandler().handle(response: networkResponse)
+    }
+    
+    open func validate(_ accessTokenResponse: AccessTokenResponse) throws {
+        
+        //nothing to validate here
+    }
+    
+    open func authenticate(using request: URLRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+        
+        self.authorize(request, handler: { (request, error) in
+            
+            guard error == nil else {
+                
+                handler(nil, error)
+                return
+            }
+            
+            self.perform(request, completion: { (response) in
+                
+                do {
+                    
+                    let accessTokenResponse = try self.accessTokenResponse(from: response)
+                    try self.validate(accessTokenResponse)
+                    
+                    DispatchQueue.main.async {
+                        
+                        handler(accessTokenResponse, nil)
+                    }
+                }
+                catch {
+                    
+                    DispatchQueue.main.async {
+                        
+                        handler(nil, error)
+                    }
+                }
+            })
+        })
+    }
+    
     //MARK: - AuthorizationGrantFlow
     
     open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
@@ -47,15 +116,9 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
         self.credentialsProvider.credentials { (username, password) in
             
             //build the request
-            var request = URLRequest(url: self.tokenEndpoint)
-            request.httpMethod = "POST"
-            request.httpBody = AccessTokenRequest(username: username, password: password, scope: self.scope).dictionary.urlEncodedParametersData
-            
-            self.authorizeAndPerform(request: request, using: self.clientAuthorizer, and: self.networkClient, handler: { (accessTokenResponse, error) in
-                                
-                //any validation logic can go here
-                handler(accessTokenResponse, error)
-            })
+            let accessTokenRequest = AccessTokenRequest(username: username, password: password, scope: self.scope)
+            let request = self.urlRequest(from: accessTokenRequest)
+            self.authenticate(using: request, handler: handler)
         }
     }
 }
