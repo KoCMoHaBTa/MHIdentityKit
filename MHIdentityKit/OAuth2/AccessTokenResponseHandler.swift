@@ -14,6 +14,10 @@ import Foundation
 ///Handles an HTTP response in attempt to produce an access token or error as defined
 public struct AccessTokenResponseHandler {
     
+    public init() {
+        
+    }
+    
     public func handle(response networkResponse: NetworkResponse) throws -> AccessTokenResponse {
         
         //if there is an error - throw it
