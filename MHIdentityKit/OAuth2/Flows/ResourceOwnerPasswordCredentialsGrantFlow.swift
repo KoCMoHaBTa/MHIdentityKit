@@ -10,13 +10,13 @@ import Foundation
 
 //https://tools.ietf.org/html/rfc6749#section-1.3.3
 //https://tools.ietf.org/html/rfc6749#section-4.3
-public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
+open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
-    public let tokenEndpoint: URL
-    public let credentialsProvider: CredentialsProvider
-    public let scope: Scope?
-    public let clientAuthorizer: RequestAuthorizer
-    public let networkClient: NetworkClient
+    open let tokenEndpoint: URL
+    open let credentialsProvider: CredentialsProvider
+    open let scope: Scope?
+    open let clientAuthorizer: RequestAuthorizer
+    open let networkClient: NetworkClient
 
     //MARK: - Init
     
@@ -42,7 +42,7 @@ public class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     //MARK: - AuthorizationGrantFlow
     
-    public func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
         self.credentialsProvider.credentials { (username, password) in
             

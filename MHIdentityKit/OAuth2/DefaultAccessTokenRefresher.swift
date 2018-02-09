@@ -8,11 +8,11 @@
 
 import Foundation
 
-public class DefaultAccessTokenRefresher: AccessTokenRefresher {
+open class DefaultAccessTokenRefresher: AccessTokenRefresher {
     
-    public let tokenEndpoint: URL
-    public let networkClient: NetworkClient
-    public let clientAuthorizer: RequestAuthorizer
+    open let tokenEndpoint: URL
+    open let networkClient: NetworkClient
+    open let clientAuthorizer: RequestAuthorizer
     
     public init(tokenEndpoint: URL, networkClient: NetworkClient = _defaultNetworkClient, clientAuthorizer: RequestAuthorizer) {
         
@@ -21,7 +21,7 @@ public class DefaultAccessTokenRefresher: AccessTokenRefresher {
         self.clientAuthorizer = clientAuthorizer
     }
     
-    public func refresh(using requestModel: AccessTokenRefreshRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func refresh(using requestModel: AccessTokenRefreshRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
         var request = URLRequest(url: self.tokenEndpoint)
         request.httpMethod = "POST"

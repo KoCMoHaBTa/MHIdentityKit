@@ -11,7 +11,7 @@ import Foundation
 //https://tools.ietf.org/html/rfc6749#section-3.3
 public struct Scope  {
 
-    var value: String
+    public var value: String
     
     public var components: [String] {
         

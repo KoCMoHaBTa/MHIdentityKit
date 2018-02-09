@@ -25,14 +25,14 @@ public struct ErrorResponse: Error {
     public var description: String?
     public var uri: String?
     
-    init(code: Code, description: String? = nil, uri: String? = nil) {
+    public init(code: Code, description: String? = nil, uri: String? = nil) {
         
         self.code = code
         self.description = description
         self.uri = uri
     }
     
-    init?(json: [String: Any]) {
+    public init?(json: [String: Any]) {
         
         guard
         let codeRawValue = json["error"] as? String,

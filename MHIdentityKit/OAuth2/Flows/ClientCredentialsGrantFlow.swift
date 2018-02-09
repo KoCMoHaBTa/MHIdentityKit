@@ -9,7 +9,7 @@
 import Foundation
 
 //https://tools.ietf.org/html/rfc6749#section-4.4
-public class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
+open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
     
     public let tokenEndpoint: URL
     public let scope: Scope?
@@ -34,7 +34,7 @@ public class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
         self.networkClient = networkClient
     }
     
-    public func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
         //build the request
         var request = URLRequest(url: self.tokenEndpoint)

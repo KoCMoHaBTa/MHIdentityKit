@@ -15,7 +15,7 @@ public struct AccessTokenRefreshRequest {
     public let refreshToken: String
     public let scope: Scope?
     
-    var dictionary: [String: Any] {
+    public var dictionary: [String: Any] {
         
         var dictionary = [String: Any]()
         dictionary["grant_type"] = self.grantType.rawValue

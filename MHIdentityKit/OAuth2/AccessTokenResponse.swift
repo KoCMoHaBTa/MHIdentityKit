@@ -17,7 +17,7 @@ public struct AccessTokenResponse {
     public var refreshToken: String?
     public var scope: Scope?
     
-    init(accessToken: String, tokenType: String, expiresIn: TimeInterval?, refreshToken: String?, scope: Scope?) {
+    public init(accessToken: String, tokenType: String, expiresIn: TimeInterval?, refreshToken: String?, scope: Scope?) {
         
         self.accessToken = accessToken
         self.tokenType = tokenType
@@ -43,7 +43,7 @@ public struct AccessTokenResponse {
         return timeIntervalPassed >= expiresIn
     }
     
-    init?(json: [String: Any]) {
+    public init?(json: [String: Any]) {
         
         guard
         let accessToken = json["access_token"] as? String,
