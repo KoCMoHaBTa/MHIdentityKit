@@ -102,6 +102,26 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
         
         self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
     }
+    
+    /**
+     Creates an instance of the receiver.
+     
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter username: The username used for authentication.
+     - parameter password: The password used for authentication.
+     - parameter scope: The scope of the access request.
+     - parameter clientAuthorizer: An authorizer used to authorize the authentication request. Usually an instance of HTTPBasicAuthorizer with your clientID and secret.
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     - note: It is highly recommended to implement your own CredentialsProvider and use it instead of providing username and password directly. This way you could implement a loginc screen as a CredentialsProvider and allow the user to enter their username and password when needed.
+     */
+    
+    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = _defaultNetworkClient) {
+        
+        let credentialsProvider = DefaultCredentialsProvider(username: username, password: password)
+        
+        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+    }
 }
 
 
