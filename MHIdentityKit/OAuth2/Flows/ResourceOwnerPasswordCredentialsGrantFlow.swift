@@ -47,11 +47,16 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
         return accessTokenRequest.dictionary
     }
     
+    open func data(from parameters: [String: Any]) -> Data? {
+        
+        return parameters.urlEncodedParametersData
+    }
+    
     open func urlRequest(from accessTokenRequest: AccessTokenRequest) -> URLRequest {
         
         var request = URLRequest(url: self.tokenEndpoint)
         request.httpMethod = "POST"
-        request.httpBody = self.parameters(from: accessTokenRequest).urlEncodedParametersData
+        request.httpBody = self.data(from: self.parameters(from: accessTokenRequest))
         
         return request
     }
