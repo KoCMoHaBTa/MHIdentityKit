@@ -8,6 +8,10 @@
 
 import Foundation
 
+#if os(iOS)
+    import UIKit
+#endif
+
 ///A default implementation of a NetworkClient, used internally
 class DefaultNetoworkClient: NetworkClient {
     
