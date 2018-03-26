@@ -76,7 +76,7 @@
 		9954AE451E9D169700F2A73D /* MHIdentityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHIdentityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9954AE481E9D169700F2A73D /* MHIdentityKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MHIdentityKit.h; sourceTree = "<group>"; };
 		9954AE491E9D169700F2A73D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9954AE4E1E9D169700F2A73D /* MHIdentityKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MHIdentityKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9954AE4E1E9D169700F2A73D /* MHIdentityKit-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MHIdentityKit-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9954AE531E9D169700F2A73D /* MHIdentityKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHIdentityKitTests.swift; sourceTree = "<group>"; };
 		9954AE551E9D169700F2A73D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHIdentityKit.swift; sourceTree = "<group>"; };
@@ -101,7 +101,7 @@
 		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponseValidator.swift; sourceTree = "<group>"; };
 		E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLEncodingUtilities.swift; sourceTree = "<group>"; };
-		E68221AC1F7703B700193B48 /* MHIdentityKitTestsHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MHIdentityKitTestsHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E68221AC1F7703B700193B48 /* MHIdentityKit-iOSTestsHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MHIdentityKit-iOSTestsHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E68221AE1F7703B700193B48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E68221B01F7703B700193B48 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E68221B31F7703B700193B48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -170,8 +170,8 @@
 			isa = PBXGroup;
 			children = (
 				9954AE451E9D169700F2A73D /* MHIdentityKit.framework */,
-				9954AE4E1E9D169700F2A73D /* MHIdentityKitTests.xctest */,
-				E68221AC1F7703B700193B48 /* MHIdentityKitTestsHost.app */,
+				9954AE4E1E9D169700F2A73D /* MHIdentityKit-iOSTests.xctest */,
+				E68221AC1F7703B700193B48 /* MHIdentityKit-iOSTestsHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -323,9 +323,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		9954AE441E9D169700F2A73D /* MHIdentityKit */ = {
+		9954AE441E9D169700F2A73D /* MHIdentityKit-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9954AE591E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit" */;
+			buildConfigurationList = 9954AE591E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOS" */;
 			buildPhases = (
 				9954AE401E9D169700F2A73D /* Sources */,
 				9954AE411E9D169700F2A73D /* Frameworks */,
@@ -336,14 +336,14 @@
 			);
 			dependencies = (
 			);
-			name = MHIdentityKit;
+			name = "MHIdentityKit-iOS";
 			productName = MHIdentityKit;
 			productReference = 9954AE451E9D169700F2A73D /* MHIdentityKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		9954AE4D1E9D169700F2A73D /* MHIdentityKitTests */ = {
+		9954AE4D1E9D169700F2A73D /* MHIdentityKit-iOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9954AE5C1E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKitTests" */;
+			buildConfigurationList = 9954AE5C1E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOSTests" */;
 			buildPhases = (
 				9954AE4A1E9D169700F2A73D /* Sources */,
 				9954AE4B1E9D169700F2A73D /* Frameworks */,
@@ -355,14 +355,14 @@
 				9954AE511E9D169700F2A73D /* PBXTargetDependency */,
 				E68221BF1F7703BB00193B48 /* PBXTargetDependency */,
 			);
-			name = MHIdentityKitTests;
+			name = "MHIdentityKit-iOSTests";
 			productName = MHIdentityKitTests;
-			productReference = 9954AE4E1E9D169700F2A73D /* MHIdentityKitTests.xctest */;
+			productReference = 9954AE4E1E9D169700F2A73D /* MHIdentityKit-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		E68221AB1F7703B700193B48 /* MHIdentityKitTestsHost */ = {
+		E68221AB1F7703B700193B48 /* MHIdentityKit-iOSTestsHost */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E68221BB1F7703B700193B48 /* Build configuration list for PBXNativeTarget "MHIdentityKitTestsHost" */;
+			buildConfigurationList = E68221BB1F7703B700193B48 /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOSTestsHost" */;
 			buildPhases = (
 				E68221A81F7703B700193B48 /* Sources */,
 				E68221A91F7703B700193B48 /* Frameworks */,
@@ -372,9 +372,9 @@
 			);
 			dependencies = (
 			);
-			name = MHIdentityKitTestsHost;
+			name = "MHIdentityKit-iOSTestsHost";
 			productName = MHIdentityKitTestsHost;
-			productReference = E68221AC1F7703B700193B48 /* MHIdentityKitTestsHost.app */;
+			productReference = E68221AC1F7703B700193B48 /* MHIdentityKit-iOSTestsHost.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -417,9 +417,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9954AE441E9D169700F2A73D /* MHIdentityKit */,
-				9954AE4D1E9D169700F2A73D /* MHIdentityKitTests */,
-				E68221AB1F7703B700193B48 /* MHIdentityKitTestsHost */,
+				9954AE441E9D169700F2A73D /* MHIdentityKit-iOS */,
+				9954AE4D1E9D169700F2A73D /* MHIdentityKit-iOSTests */,
+				E68221AB1F7703B700193B48 /* MHIdentityKit-iOSTestsHost */,
 			);
 		};
 /* End PBXProject section */
@@ -519,12 +519,12 @@
 /* Begin PBXTargetDependency section */
 		9954AE511E9D169700F2A73D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9954AE441E9D169700F2A73D /* MHIdentityKit */;
+			target = 9954AE441E9D169700F2A73D /* MHIdentityKit-iOS */;
 			targetProxy = 9954AE501E9D169700F2A73D /* PBXContainerItemProxy */;
 		};
 		E68221BF1F7703BB00193B48 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E68221AB1F7703B700193B48 /* MHIdentityKitTestsHost */;
+			target = E68221AB1F7703B700193B48 /* MHIdentityKit-iOSTestsHost */;
 			targetProxy = E68221BE1F7703BB00193B48 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -675,7 +675,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MHIdentityKit;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -695,7 +695,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MHIdentityKit;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 			};
@@ -710,7 +710,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKitTestsHost.app/MHIdentityKitTestsHost";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKit-iOSTestsHost.app/MHIdentityKit-iOSTestsHost";
 			};
 			name = Debug;
 		};
@@ -723,7 +723,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKitTestsHost.app/MHIdentityKitTestsHost";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKit-iOSTestsHost.app/MHIdentityKit-iOSTestsHost";
 			};
 			name = Release;
 		};
@@ -775,7 +775,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9954AE591E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit" */ = {
+		9954AE591E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9954AE5A1E9D169700F2A73D /* Debug */,
@@ -784,7 +784,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9954AE5C1E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKitTests" */ = {
+		9954AE5C1E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9954AE5D1E9D169700F2A73D /* Debug */,
@@ -793,7 +793,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E68221BB1F7703B700193B48 /* Build configuration list for PBXNativeTarget "MHIdentityKitTestsHost" */ = {
+		E68221BB1F7703B700193B48 /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOSTestsHost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E68221BC1F7703B700193B48 /* Debug */,

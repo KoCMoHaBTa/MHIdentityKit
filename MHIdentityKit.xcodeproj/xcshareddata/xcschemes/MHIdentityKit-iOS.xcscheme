@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E68221AB1F7703B700193B48"
-               BuildableName = "MHIdentityKitTestsHost.app"
-               BlueprintName = "MHIdentityKitTestsHost"
+               BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+               BuildableName = "MHIdentityKit.framework"
+               BlueprintName = "MHIdentityKit-iOS"
                ReferencedContainer = "container:MHIdentityKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,13 +29,23 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9954AE4D1E9D169700F2A73D"
+               BuildableName = "MHIdentityKit-iOSTests.xctest"
+               BlueprintName = "MHIdentityKit-iOSTests"
+               ReferencedContainer = "container:MHIdentityKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E68221AB1F7703B700193B48"
-            BuildableName = "MHIdentityKitTestsHost.app"
-            BlueprintName = "MHIdentityKitTestsHost"
+            BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+            BuildableName = "MHIdentityKit.framework"
+            BlueprintName = "MHIdentityKit-iOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -53,16 +63,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E68221AB1F7703B700193B48"
-            BuildableName = "MHIdentityKitTestsHost.app"
-            BlueprintName = "MHIdentityKitTestsHost"
+            BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+            BuildableName = "MHIdentityKit.framework"
+            BlueprintName = "MHIdentityKit-iOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -72,16 +81,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E68221AB1F7703B700193B48"
-            BuildableName = "MHIdentityKitTestsHost.app"
-            BlueprintName = "MHIdentityKitTestsHost"
+            BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+            BuildableName = "MHIdentityKit.framework"
+            BlueprintName = "MHIdentityKit-iOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
