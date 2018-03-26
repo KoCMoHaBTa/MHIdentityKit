@@ -114,6 +114,10 @@ extension Keychain {
         query[kSecClass as String] = kSecClassGenericPassword
         query[kSecAttrService as String] = self.service
         
+        #if os(macOS)
+            query[kSecMatchLimit as String] = kSecMatchLimitAll
+        #endif
+        
         let status = SecItemDelete(query as CFDictionary)
         
         guard status == errSecSuccess else {

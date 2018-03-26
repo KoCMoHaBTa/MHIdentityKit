@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0900"
+   LastUpgradeVersion = "0920"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E68221AB1F7703B700193B48"
-               BuildableName = "MHIdentityKitTestsHost.app"
-               BlueprintName = "MHIdentityKitTestsHost"
+               BlueprintIdentifier = "E6985D9E2069018500BE5F6A"
+               BuildableName = "MHIdentityKit.framework"
+               BlueprintName = "MHIdentityKit-tvOS"
                ReferencedContainer = "container:MHIdentityKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,13 +29,23 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E6985DA62069018600BE5F6A"
+               BuildableName = "MHIdentityKit-tvOSTests.xctest"
+               BlueprintName = "MHIdentityKit-tvOSTests"
+               ReferencedContainer = "container:MHIdentityKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E68221AB1F7703B700193B48"
-            BuildableName = "MHIdentityKitTestsHost.app"
-            BlueprintName = "MHIdentityKitTestsHost"
+            BlueprintIdentifier = "E6985D9E2069018500BE5F6A"
+            BuildableName = "MHIdentityKit.framework"
+            BlueprintName = "MHIdentityKit-tvOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -53,16 +63,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E68221AB1F7703B700193B48"
-            BuildableName = "MHIdentityKitTestsHost.app"
-            BlueprintName = "MHIdentityKitTestsHost"
+            BlueprintIdentifier = "E6985D9E2069018500BE5F6A"
+            BuildableName = "MHIdentityKit.framework"
+            BlueprintName = "MHIdentityKit-tvOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -72,16 +81,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E68221AB1F7703B700193B48"
-            BuildableName = "MHIdentityKitTestsHost.app"
-            BlueprintName = "MHIdentityKitTestsHost"
+            BlueprintIdentifier = "E6985D9E2069018500BE5F6A"
+            BuildableName = "MHIdentityKit.framework"
+            BlueprintName = "MHIdentityKit-tvOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

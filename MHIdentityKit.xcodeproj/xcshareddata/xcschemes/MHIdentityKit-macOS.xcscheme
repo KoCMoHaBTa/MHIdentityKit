@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0900"
+   LastUpgradeVersion = "0920"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+               BlueprintIdentifier = "E6985DBA206901AD00BE5F6A"
                BuildableName = "MHIdentityKit.framework"
-               BlueprintName = "MHIdentityKit"
+               BlueprintName = "MHIdentityKit-macOS"
                ReferencedContainer = "container:MHIdentityKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,9 +33,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9954AE4D1E9D169700F2A73D"
-               BuildableName = "MHIdentityKitTests.xctest"
-               BlueprintName = "MHIdentityKitTests"
+               BlueprintIdentifier = "E6985DC2206901AD00BE5F6A"
+               BuildableName = "MHIdentityKit-macOSTests.xctest"
+               BlueprintName = "MHIdentityKit-macOSTests"
                ReferencedContainer = "container:MHIdentityKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -43,9 +43,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+            BlueprintIdentifier = "E6985DBA206901AD00BE5F6A"
             BuildableName = "MHIdentityKit.framework"
-            BlueprintName = "MHIdentityKit"
+            BlueprintName = "MHIdentityKit-macOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -66,9 +66,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+            BlueprintIdentifier = "E6985DBA206901AD00BE5F6A"
             BuildableName = "MHIdentityKit.framework"
-            BlueprintName = "MHIdentityKit"
+            BlueprintName = "MHIdentityKit-macOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -84,9 +84,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9954AE441E9D169700F2A73D"
+            BlueprintIdentifier = "E6985DBA206901AD00BE5F6A"
             BuildableName = "MHIdentityKit.framework"
-            BlueprintName = "MHIdentityKit"
+            BlueprintName = "MHIdentityKit-macOS"
             ReferencedContainer = "container:MHIdentityKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

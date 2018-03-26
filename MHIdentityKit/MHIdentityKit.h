@@ -6,7 +6,7 @@
 //  Copyright © 2017 Milen Halachev. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for MHIdentityKit.
 FOUNDATION_EXPORT double MHIdentityKitVersionNumber;
