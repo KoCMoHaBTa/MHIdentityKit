@@ -162,6 +162,6 @@ If you find any issues or just have questions - don't hesitate to report and/or 
 	- [ ] watchOS default UserAgent (if possible)
 
 - OpenID Connect
-        - [ ] Service Discovery
-        - [ ] Hybrid Flow
-        - [ ] ...
+	- [ ] Service Discovery
+	- [ ] Hybrid Flow
+	- [ ] ...
