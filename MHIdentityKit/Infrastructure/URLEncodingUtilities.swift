@@ -62,12 +62,12 @@ extension String {
             let components = pair.components(separatedBy: "=")
             
             guard
-                components.count == 2,
-                let key = components.first?.removingPercentEncoding,
-                let value = components.last?.removingPercentEncoding
-                else {
-                    
-                    return result
+            components.count == 2,
+            let key = components.first?.removingPercentEncoding,
+            let value = components.last?.removingPercentEncoding
+            else {
+                
+                return result
             }
             
             var result = result
@@ -103,4 +103,10 @@ func +?(lhs: URL, rhs: [String: Any]) -> URL? {
     components?.percentEncodedQuery = rhs.urlEncodedParametersString
     
     return components?.url
+}
+
+infix operator +?! : AdditionPrecedence
+func +?!(lhs: URL, rhs: [String: Any]) -> URL {
+    
+    return (lhs +? rhs)!
 }
