@@ -8,17 +8,23 @@
 
 import Foundation
 
-//https://tools.ietf.org/html/rfc6749#section-5.2
 public struct ErrorResponse: Error {
     
     public enum Code: String {
         
+        //https://tools.ietf.org/html/rfc6749#section-5.2
         case invalidRequest = "invalid_request"
         case invalidClient = "invalid_client"
         case invalidGrant = "invalid_grant"
         case unauthorizedClient = "unauthorized_client"
         case unsupportedGrantType = "unsupported_grant_type"
         case invalidScope = "invalid_scope"
+        
+        //https://tools.ietf.org/html/rfc6749#section-4.1.2.1
+        case accessDenied = "access_denied"
+        case unsupportedResponseType = "unsupported_response_type"
+        case serverError = "server_error"
+        case temporarilyUnavailable = "temporarily_unavailable"
     }
     
     public var code: Code
@@ -32,10 +38,10 @@ public struct ErrorResponse: Error {
         self.uri = uri
     }
     
-    public init?(json: [String: Any]) {
+    public init?(parameters: [String: Any]) {
         
         guard
-        let codeRawValue = json["error"] as? String,
+        let codeRawValue = parameters["error"] as? String,
         let code = Code(rawValue: codeRawValue)
         else {
             
@@ -43,7 +49,7 @@ public struct ErrorResponse: Error {
         }
         
         self.code = code
-        self.description = json["error_description"] as? String
-        self.uri = json["error_uri"] as? String
+        self.description = parameters["error_description"] as? String
+        self.uri = parameters["error_uri"] as? String
     }
 }

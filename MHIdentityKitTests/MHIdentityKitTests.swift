@@ -26,6 +26,21 @@ class TestNetworkClient: NetworkClient {
     }
 }
 
+class TestUserAgent: UserAgent {
+    
+    let handler: (URLRequest, URL?, @escaping (URLRequest) throws -> Bool) -> Void
+    
+    init(handler: @escaping (URLRequest, URL?, @escaping (URLRequest) throws -> Bool) -> Void) {
+        
+        self.handler = handler
+    }
+    
+    func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool) {
+        
+        self.handler(request, redirectURI, redirectionHandler)
+    }
+}
+
 class MHIdentityKitTests: XCTestCase {
     
     func testScope() {

@@ -76,6 +76,7 @@ extension MHIdentityKitError {
         case invalidContentType
         case invalidRequestMethod
         case invalidAccessTokenResponse
+        case invalidAuthorizationResponse
         
         private func expand() -> (failureReason: String?, recoverySuggestion: String?) {
             
@@ -135,6 +136,10 @@ extension MHIdentityKitError {
                 
                 case .invalidAccessTokenResponse:
                     let reason = NSLocalizedString("The received access token response is not valid.", comment: "The localized error description returned when a received access token response is not valid due to incorrect or malformed data.")
+                    return (reason, nil)
+                
+                case .invalidAuthorizationResponse:
+                    let reason = NSLocalizedString("The received authorization token response is not valid.", comment: "The localized error description returned when a received authorization token response is not valid due to incorrect or malformed data.")
                     return (reason, nil)
             }
         }

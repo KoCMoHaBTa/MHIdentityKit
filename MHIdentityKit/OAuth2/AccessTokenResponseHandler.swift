@@ -42,7 +42,7 @@ public struct AccessTokenResponseHandler {
         }
         
         //if the error is one of the defined in the OAuth2 framework - throw it
-        if let error = ErrorResponse(json: json) {
+        if let error = ErrorResponse(parameters: json) {
             
             throw error
         }
