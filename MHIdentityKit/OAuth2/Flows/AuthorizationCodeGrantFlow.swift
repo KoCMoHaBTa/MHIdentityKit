@@ -20,6 +20,22 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     open let clientAuthorizer: RequestAuthorizer?
     open let userAgent: UserAgent
     open let networkClient: NetworkClient
+    
+    //MARK: - Init
+    
+    /**
+     Creates an instance of the receiver.
+     
+     - parameter tokenEndpoint: The URL of the authorization endpoint
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter clientID: The client identifier as described in [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2)
+     - parameter redirectURI: As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2)
+     - parameter scope: The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3)
+     - parameter state: An opaque value used by the client to maintain state between the request and callback. The authorization server includes this value when redirecting the user-agent back to the client. The parameter SHOULD be used for preventing cross-site request forgery as described in [Section 10.12](https://tools.ietf.org/html/rfc6749#section-10.12)
+     - parameter clientAuthorizer: An optional authorizer used to authorize the authentication request.
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     */
 
     public init(authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, redirectURI: URL?, scope: Scope?, state: AnyHashable?, clientAuthorizer: RequestAuthorizer?, userAgent: UserAgent, networkClient: NetworkClient = _defaultNetworkClient) {
 
@@ -32,6 +48,23 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         self.clientAuthorizer = clientAuthorizer
         self.userAgent = userAgent
         self.networkClient = networkClient
+    }
+    
+    /**
+     Creates an instance of the receiver.
+     
+     - parameter tokenEndpoint: The URL of the authorization endpoint
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter clientID: The client identifier as described in [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2)
+     - parameter redirectURI: As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2)
+     - parameter scope: The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3)
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     */
+    
+    public convenience init(authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, redirectURI: URL?, scope: Scope?, userAgent: UserAgent, networkClient: NetworkClient = _defaultNetworkClient) {
+        
+        self.init(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: NSUUID().uuidString, clientAuthorizer: nil, userAgent: userAgent, networkClient: networkClient)
     }
     
     //MARK: - Flow logic
