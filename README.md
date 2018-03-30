@@ -2,7 +2,7 @@
 
 [![Build Status](https://www.bitrise.io/app/e4aae8e132be2cf8/status.svg?token=FHpa_DLw0GpS-_rbXunbYQ&branch=master)](https://www.bitrise.io/app/e4aae8e132be2cf8)
 
-## OAuth2 and OpenID connect iOS Swift client library
+## OAuth2 and OpenID connect iOS Protocol Oriented Swift client library
 
 ## Installation
 
@@ -155,8 +155,14 @@ If you find any issues or just have questions - don't hesitate to report and/or 
 	- [ ] [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2)
 	- [x] [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
 	- [x] [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
+	
+- Platform specific default user agents or examples
+	- [ ] iOS default UserAgent
+	- [ ] macOS default UserAgent
+	- [ ] tvOS default UserAgent (if possible)
+	- [ ] watchOS default UserAgent (if possible)
 
 - OpenID Connect
-        - [ ] Service Discovery
-        - [ ] Hybrid Flow
-        - [ ] ...
+	- [ ] Service Discovery
+	- [ ] Hybrid Flow
+	- [ ] ...
