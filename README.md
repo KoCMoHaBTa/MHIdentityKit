@@ -167,13 +167,13 @@ If you find any issues or just have questions - don't hesitate to report and/or 
 	- [ ] ...
     
 - iOS demos
-    - [x] [Authorization Code Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.1)
-    - [ ] [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2)
-    - [ ] [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
-    - [ ] [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
+    - [x] Authorization Code Grant Flow
+    - [ ] Implicit Grant Flow
+    - [ ] Resource Owner Password Credentials Grant
+    - [ ] Client Credentials Grant
 
 - macOS demo
-    - [ ] [Authorization Code Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.1)
-    - [ ] [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2)
-    - [ ] [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
-    - [ ] [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
+    - [ ] Authorization Code Grant Flow
+    - [ ] Implicit Grant Flow
+    - [ ] Resource Owner Password Credentials Grant
+    - [ ] Client Credentials Grant
