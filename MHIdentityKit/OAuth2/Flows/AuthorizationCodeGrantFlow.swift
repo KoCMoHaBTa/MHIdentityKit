@@ -56,6 +56,30 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
      - parameter tokenEndpoint: The URL of the authorization endpoint
      - parameter tokenEndpoint: The URL of the token endpoint
      - parameter clientID: The client identifier as described in [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2)
+     - parameter secret: The secret, used to authorize confidential clients as described in [Section 4.1.3](https://tools.ietf.org/html/rfc6749#section-4.1.3) and [Section 3.2.1](https://tools.ietf.org/html/rfc6749#section-3.2.1)
+     - parameter redirectURI: As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2)
+     - parameter scope: The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3)
+     - parameter networkClient: A network client used to perform the authentication request.
+     
+     */
+    
+    public convenience init(authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, secret: String?, redirectURI: URL?, scope: Scope?, userAgent: UserAgent, networkClient: NetworkClient = _defaultNetworkClient) {
+        
+        var clientAuthorizer: RequestAuthorizer?
+        if let secret = secret {
+            
+            clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
+        }
+        
+        self.init(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: NSUUID().uuidString, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
+    }
+    
+    /**
+     Creates an instance of the receiver.
+     
+     - parameter tokenEndpoint: The URL of the authorization endpoint
+     - parameter tokenEndpoint: The URL of the token endpoint
+     - parameter clientID: The client identifier as described in [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2)
      - parameter redirectURI: As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2)
      - parameter scope: The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3)
      - parameter networkClient: A network client used to perform the authentication request.
