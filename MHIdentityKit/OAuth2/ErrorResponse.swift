@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ErrorResponse: Error {
+public struct ErrorResponse: LocalizedError {
     
     public enum Code: String {
         
@@ -51,5 +51,15 @@ public struct ErrorResponse: Error {
         self.code = code
         self.description = parameters["error_description"] as? String
         self.uri = parameters["error_uri"] as? String
+    }
+    
+    public var errorDescription: String? {
+        
+        return self.code.rawValue
+    }
+    
+    public var failureReason: String? {
+        
+        return self.description
     }
 }
