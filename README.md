@@ -156,7 +156,7 @@ If you find any issues or just have questions - don't hesitate to report and/or 
 	- [x] [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
 	
 - Platform specific default user agents or examples
-	- [ ] iOS default UserAgent
+	- [x] iOS default UserAgent
 	- [ ] macOS default UserAgent
 	- [ ] tvOS default UserAgent (if possible)
 	- [ ] watchOS default UserAgent (if possible)
@@ -165,3 +165,15 @@ If you find any issues or just have questions - don't hesitate to report and/or 
 	- [ ] Service Discovery
 	- [ ] Hybrid Flow
 	- [ ] ...
+    
+- iOS demos
+    - [x] [Authorization Code Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.1)
+    - [ ] [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2)
+    - [ ] [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
+    - [ ] [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
+
+- macOS demo
+    - [ ] [Authorization Code Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.1)
+    - [ ] [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2)
+    - [ ] [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
+    - [ ] [Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)

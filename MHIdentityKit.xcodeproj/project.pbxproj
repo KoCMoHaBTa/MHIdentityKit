@@ -30,7 +30,7 @@
 		E675980E1F13A032008C1262 /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E68221AF1F7703B700193B48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68221AE1F7703B700193B48 /* AppDelegate.swift */; };
-		E68221B11F7703B700193B48 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68221B01F7703B700193B48 /* ViewController.swift */; };
+		E68221B11F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68221B01F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift */; };
 		E68221B41F7703B700193B48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E68221B21F7703B700193B48 /* Main.storyboard */; };
 		E68221B61F7703B700193B48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E68221B51F7703B700193B48 /* Assets.xcassets */; };
 		E68221B91F7703B700193B48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E68221B71F7703B700193B48 /* LaunchScreen.storyboard */; };
@@ -180,6 +180,16 @@
 		E69D5F021ED85CEB0099EE36 /* DefaultCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */; };
 		E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
 		E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */; };
+		E6B09F872115D548000A94C8 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9954AE451E9D169700F2A73D /* MHIdentityKit.framework */; };
+		E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09F8C2115E0D1000A94C8 /* WebViewUserAgentViewController.swift */; };
+		E6B09FA621160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */; };
+		E6B09FA721160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */; };
+		E6B09FA821160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */; };
+		E6B09FA921160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */; };
+		E6B09FAB21160873000A94C8 /* AnyUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */; };
+		E6B09FAC21160873000A94C8 /* AnyUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */; };
+		E6B09FAD21160873000A94C8 /* AnyUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */; };
+		E6B09FAE21160873000A94C8 /* AnyUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */; };
 		E6B39C24206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C23206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift */; };
 		E6B39C25206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C23206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift */; };
 		E6B39C26206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C23206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift */; };
@@ -238,6 +248,13 @@
 			remoteGlobalIDString = E6985E3A20690E7700BE5F6A;
 			remoteInfo = "MHIdentityKit-macOSTestsHost";
 		};
+		E6B09F842115D544000A94C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9954AE3C1E9D169700F2A73D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9954AE441E9D169700F2A73D;
+			remoteInfo = "MHIdentityKit-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -270,7 +287,7 @@
 		E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLEncodingUtilities.swift; sourceTree = "<group>"; };
 		E68221AC1F7703B700193B48 /* MHIdentityKit-iOSTestsHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MHIdentityKit-iOSTestsHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E68221AE1F7703B700193B48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E68221B01F7703B700193B48 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E68221B01F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E68221B31F7703B700193B48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E68221B51F7703B700193B48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E68221B81F7703B700193B48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -310,6 +327,9 @@
 		E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultCredentialsProvider.swift; sourceTree = "<group>"; };
 		E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryIdentityStorage.swift; sourceTree = "<group>"; };
 		E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BearerAccessTokenAuthorizer.swift; sourceTree = "<group>"; };
+		E6B09F8C2115E0D1000A94C8 /* WebViewUserAgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewUserAgentViewController.swift; sourceTree = "<group>"; };
+		E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNetworkResponseValidator.swift; sourceTree = "<group>"; };
+		E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyUserAgent.swift; sourceTree = "<group>"; };
 		E6B39C23206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B39C27206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
@@ -339,6 +359,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B09F872115D548000A94C8 /* MHIdentityKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +428,7 @@
 				E6985E2720690CB400BE5F6A /* MHIdentityKit-tvOSTestsHost */,
 				E6985E3C20690E7800BE5F6A /* MHIdentityKit-macOSTestsHost */,
 				9954AE461E9D169700F2A73D /* Products */,
+				E6B09F862115D548000A94C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -509,7 +531,7 @@
 			isa = PBXGroup;
 			children = (
 				E68221AE1F7703B700193B48 /* AppDelegate.swift */,
-				E68221B01F7703B700193B48 /* ViewController.swift */,
+				E68221B01F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift */,
 				E68221B21F7703B700193B48 /* Main.storyboard */,
 				E68221B51F7703B700193B48 /* Assets.xcassets */,
 				E68221B71F7703B700193B48 /* LaunchScreen.storyboard */,
@@ -547,6 +569,8 @@
 			isa = PBXGroup;
 			children = (
 				E6985E89206A588100BE5F6A /* UserAgent.swift */,
+				E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */,
+				E6B09F8A2115E0BA000A94C8 /* iOS */,
 			);
 			path = UserAgent;
 			sourceTree = "<group>";
@@ -558,6 +582,7 @@
 				E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */,
 				E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */,
 				E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */,
+				E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */,
 			);
 			path = NetworkClient;
 			sourceTree = "<group>";
@@ -590,6 +615,21 @@
 				E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */,
 			);
 			path = RequestAuthorizer;
+			sourceTree = "<group>";
+		};
+		E6B09F862115D548000A94C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E6B09F8A2115E0BA000A94C8 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				E6B09F8C2115E0D1000A94C8 /* WebViewUserAgentViewController.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		E6B39C2F206BB2D800CB1435 /* Flows */ = {
@@ -700,6 +740,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E6B09F852115D544000A94C8 /* PBXTargetDependency */,
 			);
 			name = "MHIdentityKit-iOSTestsHost";
 			productName = MHIdentityKitTestsHost;
@@ -1013,6 +1054,8 @@
 				E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */,
 				9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */,
+				E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */,
+				E6B09FAB21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */,
 				E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */,
 				E6DC216C1F028FEA008D182A /* KeychainIdentityStorage.swift in Sources */,
@@ -1033,6 +1076,7 @@
 				E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */,
 				E69D5EFA1ED85C240099EE36 /* RequestAuthorizer.swift in Sources */,
 				E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */,
+				E6B09FA621160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */,
 				E6DC21791F0293D9008D182A /* OSStatus.swift in Sources */,
 			);
@@ -1059,7 +1103,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E68221B11F7703B700193B48 /* ViewController.swift in Sources */,
+				E68221B11F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift in Sources */,
 				E68221AF1F7703B700193B48 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1072,6 +1116,7 @@
 				E6985D1F2068FDD000BE5F6A /* DefaultNetoworkClient.swift in Sources */,
 				E6985D2B2068FDDF00BE5F6A /* GrantType.swift in Sources */,
 				E6985D222068FDD400BE5F6A /* CredentialsProvider.swift in Sources */,
+				E6B09FA721160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6985D202068FDD000BE5F6A /* NetworkResponse.swift in Sources */,
 				E6985D192068FDCA00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985D2F2068FDDF00BE5F6A /* ErrorResponse.swift in Sources */,
@@ -1094,6 +1139,7 @@
 				E6985D1D2068FDCD00BE5F6A /* OAuth2IdentityManager.swift in Sources */,
 				E6985E80206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985D212068FDD000BE5F6A /* NetworkResponseValidator.swift in Sources */,
+				E6B09FAC21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6985D2A2068FDDB00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6985D1E2068FDD000BE5F6A /* NetworkClient.swift in Sources */,
 				E6985D282068FDDB00BE5F6A /* RequestAuthorizer.swift in Sources */,
@@ -1113,6 +1159,7 @@
 				E6985DDA20690C5D00BE5F6A /* DefaultNetoworkClient.swift in Sources */,
 				E6985DE620690C5D00BE5F6A /* GrantType.swift in Sources */,
 				E6985DDD20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */,
+				E6B09FA821160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6985DDB20690C5D00BE5F6A /* NetworkResponse.swift in Sources */,
 				E6985DD420690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985DEA20690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
@@ -1135,6 +1182,7 @@
 				E6985DD820690C5D00BE5F6A /* OAuth2IdentityManager.swift in Sources */,
 				E6985E81206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DDC20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */,
+				E6B09FAD21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6985DE520690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6985DD920690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6985DE320690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
@@ -1180,6 +1228,7 @@
 				E6985E0D20690C5D00BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
 				E6985DF120690C5D00BE5F6A /* MHIdentityKit.swift in Sources */,
 				E6985E0020690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
+				E6B09FAE21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6985E0620690C5D00BE5F6A /* Scope.swift in Sources */,
 				E6985DFF20690C5D00BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
 				E6985E0720690C5D00BE5F6A /* AccessTokenResponse.swift in Sources */,
@@ -1199,6 +1248,7 @@
 				E6985DFD20690C5D00BE5F6A /* DefaultCredentialsProvider.swift in Sources */,
 				E6985E0F20690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985E0320690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
+				E6B09FA921160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6985E0E20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985E0B20690C5D00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
 			);
@@ -1271,6 +1321,11 @@
 			isa = PBXTargetDependency;
 			target = E6985E3A20690E7700BE5F6A /* MHIdentityKit-macOSTestsHost */;
 			targetProxy = E6985E4B20690E9600BE5F6A /* PBXContainerItemProxy */;
+		};
+		E6B09F852115D544000A94C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9954AE441E9D169700F2A73D /* MHIdentityKit-iOS */;
+			targetProxy = E6B09F842115D544000A94C8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
