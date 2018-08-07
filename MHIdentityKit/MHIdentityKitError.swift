@@ -44,6 +44,26 @@ public enum MHIdentityKitError: LocalizedError {
         }
     }
     
+    public func contains<E: Error>(error: E.Type) -> Bool {
+    
+        switch self {
+            
+            case .wrapped(let error):
+                return error is E || (error as? MHIdentityKitError)?.contains(error: E.self) == true
+            
+            case .general:
+                return false
+            
+            case .authorizationFailed(let reason):
+                return reason is E || (reason as? MHIdentityKitError)?.contains(error: E.self) == true
+            
+            case .authenticationFailed(let reason):
+                return reason is E || (reason as? MHIdentityKitError)?.contains(error: E.self) == true
+        }
+    }
+    
+    //MARK: - LocalizedError
+    
     public var errorDescription: String? {
         
         return self.expand().errorDescription

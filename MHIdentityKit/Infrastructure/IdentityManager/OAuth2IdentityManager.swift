@@ -142,10 +142,8 @@ open class OAuth2IdentityManager: IdentityManager {
                 
                 //if force authentication is enabled upon refresh error, and the error returned is ErrorResponse - perform a new authentication
                 if self?.forceAuthenticateOnRefreshError == true,
-                let error = error,
-                case MHIdentityKitError.authenticationFailed(let reason) = error,
-                case MHIdentityKitError.wrapped(let wrappedError) = reason,
-                wrappedError is ErrorResponse {
+                let error = error as? MHIdentityKitError,
+                error.contains(error: ErrorResponse.self) {
                     
                     //authenticate
                     self?.performAuthentication(handler: handler)
