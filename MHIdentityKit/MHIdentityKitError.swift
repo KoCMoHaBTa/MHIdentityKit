@@ -89,6 +89,8 @@ extension MHIdentityKitError {
         case tokenExpired
         case buildAuthenticationHeaderFailed
         case unknownURLResponse
+        @available(*, deprecated, message: "Not thrown from framework anymore. Replcaed by `invalidAccessTokenResponse`.") case unableToParseAccessToken
+        @available(*, deprecated, message: "Not thrown from framework anymore. Replcaed by `invalidAccessTokenResponse`.") case unableToParseData
         case unknownHTTPResponse(code: Int)
         case invalidRequestURL
         case invalidContentType
@@ -126,6 +128,9 @@ extension MHIdentityKitError {
                 
                     let reason = NSLocalizedString("Unknown url response", comment: "The localized error failure reason when the network response is unknown")
                     return (reason, nil)
+                
+                case .unableToParseAccessToken, .unableToParseData:
+                    return (nil, nil)
                 
                 case .unknownHTTPResponse(let code):
                     let format = NSLocalizedString("Unknown HTTP response with code: %@", comment: "The localized error description returned when the response code is not sucess 2xx and no other has been handled")
