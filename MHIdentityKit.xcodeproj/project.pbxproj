@@ -203,6 +203,18 @@
 		E6DC216C1F028FEA008D182A /* KeychainIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216B1F028FEA008D182A /* KeychainIdentityStorage.swift */; };
 		E6DC216E1F0292C9008D182A /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216D1F0292C9008D182A /* Keychain.swift */; };
 		E6DC21791F0293D9008D182A /* OSStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC21781F0293D9008D182A /* OSStatus.swift */; };
+		E6E83B5A211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */; };
+		E6E83B5B211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */; };
+		E6E83B5C211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */; };
+		E6E83B5D211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */; };
+		E6E83B5F211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */; };
+		E6E83B60211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */; };
+		E6E83B61211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */; };
+		E6E83B62211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */; };
+		E6E83B6B211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
+		E6E83B6C211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
+		E6E83B6D211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
+		E6E83B6E211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -337,6 +349,9 @@
 		E6DC216B1F028FEA008D182A /* KeychainIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainIdentityStorage.swift; sourceTree = "<group>"; };
 		E6DC216D1F0292C9008D182A /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		E6DC21781F0293D9008D182A /* OSStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSStatus.swift; sourceTree = "<group>"; };
+		E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNetworkClient.swift; sourceTree = "<group>"; };
+		E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCredentialsProvider.swift; sourceTree = "<group>"; };
+		E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequestAuthorizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -579,6 +594,7 @@
 			isa = PBXGroup;
 			children = (
 				E69D5EEB1ED85BA30099EE36 /* NetworkClient.swift */,
+				E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */,
 				E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */,
 				E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */,
 				E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */,
@@ -591,6 +607,7 @@
 			isa = PBXGroup;
 			children = (
 				E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */,
+				E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */,
 				E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */,
 			);
 			path = CredentialsProvider;
@@ -611,6 +628,7 @@
 			isa = PBXGroup;
 			children = (
 				E69D5EF81ED85C240099EE36 /* RequestAuthorizer.swift */,
+				E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */,
 				E69D5EF71ED85C240099EE36 /* HTTPBasicAuthorizer.swift */,
 				E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */,
 			);
@@ -1056,10 +1074,12 @@
 				9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */,
 				E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */,
 				E6B09FAB21160873000A94C8 /* AnyUserAgent.swift in Sources */,
+				E6E83B5F211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */,
 				E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */,
 				E6DC216C1F028FEA008D182A /* KeychainIdentityStorage.swift in Sources */,
 				E69D5EEC1ED85BA30099EE36 /* NetworkClient.swift in Sources */,
+				E6E83B6B211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E683DBA31ED6B327000D7853 /* Scope.swift in Sources */,
 				E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */,
 				E69D5EF91ED85C240099EE36 /* HTTPBasicAuthorizer.swift in Sources */,
@@ -1074,6 +1094,7 @@
 				998405CE1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E61974881EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift in Sources */,
 				E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */,
+				E6E83B5A211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E69D5EFA1ED85C240099EE36 /* RequestAuthorizer.swift in Sources */,
 				E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6B09FA621160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
@@ -1140,12 +1161,15 @@
 				E6985E80206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985D212068FDD000BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6B09FAC21160873000A94C8 /* AnyUserAgent.swift in Sources */,
+				E6E83B5B211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985D2A2068FDDB00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
+				E6E83B60211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985D1E2068FDD000BE5F6A /* NetworkClient.swift in Sources */,
 				E6985D282068FDDB00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985D232068FDD400BE5F6A /* DefaultCredentialsProvider.swift in Sources */,
 				E6985D352068FDE300BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985D292068FDDB00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
+				E6E83B6C211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985D342068FDE300BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985D312068FDDF00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
 			);
@@ -1183,12 +1207,15 @@
 				E6985E81206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DDC20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6B09FAD21160873000A94C8 /* AnyUserAgent.swift in Sources */,
+				E6E83B5C211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985DE520690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
+				E6E83B61211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985DD920690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6985DE320690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985DDE20690C5D00BE5F6A /* DefaultCredentialsProvider.swift in Sources */,
 				E6985DF020690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985DE420690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
+				E6E83B6D211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985DEF20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985DEC20690C5D00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
 			);
@@ -1243,12 +1270,15 @@
 				E6985E82206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DFB20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6985E0420690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
+				E6E83B5D211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985DF820690C5D00BE5F6A /* NetworkClient.swift in Sources */,
+				E6E83B62211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985E0220690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985DFD20690C5D00BE5F6A /* DefaultCredentialsProvider.swift in Sources */,
 				E6985E0F20690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985E0320690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
 				E6B09FA921160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
+				E6E83B6E211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985E0E20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985E0B20690C5D00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
 			);
