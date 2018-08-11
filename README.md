@@ -1,6 +1,6 @@
 # MHIdentityKit
 
-[![Build Status](https://www.bitrise.io/app/e4aae8e132be2cf8/status.svg?token=FHpa_DLw0GpS-_rbXunbYQ&branch=master)](https://www.bitrise.io/app/e4aae8e132be2cf8)
+[![Build Status](https://app.bitrise.io/app/e4aae8e132be2cf8/status.svg?token=FHpa_DLw0GpS-_rbXunbYQ&branch=master)](https://www.bitrise.io/app/e4aae8e132be2cf8)
 
 ## OAuth2 and OpenID connect iOS Protocol Oriented Swift client library
 
