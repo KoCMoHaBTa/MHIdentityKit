@@ -53,4 +53,5 @@ class DefaultNetoworkClient: NetworkClient {
     }
 }
 
+///The shared instance of the default network client, used internally
 public let _defaultNetworkClient: NetworkClient = DefaultNetoworkClient()
