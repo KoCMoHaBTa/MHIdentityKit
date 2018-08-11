@@ -17,6 +17,10 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
     @IBOutlet weak var authorizationURLTextField: UITextField!
     @IBOutlet weak var tokenURLTextField: UITextField!
     @IBOutlet weak var redirectURLTextField: UITextField!
+    
+    private var accessTokenRequest: URLRequest?
+    private var accessTokenResponse: AccessTokenResponse?
+    private var accessTokenError: Error?
 
     override func viewDidLoad() {
         
@@ -49,11 +53,103 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
         self.clearErrorIndicator(from: self.redirectURLTextField)
     }
     
+    private func clearResult() {
+        
+        self.accessTokenRequest = nil
+        self.accessTokenResponse = nil
+        self.accessTokenError = nil
+    }
+    
+    private func showResult() {
+        
+        let accessTokenRequestAvailable = self.accessTokenRequest != nil
+        let accessTokenResponseAvailable = self.accessTokenResponse != nil
+        let accessTokenErrorAvailable = self.accessTokenError != nil
+        
+        let title = "Result summary"
+        let message =
+        """
+        Access token request: \(accessTokenRequestAvailable ? "available" : "none")
+        Access token response: \(accessTokenResponseAvailable ? "available" : "none")
+        Access token error: \(accessTokenErrorAvailable ? "available" : "none")
+        """
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        if accessTokenRequestAvailable, let request = self.accessTokenRequest {
+            
+            alertController.addAction(UIAlertAction(title: "View access token request", style: .default, handler: { (_) in
+                
+                let value =
+                """
+                URL:
+                \(request.url?.absoluteString ?? "nil")
+                
+                Method: \(request.httpMethod ?? "nil")
+                
+                Headers:
+                \(request.allHTTPHeaderFields?.map({ "\($0): \($1)" }).joined(separator: "\n") ?? "nil")
+                
+                Body:
+                \(request.httpBody == nil ? "nil" : String(data: request.httpBody!, encoding: .utf8) ?? "nil")
+                """
+                
+                self.showAlert(title: "Access token request", value: value)
+            }))
+        }
+        
+        if accessTokenResponseAvailable, let response = self.accessTokenResponse {
+            
+            alertController.addAction(UIAlertAction(title: "View access token response", style: .default, handler: { (_) in
+                
+                if let data = try? JSONEncoder().encode(response), let json = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
+                    
+                    let value = json.map({ (key, value) -> String in
+                        
+                        return "\(key): \n\(value as? String ?? "nil")"
+                    }).joined(separator: "\n\n")
+                    
+                    self.showAlert(title: "Access token response", value: value)
+                }
+                else {
+                    
+                    let value = response.accessToken
+                    self.showAlert(title: "Access token response", value: value)
+                }
+            }))
+        }
+        
+        if accessTokenErrorAvailable, let error = self.accessTokenError {
+            
+            alertController.addAction(UIAlertAction(title: "View access token error", style: .default, handler: { (_) in
+                
+                self.showAlert(title: "Access token error", value: error.localizedDescription)
+            }))
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func showAlert(title: String?, value: String?) {
+        
+        let alertController = UIAlertController(title: title, message: value, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Copy", style: .default, handler: { (_) in
+            
+            UIPasteboard.general.string = value
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     //MARK: - Actions
 
     @IBAction func loginAction() {
         
         self.clearErrorIndicatorFromAllTextFields()
+        self.clearResult()
         
         guard let client = self.clientTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), client.isEmpty == false else {
             
@@ -105,16 +201,20 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
             self?.navigationController?.popViewController(animated: true)
         }
         
-        var flow: AuthorizationGrantFlow? = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationURL, tokenEndpoint: tokenURL, clientID: client, secret: secret, redirectURI: redirectURL, scope: scope, userAgent: userAgent)
+        let networkClient = AnyNetworkClient { [weak self] (request, completion) in
+            
+            self?.accessTokenRequest = request
+            _defaultNetworkClient.perform(request, completion: completion)
+        }
+        
+        var flow: AuthorizationGrantFlow? = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationURL, tokenEndpoint: tokenURL, clientID: client, secret: secret, redirectURI: redirectURL, scope: scope, userAgent: userAgent, networkClient: networkClient)
 
         flow?.authenticate { [weak self] (accessTokenResponse, error) in
 
-            let title = error != nil ? "Error" : "Success"
-            let message = error?.localizedDescription ?? accessTokenResponse?.accessToken
+            self?.accessTokenResponse = accessTokenResponse
+            self?.accessTokenError = error
             
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
-            self?.present(alertController, animated: true, completion: nil)
+            self?.showResult()
             
             flow = nil
         }
@@ -125,7 +225,18 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
-        (tableView.cellForRow(at: indexPath)?.contentView.subviews.first as? UITextField)?.becomeFirstResponder()
+        
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        if let textField = (cell?.contentView.subviews.first as? UITextField) {
+            
+            textField.becomeFirstResponder()
+        }
+        
+        if let label = cell?.contentView.subviews.first as? UILabel, label.text == "View Result" {
+            
+            self.showResult()
+        }
     }
    
     //MARK: - UITextFieldDelegate
