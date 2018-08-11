@@ -8,9 +8,9 @@
 
 import Foundation
 
-public struct ErrorResponse: LocalizedError {
+public struct ErrorResponse: LocalizedError, Codable {
     
-    public enum Code: String {
+    public enum Code: String, Codable {
         
         //https://tools.ietf.org/html/rfc6749#section-5.2
         case invalidRequest = "invalid_request"
@@ -40,18 +40,33 @@ public struct ErrorResponse: LocalizedError {
     
     public init?(parameters: [String: Any]) {
         
-        guard
-        let codeRawValue = parameters["error"] as? String,
-        let code = Code(rawValue: codeRawValue)
-        else {
+        guard let data = try? JSONSerialization.data(withJSONObject: parameters, options: []), let object = try? JSONDecoder().decode(ErrorResponse.self, from: data) else {
             
             return nil
         }
         
-        self.code = code
-        self.description = parameters["error_description"] as? String
-        self.uri = parameters["error_uri"] as? String
+        self = object
     }
+    
+    //MARK: - Codable
+    
+    public init(from decoder: Decoder) throws {
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.code = try container.decode(Code.self, forKey: .code)
+        self.description = try? container.decode(String.self, forKey: .description)
+        self.uri = try? container.decode(String.self, forKey: .uri)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case code = "error"
+        case description = "error_description"
+        case uri = "error_uri"
+    }
+    
+    //MARK: - LocalizedError
     
     public var errorDescription: String? {
         

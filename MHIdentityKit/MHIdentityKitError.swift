@@ -89,8 +89,6 @@ extension MHIdentityKitError {
         case tokenExpired
         case buildAuthenticationHeaderFailed
         case unknownURLResponse
-        case unableToParseAccessToken
-        case unableToParseData
         case unknownHTTPResponse(code: Int)
         case invalidRequestURL
         case invalidContentType
@@ -127,14 +125,6 @@ extension MHIdentityKitError {
                 case .unknownURLResponse:
                 
                     let reason = NSLocalizedString("Unknown url response", comment: "The localized error failure reason when the network response is unknown")
-                    return (reason, nil)
-                
-                case .unableToParseAccessToken:
-                    let reason = NSLocalizedString("Unable to parse access token data", comment: "The localized error description returned when the received access token response canot be read and/or parsed")
-                    return (reason, nil)
-                
-                case .unableToParseData:
-                    let reason = NSLocalizedString("Unable to parse data", comment: "The localized error description returned when the received data canot be read and/or parsed")
                     return (reason, nil)
                 
                 case .unknownHTTPResponse(let code):

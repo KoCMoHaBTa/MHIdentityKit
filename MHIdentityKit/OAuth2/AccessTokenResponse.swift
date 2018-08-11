@@ -9,7 +9,7 @@
 import Foundation
 
 //https://tools.ietf.org/html/rfc6749#section-5.1
-public struct AccessTokenResponse {
+public struct AccessTokenResponse: Codable {
     
     public var accessToken: String
     public var tokenType: String
@@ -43,29 +43,51 @@ public struct AccessTokenResponse {
         return timeIntervalPassed >= expiresIn
     }
     
-    public init?(json: [String: Any]) {
+//    public init?(json: [String: Any]) {
+//
+//        guard
+//        let accessToken = json["access_token"] as? String,
+//        let tokenType = json["token_type"] as? String
+//        else {
+//
+//            return nil
+//        }
+//
+//        self.accessToken = accessToken
+//        self.tokenType = tokenType
+//        self.expiresIn = json["expires_in"] as? TimeInterval
+//        self.refreshToken = json["refresh_token"] as? String
+//
+//        if let scopeRawValue = json["scope"] as? String {
+//
+//            self.scope = Scope(rawValue: scopeRawValue)
+//        }
+//        else {
+//
+//            self.scope = nil
+//        }
+//    }
+    
+    //MARK: - Codable
+    
+    public init(from decoder: Decoder) throws {
         
-        guard
-        let accessToken = json["access_token"] as? String,
-        let tokenType = json["token_type"] as? String
-        else {
-            
-            return nil
-        }
+        let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.accessToken = accessToken
-        self.tokenType = tokenType
-        self.expiresIn = json["expires_in"] as? TimeInterval
-        self.refreshToken = json["refresh_token"] as? String
+        self.accessToken = try container.decode(String.self, forKey: .accessToken)
+        self.tokenType = try container.decode(String.self, forKey: .tokenType)
+        self.expiresIn = try? container.decode(TimeInterval.self, forKey: .expiresIn)
+        self.refreshToken = try? container.decode(String.self, forKey: .refreshToken)
+        self.scope = try? container.decode(Scope.self, forKey: .scope)
+    }
+    
+    enum CodingKeys: String, CodingKey {
         
-        if let scopeRawValue = json["scope"] as? String {
-            
-            self.scope = Scope(rawValue: scopeRawValue)
-        }
-        else {
-            
-            self.scope = nil
-        }
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+        case expiresIn = "expires_in"
+        case refreshToken = "refresh_token"
+        case scope
     }
 }
 

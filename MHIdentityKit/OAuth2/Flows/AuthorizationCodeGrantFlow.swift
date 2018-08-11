@@ -164,13 +164,11 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
             throw error
         }
         
-        guard let code = parameters["code"] else {
+        guard let response = AuthorizationResponse(parameters: parameters) else {
             
             throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse)
         }
         
-        let state = parameters["state"]
-        let response = AuthorizationResponse(code: code, state: state)
         return response
     }
     
@@ -348,6 +346,18 @@ extension AuthorizationCodeGrantFlow {
             
             self.code = code
             self.state = state
+        }
+        
+        public init?(parameters: [String: Any]) {
+            
+            guard let code = parameters["code"] as? String else {
+                
+                return nil
+            }
+            
+            let state = parameters["state"] as? AnyHashable
+
+            self.init(code: code, state: state)
         }
     }
     

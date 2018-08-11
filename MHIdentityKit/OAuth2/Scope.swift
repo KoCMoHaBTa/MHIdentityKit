@@ -80,3 +80,21 @@ extension Scope: CustomStringConvertible {
         return self.value
     }
 }
+
+//MARK: - Codable
+extension Scope: Codable {
+    
+    public init(from decoder: Decoder) throws {
+        
+        let container = try decoder.singleValueContainer()
+        
+        self.value = try container.decode(String.self)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        
+        var container = encoder.singleValueContainer()
+        
+        try container.encode(self.value)
+    }
+}

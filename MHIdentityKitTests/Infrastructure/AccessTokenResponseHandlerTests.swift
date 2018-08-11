@@ -40,7 +40,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
         
         self.performExpectation { (e) in
             
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.unableToParseData, {
+            e.fulfilOnThrowing(MHIdentityKitError.Reason.invalidAccessTokenResponse, {
                 
                 let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)
                 _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: response, error: nil))
@@ -69,7 +69,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
         
         self.performExpectation { (e) in
             
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.unableToParseAccessToken, {
+            e.fulfilOnThrowing(MHIdentityKitError.Reason.invalidAccessTokenResponse, {
                 
                 let data = "{}".data(using: .utf8)
                 let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)
