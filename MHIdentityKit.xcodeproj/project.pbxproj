@@ -215,6 +215,8 @@
 		E6E83B6C211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
 		E6E83B6D211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
 		E6E83B6E211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
+		E6E83B70212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6F212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */; };
+		E6E83B72212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B71212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -352,6 +354,8 @@
 		E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNetworkClient.swift; sourceTree = "<group>"; };
 		E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCredentialsProvider.swift; sourceTree = "<group>"; };
 		E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequestAuthorizer.swift; sourceTree = "<group>"; };
+		E6E83B6F212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
+		E6E83B71212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -546,6 +550,8 @@
 			isa = PBXGroup;
 			children = (
 				E68221AE1F7703B700193B48 /* AppDelegate.swift */,
+				E6E83B6F212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */,
+				E6E83B71212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift */,
 				E68221B01F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift */,
 				E68221B21F7703B700193B48 /* Main.storyboard */,
 				E68221B51F7703B700193B48 /* Assets.xcassets */,
@@ -1126,6 +1132,8 @@
 			files = (
 				E68221B11F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift in Sources */,
 				E68221AF1F7703B700193B48 /* AppDelegate.swift in Sources */,
+				E6E83B72212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift in Sources */,
+				E6E83B70212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
