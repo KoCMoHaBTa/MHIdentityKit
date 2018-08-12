@@ -12,9 +12,25 @@ import UIKit
 
 /**
  A default implementation of UserAgent for iOS using WKWebView.
+ 
+ - note: It is recommended embed the view controller into UINavigationController with visible toolbar, because it contains web navigation controls. If you present it modally within an UINavigationController - it is your responsibility to setup a cancel/close button, based on your needs.
  */
 
 open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegate, UserAgent {
+    
+    @IBOutlet open lazy var progressView: UIProgressView! = { [unowned self] in
+        
+        let progressView = UIProgressView(progressViewStyle: .default)
+        
+        self.view.addSubview(progressView)
+        
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.init(item: progressView, attribute: .top, relatedBy: .equal, toItem: self.topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint.init(item: progressView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint.init(item: progressView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1, constant: 0).isActive = true
+        
+        return progressView
+    }()
     
     @IBOutlet open lazy var webView: WKWebView! = { [unowned self] in
        
@@ -58,6 +74,11 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
         self?.updateControlButtons()
     }
     
+    private lazy var webViewEstimatedProgressObserver = self.webView.observe(\.estimatedProgress) { [weak self] (webView, change) in
+        
+        self?.updateProgress()
+    }
+    
     private var request: URLRequest?
     private var redirectURI: URL?
     private var redirectionHandler:  ((URLRequest) throws -> Bool)?
@@ -71,6 +92,7 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
             
             //NOTE: On iOS 10 and below, swift key-value observers are not automatically invalidated upon deallocation, so we have to explicitly invalidate it in order to prevent the app from crashing
             self.webViewIsLoadingObserver.invalidate()
+            self.webViewEstimatedProgressObserver.invalidate()
         }
     }
     
@@ -79,6 +101,7 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
         super.viewDidLoad()
         
         _ = self.webViewIsLoadingObserver
+        _ = self.webViewEstimatedProgressObserver
         
         self.toolbarItems = [
             
@@ -110,6 +133,13 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
         self.forwardButton.isEnabled = self.webView.canGoForward
         self.stopButton.isEnabled = self.webView.isLoading
         self.reloadButton.isEnabled = !self.webView.isLoading
+        
+        self.progressView.isHidden = !self.webView.isLoading
+    }
+    
+    open func updateProgress() {
+        
+        self.progressView.progress = Float(self.webView.estimatedProgress)
     }
     
     //MARK: - Actions
@@ -172,6 +202,8 @@ extension WebViewUserAgentViewController {
      
      - parameter present: This is the presentation handler. Called when the user agent has to be shown on screen.
      - parameter dismiss: This is the dimiss handler. Called when the user agent successfully handles a redirect and has to be dismissed.
+     
+     - note: It is recommended embed the view controller into UINavigationController with visible toolbar, because it contains web navigation controls. If you present it modally within an UINavigationController - it is your responsibility to setup a cancel/close button, based on your needs.
      */
     
     open func makePresentableUserAgent(present: @escaping (WebViewUserAgentViewController) -> Void, dismiss: @escaping (WebViewUserAgentViewController) -> Void) -> UserAgent {
