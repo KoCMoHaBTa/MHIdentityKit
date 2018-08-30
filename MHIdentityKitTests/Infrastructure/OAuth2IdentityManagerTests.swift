@@ -356,6 +356,98 @@ class OAuth2IdentityManagerTests: XCTestCase {
             })
         }
     }
+    
+    func testRefreshTokenStateUponRefreshFailureWithOAuth2Error() {
+        
+        //When trying to perform a refresh and the server returns an oauth2 error - the refresh token should be deleted
+        
+        class Flow: AuthorizationGrantFlow {
+            
+            func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
+            }
+        }
+        
+        class Refresher: AccessTokenRefresher {
+            
+            func refresh(using requestModel: AccessTokenRefreshRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                handler(nil, MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant))))
+            }
+        }
+        
+        self.performExpectation { (e) in
+            
+            e.expectedFulfillmentCount = 2
+            
+            let manager = OAuth2IdentityManager(flow: Flow(), refresher: Refresher(), storage: InMemoryIdentityStorage(), authorizationMethod: .header)
+            manager.forceAuthenticateOnRefreshError = false
+            XCTAssertNil(manager.refreshToken)
+            
+            //upon first authorization - we don't have refresh token - so it will call the flow and save 1
+            manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), handler: { (request, error) in
+                
+                XCTAssertNil(error)
+                XCTAssertEqual(manager.refreshToken, "trt1")
+                e.fulfill()
+            })
+            
+            //upon second authorization - we will have a refresh token and an error should be returned - the refresh token should be deleted
+            manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), handler: { (request, error) in
+                
+                XCTAssertNotNil(error)
+                XCTAssertNil(manager.refreshToken)
+                e.fulfill()
+            })
+        }
+    }
+    
+    func testRefreshTokenStateUponRefreshFailureWithUnknownError() {
+        
+        //When trying to perform a refresh and the server returns an oauth2 error - the refresh token should be deleted
+        
+        class Flow: AuthorizationGrantFlow {
+            
+            func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
+            }
+        }
+        
+        class Refresher: AccessTokenRefresher {
+            
+            func refresh(using requestModel: AccessTokenRefreshRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+                
+                handler(nil, NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil))
+            }
+        }
+        
+        self.performExpectation { (e) in
+            
+            e.expectedFulfillmentCount = 2
+            
+            let manager = OAuth2IdentityManager(flow: Flow(), refresher: Refresher(), storage: InMemoryIdentityStorage(), authorizationMethod: .header)
+            manager.forceAuthenticateOnRefreshError = false
+            XCTAssertNil(manager.refreshToken)
+            
+            //upon first authorization - we don't have refresh token - so it will call the flow and save 1
+            manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), handler: { (request, error) in
+                
+                XCTAssertNil(error)
+                XCTAssertEqual(manager.refreshToken, "trt1")
+                e.fulfill()
+            })
+            
+            //upon second authorization - we will have a refresh token and an error should be returned - the refresh token should be deleted
+            manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), handler: { (request, error) in
+                
+                XCTAssertNotNil(error)
+                XCTAssertEqual(manager.refreshToken, "trt1")
+                e.fulfill()
+            })
+        }
+    }
 }
 
 

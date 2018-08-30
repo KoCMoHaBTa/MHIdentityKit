@@ -68,21 +68,19 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //MARK: - State
     
-    private static let refreshTokenKey = bundleIdentifier + ".OAuth2IdentityManager.refresh_token"
-    private static let scopeValueKey = bundleIdentifier + ".OAuth2IdentityManager.scope_value"
-    
     private var accessTokenResponse: AccessTokenResponse? {
         
         didSet {
             
-            self.storage?[type(of: self).refreshTokenKey] = self.accessTokenResponse?.refreshToken
-            self.storage?[type(of: self).scopeValueKey] = self.accessTokenResponse?.scope?.value
+            self.storage?.refreshToken = self.accessTokenResponse?.refreshToken
+            self.storage?.scope = self.accessTokenResponse?.scope
         }
     }
     
-    private var refreshToken: String? {
+    ///The available refresh token - either from the access token response or from the storage.
+    var refreshToken: String? {
         
-        let refreshToken = self.accessTokenResponse?.refreshToken ?? self.storage?[type(of: self).refreshTokenKey]
+        let refreshToken = self.accessTokenResponse?.refreshToken ?? self.storage?.refreshToken
         
         //if token is empty string - ignore it
         if refreshToken?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true {
@@ -95,17 +93,8 @@ open class OAuth2IdentityManager: IdentityManager {
     
     private var scope: Scope? {
         
-        if let scope = self.accessTokenResponse?.scope {
-            
-            return scope
-        }
-        
-        if let value = self.storage?[type(of: self).scopeValueKey] {
-            
-            return Scope(value: value)
-        }
-        
-        return nil
+        let scope = self.accessTokenResponse?.scope ?? self.storage?.scope
+        return scope
     }
     
     //MARK: - IdentityManager
@@ -138,16 +127,18 @@ open class OAuth2IdentityManager: IdentityManager {
             let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: self.scope)
             refresher.refresh(using: request, handler: { [weak self] (response, error) in
                 
-                //TODO: authentication should be performed if the error is one of the oauth2 errors - there is no need to reauthenticate (eg show login screen) if the server returns error 500 or there is no internet connection
+                if let error = error as? MHIdentityKitError, error.contains(error: ErrorResponse.self) {
                 
-                //if force authentication is enabled upon refresh error, and the error returned is ErrorResponse - perform a new authentication
-                if self?.forceAuthenticateOnRefreshError == true,
-                let error = error as? MHIdentityKitError,
-                error.contains(error: ErrorResponse.self) {
+                    //if the error returned is ErrorResponse - clear the existing refresh token
+                    self?.accessTokenResponse?.refreshToken = nil
                     
-                    //authenticate
-                    self?.performAuthentication(handler: handler)
-                    return
+                    //if force authentication is enabled upon refresh error, and the error returned is ErrorResponse - perform a new authentication
+                    if self?.forceAuthenticateOnRefreshError == true {
+                        
+                        //authenticate
+                        self?.performAuthentication(handler: handler)
+                        return
+                    }
                 }
                 
                 //complete
@@ -311,4 +302,49 @@ extension Notification.Name {
     public static let OAuth2IdentityManagerDidFailToAuthenticate = OAuth2IdentityManager.didFailToAuthenticate
 }
 
+extension IdentityStorage {
+    
+    private var refreshTokenKey: String {
+        
+        return bundleIdentifier + ".OAuth2IdentityManager.refresh_token"
+    }
+    
+    fileprivate var refreshToken: String? {
+        
+        get {
+            
+            return self[refreshTokenKey]
+        }
+        
+        set {
+            
+            self[refreshTokenKey] = newValue
+        }
+    }
+}
 
+extension IdentityStorage {
+    
+    private var scopeValueKey: String {
+        
+        return bundleIdentifier + ".OAuth2IdentityManager.scope_value"
+    }
+    
+    fileprivate var scope: Scope? {
+        
+        get {
+            
+            guard let value = self[scopeValueKey] else {
+                
+                return nil
+            }
+            
+            return Scope(value: value)
+        }
+        
+        set {
+            
+            self[scopeValueKey] = newValue?.value
+        }
+    }
+}
