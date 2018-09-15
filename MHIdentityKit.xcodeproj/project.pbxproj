@@ -52,7 +52,6 @@
 		E6985D202068FDD000BE5F6A /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
 		E6985D212068FDD000BE5F6A /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E6985D222068FDD400BE5F6A /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */; };
-		E6985D232068FDD400BE5F6A /* DefaultCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */; };
 		E6985D242068FDD800BE5F6A /* IdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF11ED85BFC0099EE36 /* IdentityStorage.swift */; };
 		E6985D252068FDD800BE5F6A /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
 		E6985D262068FDD800BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */; };
@@ -85,7 +84,6 @@
 		E6985DDB20690C5D00BE5F6A /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
 		E6985DDC20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E6985DDD20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */; };
-		E6985DDE20690C5D00BE5F6A /* DefaultCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */; };
 		E6985DDF20690C5D00BE5F6A /* IdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF11ED85BFC0099EE36 /* IdentityStorage.swift */; };
 		E6985DE020690C5D00BE5F6A /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
 		E6985DE120690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */; };
@@ -116,7 +114,6 @@
 		E6985DFA20690C5D00BE5F6A /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
 		E6985DFB20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E6985DFC20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */; };
-		E6985DFD20690C5D00BE5F6A /* DefaultCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */; };
 		E6985DFE20690C5D00BE5F6A /* IdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF11ED85BFC0099EE36 /* IdentityStorage.swift */; };
 		E6985DFF20690C5D00BE5F6A /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
 		E6985E0020690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */; };
@@ -177,7 +174,6 @@
 		E69D5EF91ED85C240099EE36 /* HTTPBasicAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF71ED85C240099EE36 /* HTTPBasicAuthorizer.swift */; };
 		E69D5EFA1ED85C240099EE36 /* RequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF81ED85C240099EE36 /* RequestAuthorizer.swift */; };
 		E69D5EFC1ED85C480099EE36 /* DefaultNetoworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */; };
-		E69D5F021ED85CEB0099EE36 /* DefaultCredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */; };
 		E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
 		E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */; };
 		E6B09F872115D548000A94C8 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9954AE451E9D169700F2A73D /* MHIdentityKit.framework */; };
@@ -338,7 +334,6 @@
 		E69D5EF71ED85C240099EE36 /* HTTPBasicAuthorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPBasicAuthorizer.swift; sourceTree = "<group>"; };
 		E69D5EF81ED85C240099EE36 /* RequestAuthorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAuthorizer.swift; sourceTree = "<group>"; };
 		E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultNetoworkClient.swift; sourceTree = "<group>"; };
-		E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultCredentialsProvider.swift; sourceTree = "<group>"; };
 		E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryIdentityStorage.swift; sourceTree = "<group>"; };
 		E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BearerAccessTokenAuthorizer.swift; sourceTree = "<group>"; };
 		E6B09F8C2115E0D1000A94C8 /* WebViewUserAgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewUserAgentViewController.swift; sourceTree = "<group>"; };
@@ -614,7 +609,6 @@
 			children = (
 				E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */,
 				E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */,
-				E69D5F011ED85CEB0099EE36 /* DefaultCredentialsProvider.swift */,
 			);
 			path = CredentialsProvider;
 			sourceTree = "<group>";
@@ -1071,7 +1065,6 @@
 				995CD1E61E9E69450024BFA4 /* ErrorResponse.swift in Sources */,
 				E69D5EF21ED85BFC0099EE36 /* IdentityStorage.swift in Sources */,
 				E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */,
-				E69D5F021ED85CEB0099EE36 /* DefaultCredentialsProvider.swift in Sources */,
 				E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */,
 				E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */,
 				E6DC216E1F0292C9008D182A /* Keychain.swift in Sources */,
@@ -1174,7 +1167,6 @@
 				E6E83B60211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985D1E2068FDD000BE5F6A /* NetworkClient.swift in Sources */,
 				E6985D282068FDDB00BE5F6A /* RequestAuthorizer.swift in Sources */,
-				E6985D232068FDD400BE5F6A /* DefaultCredentialsProvider.swift in Sources */,
 				E6985D352068FDE300BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985D292068FDDB00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
 				E6E83B6C211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
@@ -1220,7 +1212,6 @@
 				E6E83B61211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985DD920690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6985DE320690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
-				E6985DDE20690C5D00BE5F6A /* DefaultCredentialsProvider.swift in Sources */,
 				E6985DF020690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985DE420690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
 				E6E83B6D211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
@@ -1282,7 +1273,6 @@
 				E6985DF820690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6E83B62211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985E0220690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
-				E6985DFD20690C5D00BE5F6A /* DefaultCredentialsProvider.swift in Sources */,
 				E6985E0F20690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985E0320690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
 				E6B09FA921160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,

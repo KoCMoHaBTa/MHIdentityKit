@@ -123,7 +123,20 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
             //build the request
             let accessTokenRequest = AccessTokenRequest(username: username, password: password, scope: self.scope)
             let request = self.urlRequest(from: accessTokenRequest)
-            self.authenticate(using: request, handler: handler)
+            
+            self.authenticate(using: request, handler: { (response, error) in
+            
+                if let error = error {
+                    
+                    self.credentialsProvider.didFailAuthenticating(with: error)
+                }
+                else {
+                    
+                    self.credentialsProvider.didFinishAuthenticating()
+                }
+                
+                handler(response, error)
+            })
         }
     }
 }
@@ -165,7 +178,7 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
     
     public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = _defaultNetworkClient) {
         
-        let credentialsProvider = DefaultCredentialsProvider(username: username, password: password)
+        let credentialsProvider = AnyCredentialsProvider(username: username, password: password)
         let clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
         
         self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
@@ -186,7 +199,7 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
     
     public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = _defaultNetworkClient) {
         
-        let credentialsProvider = DefaultCredentialsProvider(username: username, password: password)
+        let credentialsProvider = AnyCredentialsProvider(username: username, password: password)
         
         self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
     }

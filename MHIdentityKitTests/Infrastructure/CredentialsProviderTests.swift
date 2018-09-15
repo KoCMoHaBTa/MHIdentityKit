@@ -14,7 +14,7 @@ class CredentialsProviderTests: XCTestCase {
     
     func testDefaultCredentialsProvider() {
         
-        let provider: CredentialsProvider = DefaultCredentialsProvider(username: "tuname", password: "tpsswd")
+        let provider: CredentialsProvider = AnyCredentialsProvider(username: "tuname", password: "tpsswd")
         
         self.performExpectation { (e) in
             
@@ -26,5 +26,4 @@ class CredentialsProviderTests: XCTestCase {
             }
         }
     }
-    
 }

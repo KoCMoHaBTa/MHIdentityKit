@@ -13,7 +13,6 @@ import XCTest
 class ResourceOwnerPasswordCredentialsGrantFlowTests: XCTestCase {
     
     let tokenEndpoint = URL(string: "http://foo.bar")!
-    let credentialsProvider = DefaultCredentialsProvider(username: "tu", password: "tp")
     let scope: Scope = "read write"
     let clientAuthorizer = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
     
@@ -21,7 +20,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowTests: XCTestCase {
         
         self.performExpectation { (e) in
             
-            e.expectedFulfillmentCount = 2
+            e.expectedFulfillmentCount = 3
             
             let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
                 
@@ -52,6 +51,15 @@ class ResourceOwnerPasswordCredentialsGrantFlowTests: XCTestCase {
                 handler(NetworkResponse(data: data, response: response, error: nil))
             }
             
+            let credentialsProvider = AnyCredentialsProvider(username: "tu", password: "tp", didFinishAuthenticatingHandler: {
+                
+                e.fulfill()
+                
+            }, didFailAuthenticatingHandler: { (error) in
+                
+                XCTFail()
+            })
+            
             let flow: AuthorizationGrantFlow = ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
                 
             flow.authenticate { (response, error) in
@@ -74,7 +82,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowTests: XCTestCase {
         
         self.performExpectation { (e) in
             
-            e.expectedFulfillmentCount = 2
+            e.expectedFulfillmentCount = 3
             
             let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
                 
@@ -104,6 +112,16 @@ class ResourceOwnerPasswordCredentialsGrantFlowTests: XCTestCase {
                 
                 handler(NetworkResponse(data: data, response: response, error: nil))
             }
+            
+            let credentialsProvider = AnyCredentialsProvider(username: "tu", password: "tp", didFinishAuthenticatingHandler: {
+                
+                XCTFail()
+                
+            }, didFailAuthenticatingHandler: { (error) in
+                
+                XCTAssertEqual((error as? ErrorResponse)?.code, .invalidClient)
+                e.fulfill()
+            })
             
             let flow: AuthorizationGrantFlow = ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
             

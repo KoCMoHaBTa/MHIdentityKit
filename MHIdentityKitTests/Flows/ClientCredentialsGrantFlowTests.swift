@@ -13,7 +13,7 @@ import XCTest
 class ClientCredentialsGrantFlowTests: XCTestCase {
     
     let tokenEndpoint = URL(string: "http://foo.bar")!
-    let credentialsProvider = DefaultCredentialsProvider(username: "tu", password: "tp")
+    let credentialsProvider = AnyCredentialsProvider(username: "tu", password: "tp")
     let scope: Scope = "read write"
     let clientAuthorizer = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
     

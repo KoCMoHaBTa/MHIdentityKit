@@ -15,7 +15,7 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
     let authorizationEndpoint = URL(string: "http://foo.bar/auth")!
     let tokenEndpoint = URL(string: "http://foo.bar/token")!
     let clientID = "jarjar"
-    let credentialsProvider = DefaultCredentialsProvider(username: "tu", password: "tp")
+    let credentialsProvider = AnyCredentialsProvider(username: "tu", password: "tp")
     let scope: Scope = "read write"
     
     func testSuccessWithAllArguments() {
