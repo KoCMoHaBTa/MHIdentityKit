@@ -12,11 +12,11 @@ import Foundation
 //https://tools.ietf.org/html/rfc6749#section-4.3
 open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
-    open let tokenEndpoint: URL
-    open let credentialsProvider: CredentialsProvider
-    open let scope: Scope?
-    open let clientAuthorizer: RequestAuthorizer
-    open let networkClient: NetworkClient
+    public let tokenEndpoint: URL
+    public let credentialsProvider: CredentialsProvider
+    public let scope: Scope?
+    public let clientAuthorizer: RequestAuthorizer
+    public let networkClient: NetworkClient
 
     //MARK: - Init
     

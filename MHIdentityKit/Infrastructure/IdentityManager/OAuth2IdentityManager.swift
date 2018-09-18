@@ -13,16 +13,16 @@ import Foundation
 open class OAuth2IdentityManager: IdentityManager {
     
     //used for authentication - getting OAuth2 access token
-    open let flow: AuthorizationGrantFlow
+    public let flow: AuthorizationGrantFlow
     
     //used to refresh an access token using a refresh token if aplicable
-    open let refresher: AccessTokenRefresher?
+    public let refresher: AccessTokenRefresher?
     
     //used to store state, like the refresh token
-    open let storage: IdentityStorage?
+    public let storage: IdentityStorage?
     
     //used to provide an authorizer that authorize the request using the provided access token response
-    open let tokenAuthorizerProvider: (AccessTokenResponse) -> RequestAuthorizer
+    public let tokenAuthorizerProvider: (AccessTokenResponse) -> RequestAuthorizer
     
     //    private let queue = DispatchQueue(label: bundleIdentifier + ".OAuth2IdentityManager", qos: .default)
     private var queue: OperationQueue = {

@@ -11,15 +11,15 @@ import Foundation
 //https://tools.ietf.org/html/rfc6749#section-4.1
 open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     
-    open let authorizationEndpoint: URL
-    open let tokenEndpoint: URL
-    open let clientID: String
-    open let redirectURI: URL?
-    open let scope: Scope?
-    open let state: AnyHashable?
-    open let clientAuthorizer: RequestAuthorizer?
-    open let userAgent: UserAgent
-    open let networkClient: NetworkClient
+    public let authorizationEndpoint: URL
+    public let tokenEndpoint: URL
+    public let clientID: String
+    public let redirectURI: URL?
+    public let scope: Scope?
+    public let state: AnyHashable?
+    public let clientAuthorizer: RequestAuthorizer?
+    public let userAgent: UserAgent
+    public let networkClient: NetworkClient
     
     //MARK: - Init
     

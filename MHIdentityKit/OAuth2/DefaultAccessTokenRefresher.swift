@@ -10,9 +10,9 @@ import Foundation
 
 open class DefaultAccessTokenRefresher: AccessTokenRefresher {
     
-    open let tokenEndpoint: URL
-    open let networkClient: NetworkClient
-    open let clientAuthorizer: RequestAuthorizer
+    public let tokenEndpoint: URL
+    public let networkClient: NetworkClient
+    public let clientAuthorizer: RequestAuthorizer
     
     public init(tokenEndpoint: URL, networkClient: NetworkClient = _defaultNetworkClient, clientAuthorizer: RequestAuthorizer) {
         

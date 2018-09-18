@@ -21,7 +21,7 @@ class DefaultNetoworkClient: NetworkClient {
         
         #if os(iOS)
             let application = UIApplication.shared
-            var id = UIBackgroundTaskInvalid
+            var id = UIBackgroundTaskIdentifier.invalid
             id = application.beginBackgroundTask(withName: "MHIdentityKit.DefaultNetoworkClient.\(#function).backgroundTask") {
                 
                 let description = NSLocalizedString("Unable to complete network request", comment: "The description of the network error produced when the background time has expired")
@@ -30,7 +30,7 @@ class DefaultNetoworkClient: NetworkClient {
                 
                 completion(NetworkResponse(data: nil, response: nil, error: error))
                 application.endBackgroundTask(id)
-                id = UIBackgroundTaskInvalid
+                id = UIBackgroundTaskIdentifier.invalid
             }
         #endif
         
@@ -40,7 +40,7 @@ class DefaultNetoworkClient: NetworkClient {
             
             #if os(iOS)
                 application.endBackgroundTask(id)
-                id = UIBackgroundTaskInvalid
+                id = UIBackgroundTaskIdentifier.invalid
             #endif
         }
         
