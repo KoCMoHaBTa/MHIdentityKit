@@ -291,8 +291,8 @@
 		E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManager.swift; sourceTree = "<group>"; };
 		E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManagerTests.swift; sourceTree = "<group>"; };
 		E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsIdentityStorage.swift; sourceTree = "<group>"; };
+		E648E8F6217A296F00FC15BA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		E66D60581ED85FA00049657F /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponseValidator.swift; sourceTree = "<group>"; };
 		E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLEncodingUtilities.swift; sourceTree = "<group>"; };
 		E68221AC1F7703B700193B48 /* MHIdentityKit-iOSTestsHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MHIdentityKit-iOSTestsHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -435,7 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				E66D60571ED85F590049657F /* README.md */,
-				E66D60581ED85FA00049657F /* LICENSE.md */,
+				E648E8F6217A296F00FC15BA /* LICENSE */,
 				9954AE471E9D169700F2A73D /* MHIdentityKit */,
 				9954AE521E9D169700F2A73D /* MHIdentityKitTests */,
 				E68221AD1F7703B700193B48 /* MHIdentityKit-iOSTestsHost */,
