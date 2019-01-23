@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "MHIdentityKit"
-  s.version      = "1.7.1"
+  s.version      = "1.7.2"
   s.source       = { :git => "https://github.com/KoCMoHaBTa/MHIdentityKit.git", :tag => "#{s.version}" }
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author    = "Milen Halachev"
