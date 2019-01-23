@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.version      = "1.7.2"
   s.source       = { :git => "https://github.com/KoCMoHaBTa/MHIdentityKit.git", :tag => "#{s.version}" }
   s.license      = { :type => "MIT", :file => "LICENSE" }
-  s.author    = "Milen Halachev"
+  s.author       = "Milen Halachev"
   s.summary      = "OAuth2 and OpenID connect iOS Protocol Oriented Swift client library."
   s.homepage     = "https://github.com/KoCMoHaBTa/MHIdentityKit"
 
