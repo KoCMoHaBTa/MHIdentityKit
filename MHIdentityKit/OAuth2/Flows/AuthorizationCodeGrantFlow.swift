@@ -21,6 +21,12 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     public let userAgent: UserAgent
     public let networkClient: NetworkClient
     
+    ///You can specify additional authorization request parameters. If existing key is duplicated, the one specified by this property will be used.
+    public var additionalAuthorizationRequestParameters: [String: Any] = [:]
+    
+    ///You can specify additional access token request parameters. If existing key is duplicated, the one specified by this property will be used.
+    public var additionalAccessTokenRequestParameters: [String: Any] = [:]
+    
     //MARK: - Init
     
     /**
@@ -95,12 +101,12 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     
     open func parameters(from authorizationRequest: AuthorizationRequest) -> [String: Any] {
         
-        return authorizationRequest.dictionary
+        return authorizationRequest.dictionary.merging(self.additionalAuthorizationRequestParameters, uniquingKeysWith: { $1 })
     }
     
     open func parameters(from accessTokenRequest: AccessTokenRequest) -> [String: Any] {
         
-        return accessTokenRequest.dictionary
+        return accessTokenRequest.dictionary.merging(self.additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
     }
     
     open func data(from parameters: [String: Any]) -> Data? {

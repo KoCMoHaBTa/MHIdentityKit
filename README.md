@@ -130,6 +130,13 @@ The outcome of refreshing an access token is the same as authenticating - upon s
 
 It is, again, up to you to handle use and manage the response.
 
+#### Additional request parameters
+
+Because a lot of auth services actually put custom data into token and auth requests, that is out of the official OAuth2 spec - you can inject custom parameters in one of the following ways:
+
+- set the `additionalAuthorizationRequestParameters` or `additionalAccessTokenRequestParameters` on the flow you are using. If you specift a parameter that is originally supplied by the flow - your custom one will override it.
+- inherit the desired flow and override the `parameters(from:)` function to specify your own custom parameters.
+
 ## Documentation
 
 The code contains inline documentation supported by Xcode. In order to find out more - just check it out. 

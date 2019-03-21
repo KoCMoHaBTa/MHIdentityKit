@@ -17,6 +17,9 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     public let scope: Scope?
     public let clientAuthorizer: RequestAuthorizer
     public let networkClient: NetworkClient
+    
+    ///You can specify additional access token request parameters. If existing key is duplicated, the one specified by this property will be used.
+    public var additionalAccessTokenRequestParameters: [String: Any] = [:]
 
     //MARK: - Init
     
@@ -44,7 +47,7 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     open func parameters(from accessTokenRequest: AccessTokenRequest) -> [String: Any] {
         
-        return accessTokenRequest.dictionary
+        return accessTokenRequest.dictionary.merging(self.additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
     }
     
     open func data(from parameters: [String: Any]) -> Data? {

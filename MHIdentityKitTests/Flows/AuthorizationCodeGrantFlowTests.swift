@@ -700,6 +700,96 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             })
         }
     }
+    
+    func testAdditionalParameters() {
+        
+        self.performExpectation { (e) in
+            
+            e.expectedFulfillmentCount = 3
+            
+            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
+            let state: AnyHashable? = "obi one"
+            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+            
+            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
+                
+                XCTAssertEqual(request.url?.scheme, "http")
+                XCTAssertEqual(request.url?.host, "foo.bar")
+                XCTAssertEqual(request.url?.path, "/auth")
+                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "tampered jarjar")
+                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+                XCTAssertEqual(request.url!.query!.urlDecodedParameters["additional_parameter_1"], "ap1")
+                XCTAssertEqual(request.httpMethod, "GET")
+                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
+                
+                do {
+                    
+                    //simulate successfull redirection
+                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
+                    let handled = try redirectionHandler(redirectRequest)
+                    XCTAssertTrue(handled)
+                }
+                catch {
+                    
+                    XCTFail()
+                }
+                
+                e.fulfill()
+            })
+            
+            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
+                
+                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
+                XCTAssertEqual(request.httpMethod, "POST")
+                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+                XCTAssertNotNil(request.httpBody)
+                
+                guard
+                let parameters = request.httpBody?.urlDecodedParameters
+                else {
+                    
+                    XCTFail()
+                    return
+                }
+                
+                XCTAssertEqual(parameters["grant_type"], "authorization_code")
+                XCTAssertEqual(parameters["code"], "tampered abc")
+                XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
+                XCTAssertEqual(parameters["client_id"], nil)
+                XCTAssertEqual(parameters["additional_parameter_2"], "ap2")
+                
+                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
+                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
+                
+                completion(NetworkResponse(data: data, response: response, error: nil))
+                
+                e.fulfill()
+            })
+            
+            let flow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
+            
+            //set additional  parameters and override some of existing ones
+            flow.additionalAuthorizationRequestParameters = ["additional_parameter_1": "ap1", "client_id": "tampered jarjar"]
+            flow.additionalAccessTokenRequestParameters = ["additional_parameter_2": "ap2", "code": "tampered abc"]
+            
+            flow.authenticate(handler: { (response, error) in
+                
+                XCTAssertNotNil(response)
+                XCTAssertNil(error)
+                
+                XCTAssertEqual(response?.accessToken, "tat")
+                XCTAssertEqual(response?.tokenType, "ttt")
+                XCTAssertEqual(response?.expiresIn, 1234)
+                XCTAssertEqual(response?.refreshToken, "trt")
+                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
+                
+                e.fulfill()
+            })
+        }
+    }
 }
 
 
