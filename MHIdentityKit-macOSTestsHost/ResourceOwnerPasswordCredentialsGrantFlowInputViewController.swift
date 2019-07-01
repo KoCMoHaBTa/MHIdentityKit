@@ -50,6 +50,8 @@ class ResourceOwnerPasswordCredentialsGrantFlowInputViewController: NSViewContro
         self.clearErrorIndicator(from: self.secretTextField)
         self.clearErrorIndicator(from: self.scopeTextField)
         self.clearErrorIndicator(from: self.tokenURLTextField)
+        self.clearErrorIndicator(from: self.usernameTextField)
+        self.clearErrorIndicator(from: self.passwordTextField)
     }
     
     private func clearResult() {
