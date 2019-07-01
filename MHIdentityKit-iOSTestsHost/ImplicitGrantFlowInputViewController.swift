@@ -12,7 +12,6 @@ import MHIdentityKit
 class ImplicitGrantFlowInputViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var clientTextField: UITextField!
-    @IBOutlet weak var secretTextField: UITextField!
     @IBOutlet weak var scopeTextField: UITextField!
     @IBOutlet weak var authorizationURLTextField: UITextField!
     @IBOutlet weak var redirectURLTextField: UITextField!
@@ -44,7 +43,6 @@ class ImplicitGrantFlowInputViewController: UITableViewController, UITextFieldDe
     private func clearErrorIndicatorFromAllTextFields() {
         
         self.clearErrorIndicator(from: self.clientTextField)
-        self.clearErrorIndicator(from: self.secretTextField)
         self.clearErrorIndicator(from: self.scopeTextField)
         self.clearErrorIndicator(from: self.authorizationURLTextField)
         self.clearErrorIndicator(from: self.redirectURLTextField)
@@ -130,12 +128,6 @@ class ImplicitGrantFlowInputViewController: UITableViewController, UITextFieldDe
             return
         }
         
-        var secret: String? = self.secretTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        if secret?.isEmpty == true {
-            
-            secret = nil
-        }
-        
         var scope: Scope? = nil
         if let scopeString = self.scopeTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), scopeString.isEmpty == false {
             
@@ -166,7 +158,7 @@ class ImplicitGrantFlowInputViewController: UITableViewController, UITextFieldDe
             self?.navigationController?.popViewController(animated: true)
         }
         
-        var flow: AuthorizationGrantFlow? = ImplicitGrantFlow(authorizationEndpoint: authorizationURL, clientID: client, secret: secret, redirectURI: redirectURL, scope: scope, userAgent: userAgent)
+        var flow: AuthorizationGrantFlow? = ImplicitGrantFlow(authorizationEndpoint: authorizationURL, clientID: client, redirectURI: redirectURL, scope: scope, userAgent: userAgent)
         
         flow?.authenticate { [weak self] (accessTokenResponse, error) in
             

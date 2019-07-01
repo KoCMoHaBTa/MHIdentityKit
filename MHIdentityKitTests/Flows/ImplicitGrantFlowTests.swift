@@ -39,7 +39,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
             let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -69,7 +68,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             flow.authenticate(handler: { (response, error) in
 
@@ -86,63 +85,7 @@ class ImplicitGrantFlowTests: XCTestCase {
             })
         }
     }
-
-    func testSuccessWithoutClientAuthorizer() {
-
-        self.performExpectation { (e) in
-
-            e.expectedFulfillmentCount = 2
-
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = nil
-
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "token")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-
-                do {
-
-                    //simulate successfull redirection
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now#access_token=tat&token_type=ttt&expires_in=1234&scope=ts1%20ts2&state=obi%20one")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertTrue(handled)
-                }
-                catch {
-
-                    XCTFail()
-                }
-
-                e.fulfill()
-            })
-
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
-
-            flow.authenticate(handler: { (response, error) in
-
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertNil(response?.refreshToken)
-                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
-
-                e.fulfill()
-            })
-        }
-    }
-
+    
     func testSuccessWithoutRedirectURI() {
 
         self.performExpectation { (e) in
@@ -151,7 +94,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = nil
             let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = nil
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -181,7 +123,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             flow.authenticate(handler: { (response, error) in
 
@@ -207,7 +149,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = nil
             let state: AnyHashable? = nil
-            let clientAuthorizer: RequestAuthorizer? = nil
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -237,7 +178,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             flow.authenticate(handler: { (response, error) in
 
@@ -264,7 +205,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
             let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -293,7 +233,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             flow.authenticate(handler: { (response, error) in
 
@@ -314,7 +254,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
             let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -344,7 +283,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             flow.authenticate(handler: { (response, error) in
 
@@ -362,7 +301,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
             let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -411,7 +349,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             flow.authenticate(handler: { (response, error) in
 
@@ -438,7 +376,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
             let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -467,7 +404,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             flow.authenticate(handler: { (response, error) in
 
@@ -487,7 +424,6 @@ class ImplicitGrantFlowTests: XCTestCase {
 
             let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
             let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
 
             let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
 
@@ -518,7 +454,7 @@ class ImplicitGrantFlowTests: XCTestCase {
                 e.fulfill()
             })
 
-            let flow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
+            let flow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
             //set additional  parameters and override some of existing ones
             flow.additionalAuthorizationRequestParameters = ["additional_parameter_1": "ap1", "client_id": "tampered jarjar"]

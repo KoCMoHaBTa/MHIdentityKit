@@ -16,7 +16,6 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
     public let redirectURI: URL?
     public let scope: Scope?
     public let state: AnyHashable?
-    public let clientAuthorizer: RequestAuthorizer?
     public let userAgent: UserAgent
     
     ///You can specify additional authorization request parameters. If existing key is duplicated, the one specified by this property will be used.
@@ -32,19 +31,17 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
      - parameter redirectURI: As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2)
      - parameter scope: The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3)
      - parameter state: An opaque value used by the client to maintain state between the request and callback. The authorization server includes this value when redirecting the user-agent back to the client. The parameter SHOULD be used for preventing cross-site request forgery as described in [Section 10.12](https://tools.ietf.org/html/rfc6749#section-10.12)
-     - parameter clientAuthorizer: An optional authorizer used to authorize the authentication request.
-     - parameter networkClient: A network client used to perform the authentication request.
+     - parameter userAgent: The user agent used to perform the authroization request and handle redirects.
      
      */
     
-    public init(authorizationEndpoint: URL, clientID: String, redirectURI: URL?, scope: Scope?, state: AnyHashable?, clientAuthorizer: RequestAuthorizer?, userAgent: UserAgent) {
+    public init(authorizationEndpoint: URL, clientID: String, redirectURI: URL?, scope: Scope?, state: AnyHashable?, userAgent: UserAgent) {
         
         self.authorizationEndpoint = authorizationEndpoint
         self.clientID = clientID
         self.redirectURI = redirectURI
         self.scope = scope
         self.state = state
-        self.clientAuthorizer = clientAuthorizer
         self.userAgent = userAgent
     }
     
@@ -53,39 +50,15 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
      
      - parameter tokenEndpoint: The URL of the authorization endpoint
      - parameter clientID: The client identifier as described in [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2)
-     - parameter secret: The secret, used to authorize confidential clients as described in [Section 4.1.3](https://tools.ietf.org/html/rfc6749#section-4.1.3) and [Section 3.2.1](https://tools.ietf.org/html/rfc6749#section-3.2.1)
      - parameter redirectURI: As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2)
      - parameter scope: The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3)
-     - parameter networkClient: A network client used to perform the authentication request.
-     
-     */
-    
-    public convenience init(authorizationEndpoint: URL, clientID: String, secret: String?, redirectURI: URL?, scope: Scope?, userAgent: UserAgent) {
-        
-        var clientAuthorizer: RequestAuthorizer?
-        if let secret = secret {
-            
-            clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
-        }
-        
-        self.init(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: NSUUID().uuidString, clientAuthorizer: clientAuthorizer, userAgent: userAgent)
-    }
-    
-    /**
-     Creates an instance of the receiver.
-     
-     - parameter tokenEndpoint: The URL of the authorization endpoint
-     - parameter tokenEndpoint: The URL of the token endpoint
-     - parameter clientID: The client identifier as described in [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2)
-     - parameter redirectURI: As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2)
-     - parameter scope: The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3)
-     - parameter networkClient: A network client used to perform the authentication request.
+     - parameter userAgent: The user agent used to perform the authroization request and handle redirects.
      
      */
     
     public convenience init(authorizationEndpoint: URL, clientID: String, redirectURI: URL?, scope: Scope?, userAgent: UserAgent) {
         
-        self.init(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: NSUUID().uuidString, clientAuthorizer: nil, userAgent: userAgent)
+        self.init(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: NSUUID().uuidString, userAgent: userAgent)
     }
     
     //MARK: - Flow logic
@@ -108,17 +81,6 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
         request.httpMethod = "GET"
         
         return request
-    }
-    
-    open func authorize(accesTokenURLRequest: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
-        
-        guard let clientAuthorizer = self.clientAuthorizer else {
-            
-            handler(accesTokenURLRequest, nil)
-            return
-        }
-        
-        clientAuthorizer.authorize(request: accesTokenURLRequest, handler: handler)
     }
     
     open func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool) {
