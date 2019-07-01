@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11134"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -618,7 +620,7 @@
                                         <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
-                                                <action selector="toggleSourceList:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
+                                                <action selector="toggleSidebar:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
@@ -673,22 +675,22 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MHIdentityKit_macOSTestsHost" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="0.0"/>
+            <point key="canvasLocation" x="212" y="-239"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-			<connections>
+                        <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
                     </window>
@@ -698,20 +700,204 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="250"/>
+            <point key="canvasLocation" x="212" y="11"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZW6-Ah-Fae">
+                                <rect key="frame" x="127" y="222" width="226" height="32"/>
+                                <buttonCell key="cell" type="push" title="Authorization Code Grant Flow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tla-tG-Mx8">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="wD6-3F-mCc" kind="show" id="m8d-IZ-WNi"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vRN-60-0y6">
+                                <rect key="frame" x="164" y="181" width="153" height="32"/>
+                                <buttonCell key="cell" type="push" title="Implicit Grant Flow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7UO-jG-GgI">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="Cf3-So-TIP" kind="show" id="pSx-I8-5JL"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uea-0N-p0t">
+                                <rect key="frame" x="132" y="99" width="217" height="32"/>
+                                <buttonCell key="cell" type="push" title="Client Credentials Grant Flow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HT0-Ua-jnt">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="m1k-Ao-Nit" kind="show" id="JJ6-n9-XLL"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ERG-DF-Ma5">
+                                <rect key="frame" x="69" y="140" width="343" height="32"/>
+                                <buttonCell key="cell" type="push" title="Resource Owner Password Credentials Grant Flow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cvr-Fm-wpt">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="toB-cw-gNE" kind="show" id="FCO-21-Rly"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="uea-0N-p0t" firstAttribute="top" secondItem="ERG-DF-Ma5" secondAttribute="bottom" constant="20" id="162-X1-3rf"/>
+                            <constraint firstItem="ERG-DF-Ma5" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="3Xs-ln-RiC"/>
+                            <constraint firstItem="vRN-60-0y6" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="5Ru-sy-of7"/>
+                            <constraint firstItem="ERG-DF-Ma5" firstAttribute="top" secondItem="vRN-60-0y6" secondAttribute="bottom" constant="20" id="Iio-a3-qU8"/>
+                            <constraint firstItem="ZW6-Ah-Fae" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="KRN-La-5GP"/>
+                            <constraint firstItem="uea-0N-p0t" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="Ph6-ai-RCr"/>
+                            <constraint firstItem="ZW6-Ah-Fae" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="WGc-Sx-SHX"/>
+                            <constraint firstItem="vRN-60-0y6" firstAttribute="top" secondItem="ZW6-Ah-Fae" secondAttribute="bottom" constant="20" id="gm6-Yc-CPr"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="212" y="436"/>
+        </scene>
+        <!--Authorization Code Grant Flow-->
+        <scene sceneID="J5u-ij-AAu">
+            <objects>
+                <viewController title="Authorization Code Grant Flow" id="wD6-3F-mCc" customClass="AuthorizationCodeGrantFlowInputViewController" customModule="MHIdentityKit_macOSTestsHost" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="fJS-Rt-oxz">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="edT-dd-Yt4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-490" y="1120"/>
+        </scene>
+        <!--Resource Owner Password Credentials Grant Flow-->
+        <scene sceneID="uMt-zt-8Z5">
+            <objects>
+                <viewController title="Resource Owner Password Credentials Grant Flow" id="toB-cw-gNE" customClass="ResourceOwnerPasswordCredentialsGrantFlowInputViewController" customModule="MHIdentityKit_macOSTestsHost" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="LY5-4c-lTK">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="x9j-sL-kWI" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="502" y="1120"/>
+        </scene>
+        <!--Implicit Grant Flow-->
+        <scene sceneID="xO7-Pr-qqd">
+            <objects>
+                <viewController title="Implicit Grant Flow" id="Cf3-So-TIP" customClass="ImplicitGrantFlowInputViewController" customModule="MHIdentityKit_macOSTestsHost" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="ax3-5x-qQl">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="Ntn-fg-qQf" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13" y="1120"/>
+        </scene>
+        <!--Client Credentials Grant Flow-->
+        <scene sceneID="ai6-um-JAJ">
+            <objects>
+                <viewController title="Client Credentials Grant Flow" id="m1k-Ao-Nit" customClass="ClientCredentialsGrantFlowInputViewController" customModule="MHIdentityKit_macOSTestsHost" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="sva-t6-M9s">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9BR-9W-Tdy">
+                                <rect key="frame" x="20" y="258" width="410" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Client ID" drawsBackground="YES" id="Tak-82-JFb">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eUo-I0-npu">
+                                <rect key="frame" x="20" y="216" width="410" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Secret" drawsBackground="YES" id="TAc-Ti-l22">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0jQ-ob-vrJ">
+                                <rect key="frame" x="20" y="174" width="410" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Scope (Optional)" drawsBackground="YES" id="UeD-uj-bEk">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L14-bI-HQf">
+                                <rect key="frame" x="20" y="132" width="410" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Token URL" drawsBackground="YES" id="Jsn-pD-c9l">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MXh-pg-ALH">
+                                <rect key="frame" x="14" y="13" width="422" height="32"/>
+                                <buttonCell key="cell" type="push" title="View Result" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KFt-B0-Zf1">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="viewResult:" target="m1k-Ao-Nit" id="Frf-sG-zMo"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rKp-A2-9iX">
+                                <rect key="frame" x="14" y="54" width="422" height="32"/>
+                                <buttonCell key="cell" type="push" title="Login" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kCK-4W-NM8">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="loginAction:" target="m1k-Ao-Nit" id="nOU-a4-4dw"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="0jQ-ob-vrJ" firstAttribute="leading" secondItem="sva-t6-M9s" secondAttribute="leading" constant="20" id="7pp-g3-jAO"/>
+                            <constraint firstItem="eUo-I0-npu" firstAttribute="top" secondItem="9BR-9W-Tdy" secondAttribute="bottom" constant="20" id="8t4-My-Xlv"/>
+                            <constraint firstItem="0jQ-ob-vrJ" firstAttribute="top" secondItem="eUo-I0-npu" secondAttribute="bottom" constant="20" id="CHd-qa-Fm1"/>
+                            <constraint firstItem="L14-bI-HQf" firstAttribute="leading" secondItem="sva-t6-M9s" secondAttribute="leading" constant="20" id="Db0-gt-m6c"/>
+                            <constraint firstAttribute="trailing" secondItem="L14-bI-HQf" secondAttribute="trailing" constant="20" id="FVZ-gj-y45"/>
+                            <constraint firstAttribute="trailing" secondItem="eUo-I0-npu" secondAttribute="trailing" constant="20" id="Iah-yo-79M"/>
+                            <constraint firstAttribute="bottom" secondItem="MXh-pg-ALH" secondAttribute="bottom" constant="20" id="OlK-XQ-aOW"/>
+                            <constraint firstAttribute="trailing" secondItem="0jQ-ob-vrJ" secondAttribute="trailing" constant="20" id="Wfc-O3-0R2"/>
+                            <constraint firstAttribute="trailing" secondItem="9BR-9W-Tdy" secondAttribute="trailing" constant="20" id="Zlt-22-5D6"/>
+                            <constraint firstAttribute="trailing" secondItem="MXh-pg-ALH" secondAttribute="trailing" constant="20" id="ccb-S4-okg"/>
+                            <constraint firstItem="MXh-pg-ALH" firstAttribute="leading" secondItem="sva-t6-M9s" secondAttribute="leading" constant="20" id="cko-Fv-Ne2"/>
+                            <constraint firstAttribute="trailing" secondItem="rKp-A2-9iX" secondAttribute="trailing" constant="20" id="dk8-Yk-iJm"/>
+                            <constraint firstItem="9BR-9W-Tdy" firstAttribute="leading" secondItem="sva-t6-M9s" secondAttribute="leading" constant="20" id="fek-1b-Gqf"/>
+                            <constraint firstItem="9BR-9W-Tdy" firstAttribute="top" secondItem="sva-t6-M9s" secondAttribute="top" constant="20" id="pBL-5Q-gMH"/>
+                            <constraint firstItem="MXh-pg-ALH" firstAttribute="top" secondItem="rKp-A2-9iX" secondAttribute="bottom" constant="20" id="vGV-IV-UY7"/>
+                            <constraint firstItem="L14-bI-HQf" firstAttribute="top" secondItem="0jQ-ob-vrJ" secondAttribute="bottom" constant="20" id="vJX-Yi-5Ac"/>
+                            <constraint firstItem="eUo-I0-npu" firstAttribute="leading" secondItem="sva-t6-M9s" secondAttribute="leading" constant="20" id="vdN-fq-i9J"/>
+                            <constraint firstItem="rKp-A2-9iX" firstAttribute="leading" secondItem="sva-t6-M9s" secondAttribute="leading" constant="20" id="wKa-A0-Rxu"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="clientTextField" destination="9BR-9W-Tdy" id="15O-hN-mhn"/>
+                        <outlet property="scopeTextField" destination="0jQ-ob-vrJ" id="c5y-TC-e3u"/>
+                        <outlet property="secretTextField" destination="eUo-I0-npu" id="KZn-hH-WEf"/>
+                        <outlet property="tokenURLTextField" destination="L14-bI-HQf" id="yI7-b4-ihA"/>
+                    </connections>
+                </viewController>
+                <customObject id="7DT-w4-9aX" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1004" y="1120"/>
         </scene>
     </scenes>
 </document>

@@ -195,4 +195,4 @@ If you find any issues or just have questions - don't hesitate to report and/or 
     - [ ] Authorization Code Grant Flow
     - [ ] Implicit Grant Flow
     - [ ] Resource Owner Password Credentials Grant
-    - [ ] Client Credentials Grant
+    - [x] Client Credentials Grant

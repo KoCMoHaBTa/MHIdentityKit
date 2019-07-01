@@ -27,6 +27,11 @@
 		E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
 		E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */; };
 		E645850D1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */; };
+		E662040F22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662040E22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift */; };
+		E662041122CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041022CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift */; };
+		E662041322CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */; };
+		E662041522CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */; };
+		E662041822CA2E48002F3404 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6985DBB206901AD00BE5F6A /* MHIdentityKit.framework */; };
 		E675980E1F13A032008C1262 /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E68221AF1F7703B700193B48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68221AE1F7703B700193B48 /* AppDelegate.swift */; };
@@ -153,7 +158,6 @@
 		E6985E2E20690CB400BE5F6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6985E2C20690CB400BE5F6A /* Main.storyboard */; };
 		E6985E3020690CB500BE5F6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6985E2F20690CB500BE5F6A /* Assets.xcassets */; };
 		E6985E3E20690E7800BE5F6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6985E3D20690E7800BE5F6A /* AppDelegate.swift */; };
-		E6985E4020690E7800BE5F6A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6985E3F20690E7800BE5F6A /* ViewController.swift */; };
 		E6985E4220690E7800BE5F6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6985E4120690E7800BE5F6A /* Assets.xcassets */; };
 		E6985E4520690E7800BE5F6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6985E4320690E7800BE5F6A /* Main.storyboard */; };
 		E6985E7F206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6985E7E206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift */; };
@@ -231,6 +235,13 @@
 			remoteGlobalIDString = 9954AE441E9D169700F2A73D;
 			remoteInfo = MHIdentityKit;
 		};
+		E662041622CA2E42002F3404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9954AE3C1E9D169700F2A73D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6985DBA206901AD00BE5F6A;
+			remoteInfo = "MHIdentityKit-macOS";
+		};
 		E68221BE1F7703BB00193B48 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9954AE3C1E9D169700F2A73D /* Project object */;
@@ -301,6 +312,11 @@
 		E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsIdentityStorage.swift; sourceTree = "<group>"; };
 		E648E8F6217A296F00FC15BA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E648EF9921F8A77F00CC79D6 /* MHIdentityKit.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = MHIdentityKit.podspec; sourceTree = "<group>"; };
+		E662040E22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
+		E662041022CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantFlowInputViewController.swift; sourceTree = "<group>"; };
+		E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitGrantFlowInputViewController.swift; sourceTree = "<group>"; };
+		E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
+		E662042122CA3C8E002F3404 /* MHIdentityKit-macOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-macOSTestsHost.entitlements"; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponseValidator.swift; sourceTree = "<group>"; };
 		E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLEncodingUtilities.swift; sourceTree = "<group>"; };
@@ -329,7 +345,6 @@
 		E6985E3120690CB500BE5F6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6985E3B20690E7700BE5F6A /* MHIdentityKit-macOSTestsHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MHIdentityKit-macOSTestsHost.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6985E3D20690E7800BE5F6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E6985E3F20690E7800BE5F6A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E6985E4120690E7800BE5F6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E6985E4420690E7800BE5F6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E6985E4620690E7800BE5F6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -437,6 +452,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E662041822CA2E48002F3404 /* MHIdentityKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,8 +602,12 @@
 		E6985E3C20690E7800BE5F6A /* MHIdentityKit-macOSTestsHost */ = {
 			isa = PBXGroup;
 			children = (
+				E662042122CA3C8E002F3404 /* MHIdentityKit-macOSTestsHost.entitlements */,
 				E6985E3D20690E7800BE5F6A /* AppDelegate.swift */,
-				E6985E3F20690E7800BE5F6A /* ViewController.swift */,
+				E662041022CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift */,
+				E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */,
+				E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */,
+				E662040E22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift */,
 				E6985E4120690E7800BE5F6A /* Assets.xcassets */,
 				E6985E4320690E7800BE5F6A /* Main.storyboard */,
 				E6985E4620690E7800BE5F6A /* Info.plist */,
@@ -901,6 +921,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E662041722CA2E42002F3404 /* PBXTargetDependency */,
 			);
 			name = "MHIdentityKit-macOSTestsHost";
 			productName = "MHIdentityKit-macOSTestsHost";
@@ -969,6 +990,11 @@
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1344,8 +1370,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6985E4020690E7800BE5F6A /* ViewController.swift in Sources */,
+				E662040F22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift in Sources */,
 				E6985E3E20690E7800BE5F6A /* AppDelegate.swift in Sources */,
+				E662041122CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift in Sources */,
+				E662041322CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift in Sources */,
+				E662041522CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1356,6 +1385,11 @@
 			isa = PBXTargetDependency;
 			target = 9954AE441E9D169700F2A73D /* MHIdentityKit-iOS */;
 			targetProxy = 9954AE501E9D169700F2A73D /* PBXContainerItemProxy */;
+		};
+		E662041722CA2E42002F3404 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6985DBA206901AD00BE5F6A /* MHIdentityKit-macOS */;
+			targetProxy = E662041622CA2E42002F3404 /* PBXContainerItemProxy */;
 		};
 		E68221BF1F7703BB00193B48 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1902,7 +1936,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-macOSTestsHost/MHIdentityKit_macOSTestsHost.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-macOSTestsHost/MHIdentityKit-macOSTestsHost.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1922,7 +1956,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-macOSTestsHost/MHIdentityKit_macOSTestsHost.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-macOSTestsHost/MHIdentityKit-macOSTestsHost.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
