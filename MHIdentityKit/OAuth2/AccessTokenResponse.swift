@@ -43,31 +43,6 @@ public struct AccessTokenResponse: Codable {
         return timeIntervalPassed >= expiresIn
     }
     
-//    public init?(json: [String: Any]) {
-//
-//        guard
-//        let accessToken = json["access_token"] as? String,
-//        let tokenType = json["token_type"] as? String
-//        else {
-//
-//            return nil
-//        }
-//
-//        self.accessToken = accessToken
-//        self.tokenType = tokenType
-//        self.expiresIn = json["expires_in"] as? TimeInterval
-//        self.refreshToken = json["refresh_token"] as? String
-//
-//        if let scopeRawValue = json["scope"] as? String {
-//
-//            self.scope = Scope(rawValue: scopeRawValue)
-//        }
-//        else {
-//
-//            self.scope = nil
-//        }
-//    }
-    
     //MARK: - Codable
     
     public init(from decoder: Decoder) throws {

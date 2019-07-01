@@ -9,7 +9,7 @@
 import Foundation
 
 //https://tools.ietf.org/html/rfc6749#section-3.3
-public struct Scope  {
+public struct Scope: Equatable  {
 
     public var value: String
     
