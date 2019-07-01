@@ -187,7 +187,7 @@ If you find any issues or just have questions - don't hesitate to report and/or 
     
 - iOS demos
     - [x] Authorization Code Grant Flow
-    - [ ] Implicit Grant Flow
+    - [x] Implicit Grant Flow
     - [x] Resource Owner Password Credentials Grant
     - [x] Client Credentials Grant
 
