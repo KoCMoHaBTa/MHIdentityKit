@@ -176,7 +176,7 @@ If you find any issues or just have questions - don't hesitate to report and/or 
 	
 - Platform specific default user agents or examples
 	- [x] iOS default UserAgent
-	- [ ] macOS default UserAgent
+	- [x] macOS default UserAgent
 	- [ ] tvOS default UserAgent (if possible)
 	- [ ] watchOS default UserAgent (if possible)
 
@@ -192,7 +192,7 @@ If you find any issues or just have questions - don't hesitate to report and/or 
     - [x] Client Credentials Grant
 
 - macOS demo
-    - [ ] Authorization Code Grant Flow
+    - [x] Authorization Code Grant Flow
     - [ ] Implicit Grant Flow
     - [x] Resource Owner Password Credentials Grant
     - [x] Client Credentials Grant

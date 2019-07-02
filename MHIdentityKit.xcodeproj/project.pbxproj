@@ -32,6 +32,7 @@
 		E662041322CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */; };
 		E662041522CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */; };
 		E662041822CA2E48002F3404 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6985DBB206901AD00BE5F6A /* MHIdentityKit.framework */; };
+		E662042522CA4AAA002F3404 /* WebViewUserAgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */; };
 		E675980E1F13A032008C1262 /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E68221AF1F7703B700193B48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68221AE1F7703B700193B48 /* AppDelegate.swift */; };
@@ -317,6 +318,7 @@
 		E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E662042122CA3C8E002F3404 /* MHIdentityKit-macOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-macOSTestsHost.entitlements"; sourceTree = "<group>"; };
+		E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewUserAgentViewController.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponseValidator.swift; sourceTree = "<group>"; };
 		E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLEncodingUtilities.swift; sourceTree = "<group>"; };
@@ -571,6 +573,14 @@
 			path = IdentityManager;
 			sourceTree = "<group>";
 		};
+		E662042222CA4977002F3404 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
 		E68221AD1F7703B700193B48 /* MHIdentityKit-iOSTestsHost */ = {
 			isa = PBXGroup;
 			children = (
@@ -622,6 +632,7 @@
 				E6985E89206A588100BE5F6A /* UserAgent.swift */,
 				E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */,
 				E6B09F8A2115E0BA000A94C8 /* iOS */,
+				E662042222CA4977002F3404 /* macOS */,
 			);
 			path = UserAgent;
 			sourceTree = "<group>";
@@ -1326,6 +1337,7 @@
 				E6985E82206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DFB20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6985E0420690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
+				E662042522CA4AAA002F3404 /* WebViewUserAgentViewController.swift in Sources */,
 				E6E83B5D211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985DF820690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6E83B62211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
