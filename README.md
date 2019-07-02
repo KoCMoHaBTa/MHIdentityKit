@@ -76,7 +76,7 @@ The authentication process is represented as an implementation of the Authorizat
 As per [OAuth2](https://tools.ietf.org/html/rfc6749) specification, there are 4 Flows defined:
 
 - [Authorization Code Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.1) - implemented as `AuthorizationCodeGrantFlow`
-- [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2) - not yet implemented
+- [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2) - implemented as `ImplicitGrantFlow`
 - [Resource Owner Password Credentials Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.3) - implemented as `ResourceOwnerPasswordCredentialsGrantFlow`
 - [Client Credentials Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.4) - implemented as `ClientCredentialsGrantFlow`
 
