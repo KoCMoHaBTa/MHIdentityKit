@@ -53,7 +53,10 @@ public struct AccessTokenResponseHandler {
         }
         
         //parse the access token
-        guard let accessTokenResponse = try? JSONDecoder().decode(AccessTokenResponse.self, from: data) else {
+        guard
+        let parameters = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+        let accessTokenResponse = AccessTokenResponse(parameters: parameters)
+        else {
             
             throw MHIdentityKitError.Reason.invalidAccessTokenResponse
         }

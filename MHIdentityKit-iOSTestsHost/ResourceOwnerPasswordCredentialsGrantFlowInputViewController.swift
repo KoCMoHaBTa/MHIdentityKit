@@ -103,20 +103,12 @@ class ResourceOwnerPasswordCredentialsGrantFlowInputViewController: UITableViewC
             
             alertController.addAction(UIAlertAction(title: "View access token response", style: .default, handler: { (_) in
                 
-                if let data = try? JSONEncoder().encode(response), let json = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
+                let value = response.parameters.map({ (key, value) -> String in
                     
-                    let value = json.map({ (key, value) -> String in
-                        
-                        return "\(key): \n\(value as? String ?? "nil")"
-                    }).joined(separator: "\n\n")
-                    
-                    self.showAlert(title: "Access token response", value: value)
-                }
-                else {
-                    
-                    let value = response.accessToken
-                    self.showAlert(title: "Access token response", value: value)
-                }
+                    return "\(key): \n\(value as? String ?? "nil")"
+                }).joined(separator: "\n\n")
+                
+                self.showAlert(title: "Access token response", value: value)
             }))
         }
         

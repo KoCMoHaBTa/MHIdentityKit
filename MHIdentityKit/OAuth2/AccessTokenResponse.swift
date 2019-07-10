@@ -9,13 +9,29 @@
 import Foundation
 
 //https://tools.ietf.org/html/rfc6749#section-5.1
-public struct AccessTokenResponse: Codable {
+public struct AccessTokenResponse {
     
     public var accessToken: String
     public var tokenType: String
     public var expiresIn: TimeInterval?
     public var refreshToken: String?
     public var scope: Scope?
+    
+    //Contains any additional parameters of the access token response.
+    public var additionalParameters: [String: Any]
+    
+    //Contains all parameteres, including additional
+    public var parameters: [String: Any] {
+        
+        var parameters: [String: Any] = [:]
+        parameters[ParameterKey.accessToken] = self.accessToken
+        parameters[ParameterKey.tokenType] = self.tokenType
+        parameters[ParameterKey.expiresIn] = self.expiresIn
+        parameters[ParameterKey.refreshToken] = self.refreshToken
+        parameters[ParameterKey.scope] = self.scope?.rawValue
+        
+        return parameters.merging(self.additionalParameters, uniquingKeysWith: { $1 })
+    }
     
     public init(accessToken: String, tokenType: String, expiresIn: TimeInterval?, refreshToken: String?, scope: Scope?) {
         
@@ -24,6 +40,37 @@ public struct AccessTokenResponse: Codable {
         self.expiresIn = expiresIn
         self.refreshToken = refreshToken
         self.scope = scope
+        
+        self.additionalParameters = [:]
+    }
+    
+    public init?(parameters: [String: Any]) {
+        
+        var parameters = parameters
+        
+        guard
+        let accessToken = parameters.removeValue(forKey: ParameterKey.accessToken) as? String,
+        let tokenType = parameters.removeValue(forKey: ParameterKey.tokenType) as? String
+        else {
+            
+            return nil
+        }
+        
+        self.accessToken = accessToken
+        self.tokenType = tokenType
+        self.expiresIn = parameters.removeValue(forKey: ParameterKey.expiresIn) as? TimeInterval
+        self.refreshToken = parameters.removeValue(forKey: ParameterKey.refreshToken) as? String
+        
+        if let scopeRawValue = parameters.removeValue(forKey: ParameterKey.scope) as? String {
+        
+            self.scope = Scope(rawValue: scopeRawValue)
+        }
+        else {
+            
+            self.scope = nil
+        }
+        
+        self.additionalParameters = parameters
     }
     
     ///The date when this object has been created - used to determine whenever the access token has expired
@@ -42,27 +89,17 @@ public struct AccessTokenResponse: Codable {
         let timeIntervalPassed = Date().timeIntervalSince(self.responseCreationDate)
         return timeIntervalPassed >= expiresIn
     }
+}
+
+extension AccessTokenResponse {
     
-    //MARK: - Codable
-    
-    public init(from decoder: Decoder) throws {
+    public struct ParameterKey {
         
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.accessToken = try container.decode(String.self, forKey: .accessToken)
-        self.tokenType = try container.decode(String.self, forKey: .tokenType)
-        self.expiresIn = try? container.decode(TimeInterval.self, forKey: .expiresIn)
-        self.refreshToken = try? container.decode(String.self, forKey: .refreshToken)
-        self.scope = try? container.decode(Scope.self, forKey: .scope)
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        
-        case accessToken = "access_token"
-        case tokenType = "token_type"
-        case expiresIn = "expires_in"
-        case refreshToken = "refresh_token"
-        case scope
+        public static let accessToken = "access_token"
+        public static let tokenType = "token_type"
+        public static let expiresIn = "expires_in"
+        public static let refreshToken = "refresh_token"
+        public static let scope = "scope"
     }
 }
 
