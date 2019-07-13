@@ -44,7 +44,7 @@ public struct AccessTokenResponse {
         self.additionalParameters = [:]
     }
     
-    public init?(parameters: [String: Any]) {
+    public init(parameters: [String: Any]) throws {
         
         var parameters = parameters
         
@@ -53,7 +53,7 @@ public struct AccessTokenResponse {
         let tokenType = parameters.removeValue(forKey: ParameterKey.tokenType) as? String
         else {
             
-            return nil
+            throw MHIdentityKitError.Reason.invalidAccessTokenResponse
         }
         
         self.accessToken = accessToken
