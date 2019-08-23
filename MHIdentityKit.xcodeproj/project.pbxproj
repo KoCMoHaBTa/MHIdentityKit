@@ -26,6 +26,25 @@
 		E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */; };
 		E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
 		E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */; };
+		E6279C3722D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C3622D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift */; };
+		E6279C3822D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C3622D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift */; };
+		E6279C3922D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C3622D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift */; };
+		E6279C3A22D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C3622D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift */; };
+		E6279C6122DA81C7002AF76C /* Scope+OpenID.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C6022DA81C7002AF76C /* Scope+OpenID.swift */; };
+		E6279C6222DA81C7002AF76C /* Scope+OpenID.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C6022DA81C7002AF76C /* Scope+OpenID.swift */; };
+		E6279C6322DA81C7002AF76C /* Scope+OpenID.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C6022DA81C7002AF76C /* Scope+OpenID.swift */; };
+		E6279C6422DA81C7002AF76C /* Scope+OpenID.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279C6022DA81C7002AF76C /* Scope+OpenID.swift */; };
+		E6279D2322DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2222DCC85F002AF76C /* AccessTokenResponse+IDToken.swift */; };
+		E6279D2422DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2222DCC85F002AF76C /* AccessTokenResponse+IDToken.swift */; };
+		E6279D2522DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2222DCC85F002AF76C /* AccessTokenResponse+IDToken.swift */; };
+		E6279D2622DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2222DCC85F002AF76C /* AccessTokenResponse+IDToken.swift */; };
+		E6279D2C22DCFB93002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2722DCFB4F002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift */; };
+		E6279D2D22DCFB93002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2722DCFB4F002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift */; };
+		E6279D2E22DCFB94002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2722DCFB4F002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift */; };
+		E6279D3022DD0021002AF76C /* IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2F22DD0021002AF76C /* IDToken.swift */; };
+		E6279D3122DD0021002AF76C /* IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2F22DD0021002AF76C /* IDToken.swift */; };
+		E6279D3222DD0021002AF76C /* IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2F22DD0021002AF76C /* IDToken.swift */; };
+		E6279D3322DD0021002AF76C /* IDToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6279D2F22DD0021002AF76C /* IDToken.swift */; };
 		E645850D1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */; };
 		E662040F22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662040E22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift */; };
 		E662041122CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041022CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift */; };
@@ -213,6 +232,69 @@
 		E6B39C2D206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */; };
 		E6B39C2E206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */; };
 		E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
+		E6B57DCD230D931D00216421 /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DCC230D931D00216421 /* SignatureVerifier.swift */; };
+		E6B57DCE230D931D00216421 /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DCC230D931D00216421 /* SignatureVerifier.swift */; };
+		E6B57DCF230D931D00216421 /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DCC230D931D00216421 /* SignatureVerifier.swift */; };
+		E6B57DD0230D931D00216421 /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DCC230D931D00216421 /* SignatureVerifier.swift */; };
+		E6B57DD2230D936900216421 /* RS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */; };
+		E6B57DD3230D936900216421 /* RS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */; };
+		E6B57DD4230D936900216421 /* RS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */; };
+		E6B57DD5230D936900216421 /* RS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */; };
+		E6B57DD7230D93E200216421 /* HS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */; };
+		E6B57DD8230D93E200216421 /* HS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */; };
+		E6B57DD9230D93E200216421 /* HS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */; };
+		E6B57DDA230D93E200216421 /* HS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */; };
+		E6B57DDC230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
+		E6B57DDD230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
+		E6B57DDE230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
+		E6B57DDF230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
+		E6B57DE3230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */; };
+		E6B57DE4230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */; };
+		E6B57DE5230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */; };
+		E6B57DE8230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */; };
+		E6B57DE9230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */; };
+		E6B57DEA230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */; };
+		E6B57DEB230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */; };
+		E6B57DF0230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DEC230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift */; };
+		E6B57DF6230E783200216421 /* SignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DF1230E780400216421 /* SignatureVerifierTests.swift */; };
+		E6B57DF7230E783200216421 /* SignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DF1230E780400216421 /* SignatureVerifierTests.swift */; };
+		E6B57DF8230E783300216421 /* SignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DF1230E780400216421 /* SignatureVerifierTests.swift */; };
+		E6B57DFB230E7AAC00216421 /* MockRSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DFA230E7AAC00216421 /* MockRSA.swift */; };
+		E6B57DFC230E7AAC00216421 /* MockRSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DFA230E7AAC00216421 /* MockRSA.swift */; };
+		E6B57DFD230E7AAC00216421 /* MockRSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DFA230E7AAC00216421 /* MockRSA.swift */; };
+		E6B57DFF230E7C3A00216421 /* MockX509.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DFE230E7C3A00216421 /* MockX509.swift */; };
+		E6B57E00230E7C3A00216421 /* MockX509.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DFE230E7C3A00216421 /* MockX509.swift */; };
+		E6B57E01230E7C3A00216421 /* MockX509.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DFE230E7C3A00216421 /* MockX509.swift */; };
+		E6B57E09230E91B200216421 /* SecVerifyTransformSignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E06230E91B200216421 /* SecVerifyTransformSignatureVerifierTests.swift */; };
+		E6B57E0B230E9B4400216421 /* SecKeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E0A230E9B4400216421 /* SecKeyFactory.swift */; };
+		E6B57E0C230E9B4400216421 /* SecKeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E0A230E9B4400216421 /* SecKeyFactory.swift */; };
+		E6B57E0D230E9B4400216421 /* SecKeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E0A230E9B4400216421 /* SecKeyFactory.swift */; };
+		E6B57E0E230E9B4400216421 /* SecKeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E0A230E9B4400216421 /* SecKeyFactory.swift */; };
+		E6B57E10230EAD2300216421 /* SecKeyFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E0F230EAD2300216421 /* SecKeyFactoryTests.swift */; };
+		E6B57E11230EAD2300216421 /* SecKeyFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E0F230EAD2300216421 /* SecKeyFactoryTests.swift */; };
+		E6B57E12230EAD2300216421 /* SecKeyFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E0F230EAD2300216421 /* SecKeyFactoryTests.swift */; };
+		E6B57E18230F13E000216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */; };
+		E6B57E19230F13E100216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */; };
+		E6B57E1A230F13E100216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */; };
+		E6B57E1B230F13E100216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */; };
+		E6B57E1D230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */; };
+		E6B57E1E230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */; };
+		E6B57E1F230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */; };
+		E6B57E20230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */; };
+		E6C96B4E22E1DAD800C22298 /* JSONWebToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B4D22E1DAD800C22298 /* JSONWebToken.swift */; };
+		E6C96B4F22E1DAD800C22298 /* JSONWebToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B4D22E1DAD800C22298 /* JSONWebToken.swift */; };
+		E6C96B5022E1DAD800C22298 /* JSONWebToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B4D22E1DAD800C22298 /* JSONWebToken.swift */; };
+		E6C96B5122E1DAD800C22298 /* JSONWebToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B4D22E1DAD800C22298 /* JSONWebToken.swift */; };
+		E6C96B5322E1DE9000C22298 /* JSONWebTokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5222E1DE9000C22298 /* JSONWebTokenType.swift */; };
+		E6C96B5422E1DE9000C22298 /* JSONWebTokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5222E1DE9000C22298 /* JSONWebTokenType.swift */; };
+		E6C96B5522E1DE9000C22298 /* JSONWebTokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5222E1DE9000C22298 /* JSONWebTokenType.swift */; };
+		E6C96B5622E1DE9000C22298 /* JSONWebTokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5222E1DE9000C22298 /* JSONWebTokenType.swift */; };
+		E6C96B5822E1E11500C22298 /* JWTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5722E1E11500C22298 /* JWTTests.swift */; };
+		E6C96B5922E1E11500C22298 /* JWTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5722E1E11500C22298 /* JWTTests.swift */; };
+		E6C96B5D22E2194D00C22298 /* Data+Base64UrlEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5A22E1ECFE00C22298 /* Data+Base64UrlEncoding.swift */; };
+		E6C96B5E22E2194E00C22298 /* Data+Base64UrlEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5A22E1ECFE00C22298 /* Data+Base64UrlEncoding.swift */; };
+		E6C96B5F22E2194E00C22298 /* Data+Base64UrlEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5A22E1ECFE00C22298 /* Data+Base64UrlEncoding.swift */; };
+		E6C96B6022E2194E00C22298 /* Data+Base64UrlEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5A22E1ECFE00C22298 /* Data+Base64UrlEncoding.swift */; };
 		E6DC216C1F028FEA008D182A /* KeychainIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216B1F028FEA008D182A /* KeychainIdentityStorage.swift */; };
 		E6DC216E1F0292C9008D182A /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216D1F0292C9008D182A /* Keychain.swift */; };
 		E6DC21791F0293D9008D182A /* OSStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC21781F0293D9008D182A /* OSStatus.swift */; };
@@ -230,6 +312,14 @@
 		E6E83B6E211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */; };
 		E6E83B70212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B6F212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */; };
 		E6E83B72212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B71212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift */; };
+		E6FBAF7A2310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF792310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift */; };
+		E6FBAF7B2310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF792310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift */; };
+		E6FBAF81231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF80231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift */; };
+		E6FBAF82231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF80231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift */; };
+		E6FBAF83231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF80231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift */; };
+		E6FBAF85231025E100AC51DF /* MockRS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF84231025E100AC51DF /* MockRS256.swift */; };
+		E6FBAF86231025E100AC51DF /* MockRS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF84231025E100AC51DF /* MockRS256.swift */; };
+		E6FBAF87231025E100AC51DF /* MockRS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF84231025E100AC51DF /* MockRS256.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,6 +404,11 @@
 		E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityManager.swift; sourceTree = "<group>"; };
 		E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManager.swift; sourceTree = "<group>"; };
 		E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManagerTests.swift; sourceTree = "<group>"; };
+		E6279C3622D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OIDCAuthorizationCodeGrantFlow.swift; sourceTree = "<group>"; };
+		E6279C6022DA81C7002AF76C /* Scope+OpenID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scope+OpenID.swift"; sourceTree = "<group>"; };
+		E6279D2222DCC85F002AF76C /* AccessTokenResponse+IDToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccessTokenResponse+IDToken.swift"; sourceTree = "<group>"; };
+		E6279D2722DCFB4F002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OIDCAuthorizationCodeGrantFlowTests.swift; sourceTree = "<group>"; };
+		E6279D2F22DD0021002AF76C /* IDToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDToken.swift; sourceTree = "<group>"; };
 		E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsIdentityStorage.swift; sourceTree = "<group>"; };
 		E648E8F6217A296F00FC15BA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E648EF9921F8A77F00CC79D6 /* MHIdentityKit.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = MHIdentityKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -378,6 +473,25 @@
 		E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHIdentityKitError.swift; sourceTree = "<group>"; };
 		E6C767D32332271100C10BAB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		E6B57DCC230D931D00216421 /* SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureVerifier.swift; sourceTree = "<group>"; };
+		E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RS256SignatureVerifier.swift; sourceTree = "<group>"; };
+		E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HS256SignatureVerifier.swift; sourceTree = "<group>"; };
+		E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ES256SignatureVerifier.swift; sourceTree = "<group>"; };
+		E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyRawVerifySignatureVerifier.swift; sourceTree = "<group>"; };
+		E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyVerifySignatureVerifier.swift; sourceTree = "<group>"; };
+		E6B57DEC230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecVerifyTransformSignatureVerifier.swift; sourceTree = "<group>"; };
+		E6B57DF1230E780400216421 /* SignatureVerifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureVerifierTests.swift; sourceTree = "<group>"; };
+		E6B57DFA230E7AAC00216421 /* MockRSA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRSA.swift; sourceTree = "<group>"; };
+		E6B57DFE230E7C3A00216421 /* MockX509.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockX509.swift; sourceTree = "<group>"; };
+		E6B57E06230E91B200216421 /* SecVerifyTransformSignatureVerifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecVerifyTransformSignatureVerifierTests.swift; sourceTree = "<group>"; };
+		E6B57E0A230E9B4400216421 /* SecKeyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyFactory.swift; sourceTree = "<group>"; };
+		E6B57E0F230EAD2300216421 /* SecKeyFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyFactoryTests.swift; sourceTree = "<group>"; };
+		E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecKeyFactory+RSAPublicKey.swift"; sourceTree = "<group>"; };
+		E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecKeyFactory+X509Certificate.swift"; sourceTree = "<group>"; };
+		E6C96B4D22E1DAD800C22298 /* JSONWebToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONWebToken.swift; sourceTree = "<group>"; };
+		E6C96B5222E1DE9000C22298 /* JSONWebTokenType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONWebTokenType.swift; sourceTree = "<group>"; };
+		E6C96B5722E1E11500C22298 /* JWTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTTests.swift; sourceTree = "<group>"; };
+		E6C96B5A22E1ECFE00C22298 /* Data+Base64UrlEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Base64UrlEncoding.swift"; sourceTree = "<group>"; };
 		E6DC216B1F028FEA008D182A /* KeychainIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainIdentityStorage.swift; sourceTree = "<group>"; };
 		E6DC216D1F0292C9008D182A /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		E6DC21781F0293D9008D182A /* OSStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSStatus.swift; sourceTree = "<group>"; };
@@ -386,6 +500,9 @@
 		E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequestAuthorizer.swift; sourceTree = "<group>"; };
 		E6E83B6F212033C40062CB99 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E6E83B71212033DF0062CB99 /* ClientCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
+		E6FBAF792310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyRawVerifySignatureVerifierTests.swift; sourceTree = "<group>"; };
+		E6FBAF80231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyVerifySignatureVerifierTests.swift; sourceTree = "<group>"; };
+		E6FBAF84231025E100AC51DF /* MockRS256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRS256.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -509,6 +626,7 @@
 				E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */,
 				9954AE8F1E9E050C00F2A73D /* Infrastructure */,
 				9954AE5F1E9D16DB00F2A73D /* OAuth2 */,
+				E6279C3422D5D969002AF76C /* OpenID Connect */,
 				9954AE491E9D169700F2A73D /* Info.plist */,
 			);
 			path = MHIdentityKit;
@@ -559,14 +677,14 @@
 			isa = PBXGroup;
 			children = (
 				E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */,
-				E6DC21781F0293D9008D182A /* OSStatus.swift */,
-				E6DC216D1F0292C9008D182A /* Keychain.swift */,
 				E61974AC1EE5682300DAFC15 /* IdentityManager */,
 				E6985E88206A587700BE5F6A /* UserAgent */,
 				E69D5EEA1ED85B870099EE36 /* NetworkClient */,
 				E69D5EEE1ED85BBF0099EE36 /* CredentialsProvider */,
 				E69D5EEF1ED85BCF0099EE36 /* IdentityStorage */,
 				E69D5EF01ED85BEB0099EE36 /* RequestAuthorizer */,
+				E6C96B4C22E1DAB900C22298 /* JWT */,
+				E66562ED22E7992D0056F954 /* Security */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -580,12 +698,42 @@
 			path = IdentityManager;
 			sourceTree = "<group>";
 		};
+		E6279C3422D5D969002AF76C /* OpenID Connect */ = {
+			isa = PBXGroup;
+			children = (
+				E6279C6022DA81C7002AF76C /* Scope+OpenID.swift */,
+				E6279D2222DCC85F002AF76C /* AccessTokenResponse+IDToken.swift */,
+				E6279D2F22DD0021002AF76C /* IDToken.swift */,
+				E6279C3522D5D97F002AF76C /* Flows */,
+			);
+			path = "OpenID Connect";
+			sourceTree = "<group>";
+		};
+		E6279C3522D5D97F002AF76C /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+				E6279C3622D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift */,
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
 		E662042222CA4977002F3404 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
 				E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */,
 			);
 			path = macOS;
+			sourceTree = "<group>";
+		};
+		E66562ED22E7992D0056F954 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				E6DC21781F0293D9008D182A /* OSStatus.swift */,
+				E6DC216D1F0292C9008D182A /* Keychain.swift */,
+				E6B57E13230F135B00216421 /* SecKeyFactory */,
+				E6B57DCB230D930900216421 /* SignatureVerifier */,
+			);
+			path = Security;
 			sourceTree = "<group>";
 		};
 		E68221AD1F7703B700193B48 /* MHIdentityKit-iOSTestsHost */ = {
@@ -711,6 +859,7 @@
 				E6B1956D22CA068C00954DED /* ImplicitGrantFlowTests.swift */,
 				E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */,
 				E6B39C27206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift */,
+				E6279D2722DCFB4F002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -723,8 +872,75 @@
 				E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */,
 				E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */,
 				E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */,
+				E6C96B5722E1E11500C22298 /* JWTTests.swift */,
+				E6B57DF9230E7A9400216421 /* Security */,
 			);
 			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		E6B57DCB230D930900216421 /* SignatureVerifier */ = {
+			isa = PBXGroup;
+			children = (
+				E6B57DCC230D931D00216421 /* SignatureVerifier.swift */,
+				E6B57DE0230D959C00216421 /* PlatformSpecific */,
+				E6B57DE1230D95AE00216421 /* AlgorithmSpecific */,
+			);
+			path = SignatureVerifier;
+			sourceTree = "<group>";
+		};
+		E6B57DE0230D959C00216421 /* PlatformSpecific */ = {
+			isa = PBXGroup;
+			children = (
+				E6B57DEC230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift */,
+				E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */,
+				E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */,
+			);
+			path = PlatformSpecific;
+			sourceTree = "<group>";
+		};
+		E6B57DE1230D95AE00216421 /* AlgorithmSpecific */ = {
+			isa = PBXGroup;
+			children = (
+				E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */,
+				E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */,
+				E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */,
+			);
+			path = AlgorithmSpecific;
+			sourceTree = "<group>";
+		};
+		E6B57DF9230E7A9400216421 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				E6B57DFA230E7AAC00216421 /* MockRSA.swift */,
+				E6B57DFE230E7C3A00216421 /* MockX509.swift */,
+				E6FBAF84231025E100AC51DF /* MockRS256.swift */,
+				E6B57E0F230EAD2300216421 /* SecKeyFactoryTests.swift */,
+				E6B57DF1230E780400216421 /* SignatureVerifierTests.swift */,
+				E6B57E06230E91B200216421 /* SecVerifyTransformSignatureVerifierTests.swift */,
+				E6FBAF792310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift */,
+				E6FBAF80231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		E6B57E13230F135B00216421 /* SecKeyFactory */ = {
+			isa = PBXGroup;
+			children = (
+				E6B57E0A230E9B4400216421 /* SecKeyFactory.swift */,
+				E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */,
+				E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */,
+			);
+			path = SecKeyFactory;
+			sourceTree = "<group>";
+		};
+		E6C96B4C22E1DAB900C22298 /* JWT */ = {
+			isa = PBXGroup;
+			children = (
+				E6C96B4D22E1DAD800C22298 /* JSONWebToken.swift */,
+				E6C96B5222E1DE9000C22298 /* JSONWebTokenType.swift */,
+				E6C96B5A22E1ECFE00C22298 /* Data+Base64UrlEncoding.swift */,
+			);
+			path = JWT;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -964,7 +1180,7 @@
 					};
 					9954AE4D1E9D169700F2A73D = {
 						CreatedOnToolsVersion = 8.3.1;
-						LastSwiftMigration = 1020;
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 						TestTargetID = E68221AB1F7703B700193B48;
 					};
@@ -985,7 +1201,7 @@
 					};
 					E6985DA62069018600BE5F6A = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 						TestTargetID = E6985E2520690CB400BE5F6A;
 					};
@@ -996,7 +1212,7 @@
 					};
 					E6985DC2206901AD00BE5F6A = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 						TestTargetID = E6985E3A20690E7700BE5F6A;
 					};
@@ -1129,18 +1345,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B57DE8230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */,
 				E6985E8A206A588100BE5F6A /* UserAgent.swift in Sources */,
 				E645850D1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift in Sources */,
 				995CD1E61E9E69450024BFA4 /* ErrorResponse.swift in Sources */,
 				E69D5EF21ED85BFC0099EE36 /* IdentityStorage.swift in Sources */,
 				E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */,
+				E6B57DD2230D936900216421 /* RS256SignatureVerifier.swift in Sources */,
 				E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */,
 				E683DB9F1ED589C6000D7853 /* AccessTokenRefresher.swift in Sources */,
+				E6279C6122DA81C7002AF76C /* Scope+OpenID.swift in Sources */,
+				E6C96B5322E1DE9000C22298 /* JSONWebTokenType.swift in Sources */,
 				E6DC216E1F0292C9008D182A /* Keychain.swift in Sources */,
 				E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */,
 				9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */,
+				E6B57DDC230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
 				E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */,
+				E6279D2322DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
+				E6C96B4E22E1DAD800C22298 /* JSONWebToken.swift in Sources */,
+				E6B57DE3230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
+				E6279D3022DD0021002AF76C /* IDToken.swift in Sources */,
 				E6B09FAB21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6E83B5F211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */,
@@ -1148,24 +1373,31 @@
 				E6DC216C1F028FEA008D182A /* KeychainIdentityStorage.swift in Sources */,
 				E69D5EEC1ED85BA30099EE36 /* NetworkClient.swift in Sources */,
 				E6E83B6B211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
+				E6B57E0B230E9B4400216421 /* SecKeyFactory.swift in Sources */,
 				E683DBA31ED6B327000D7853 /* Scope.swift in Sources */,
 				E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */,
 				E66CA2A823EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
 				E69D5EF91ED85C240099EE36 /* HTTPBasicAuthorizer.swift in Sources */,
 				E675980E1F13A032008C1262 /* NetworkResponseValidator.swift in Sources */,
 				E69D5EF41ED85C030099EE36 /* CredentialsProvider.swift in Sources */,
+				E6B57E19230F13E100216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */,
 				9954AE6D1E9D1E8000F2A73D /* MHIdentityKit.swift in Sources */,
 				E6985E84206A4F4700BE5F6A /* AuthorizationResponseType.swift in Sources */,
 				E619748C1EE1520C00DAFC15 /* ClientCredentialsGrantFlow.swift in Sources */,
+				E6B57E1D230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
 				E6985E7F206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E69D5EFC1ED85C480099EE36 /* DefaultNetoworkClient.swift in Sources */,
+				E6B57DD7230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
 				E61974AB1EE5635200DAFC15 /* NetworkResponse.swift in Sources */,
+				E6C96B6022E2194E00C22298 /* Data+Base64UrlEncoding.swift in Sources */,
 				998405CE1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E61974881EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift in Sources */,
 				E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */,
 				E6B1956922C9FA6000954DED /* ImplicitGrantFlow.swift in Sources */,
 				E6E83B5A211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
+				E6279C3722D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */,
 				E69D5EFA1ED85C240099EE36 /* RequestAuthorizer.swift in Sources */,
+				E6B57DCD230D931D00216421 /* SignatureVerifier.swift in Sources */,
 				E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6B09FA621160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */,
@@ -1180,13 +1412,21 @@
 				E683DCA81ED426BE0075B03B /* XCTestExtensions.swift in Sources */,
 				E6B1956E22CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
 				E619748E1EE15EAD00DAFC15 /* CredentialsProviderTests.swift in Sources */,
+				E6FBAF81231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift in Sources */,
 				E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */,
+				E6B57DFB230E7AAC00216421 /* MockRSA.swift in Sources */,
 				E6B39C2C206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */,
+				E6FBAF7A2310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift in Sources */,
 				E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */,
+				E6FBAF85231025E100AC51DF /* MockRS256.swift in Sources */,
+				E6B57DF6230E783200216421 /* SignatureVerifierTests.swift in Sources */,
 				E6B39C24206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */,
 				E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */,
 				E6B39C28206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift in Sources */,
+				E6B57E10230EAD2300216421 /* SecKeyFactoryTests.swift in Sources */,
 				E61974921EE160F000DAFC15 /* RequestAuthorizerTests.swift in Sources */,
+				E6279D2C22DCFB93002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift in Sources */,
+				E6B57DFF230E7C3A00216421 /* MockX509.swift in Sources */,
 				9954AE541E9D169700F2A73D /* MHIdentityKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1208,35 +1448,50 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6985E8B206A588100BE5F6A /* UserAgent.swift in Sources */,
+				E6C96B5F22E2194E00C22298 /* Data+Base64UrlEncoding.swift in Sources */,
 				E6985D1F2068FDD000BE5F6A /* DefaultNetoworkClient.swift in Sources */,
+				E6C96B5422E1DE9000C22298 /* JSONWebTokenType.swift in Sources */,
+				E6C96B4F22E1DAD800C22298 /* JSONWebToken.swift in Sources */,
 				E6985D2B2068FDDF00BE5F6A /* GrantType.swift in Sources */,
 				E6985D222068FDD400BE5F6A /* CredentialsProvider.swift in Sources */,
 				E6B09FA721160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6985D202068FDD000BE5F6A /* NetworkResponse.swift in Sources */,
 				E6985D192068FDCA00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985D2F2068FDDF00BE5F6A /* ErrorResponse.swift in Sources */,
+				E6B57DE4230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
 				E6985D322068FDDF00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6985D182068FDC700BE5F6A /* MHIdentityKitError.swift in Sources */,
 				E6985D2E2068FDDF00BE5F6A /* AccessTokenResponseHandler.swift in Sources */,
+				E6279D2422DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
 				E6985D332068FDE300BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
+				E6B57DCE230D931D00216421 /* SignatureVerifier.swift in Sources */,
 				E6985D172068FDC700BE5F6A /* MHIdentityKit.swift in Sources */,
+				E6B57DDD230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
 				E6985D262068FDD800BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
 				E6985D2C2068FDDF00BE5F6A /* Scope.swift in Sources */,
 				E6985D252068FDD800BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
+				E6B57DD8230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
 				E6985D2D2068FDDF00BE5F6A /* AccessTokenResponse.swift in Sources */,
 				E6985D1C2068FDCD00BE5F6A /* IdentityManager.swift in Sources */,
+				E6B57E1A230F13E100216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */,
 				E6985D242068FDD800BE5F6A /* IdentityStorage.swift in Sources */,
 				E6985D1A2068FDCA00BE5F6A /* OSStatus.swift in Sources */,
 				E6985D302068FDDF00BE5F6A /* AccessTokenRefresher.swift in Sources */,
 				E6985D1B2068FDCA00BE5F6A /* Keychain.swift in Sources */,
 				E6985D272068FDD800BE5F6A /* KeychainIdentityStorage.swift in Sources */,
 				E6B1956A22C9FA6000954DED /* ImplicitGrantFlow.swift in Sources */,
+				E6B57DD3230D936900216421 /* RS256SignatureVerifier.swift in Sources */,
+				E6B57DE9230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */,
 				E6985E85206A4F4700BE5F6A /* AuthorizationResponseType.swift in Sources */,
 				E6985D1D2068FDCD00BE5F6A /* OAuth2IdentityManager.swift in Sources */,
+				E6B57E0C230E9B4400216421 /* SecKeyFactory.swift in Sources */,
+				E6279C6222DA81C7002AF76C /* Scope+OpenID.swift in Sources */,
 				E6985E80206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985D212068FDD000BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6B09FAC21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6E83B5B211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
+				E6279D3122DD0021002AF76C /* IDToken.swift in Sources */,
+				E6279C3822D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */,
 				E6985D2A2068FDDB00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6E83B60211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E66CA2A923EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
@@ -1247,6 +1502,7 @@
 				E6E83B6C211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985D342068FDE300BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985D312068FDDF00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
+				E6B57E1E230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1255,35 +1511,50 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6985E8C206A588100BE5F6A /* UserAgent.swift in Sources */,
+				E6C96B5E22E2194E00C22298 /* Data+Base64UrlEncoding.swift in Sources */,
 				E6985DDA20690C5D00BE5F6A /* DefaultNetoworkClient.swift in Sources */,
+				E6C96B5522E1DE9000C22298 /* JSONWebTokenType.swift in Sources */,
+				E6C96B5022E1DAD800C22298 /* JSONWebToken.swift in Sources */,
 				E6985DE620690C5D00BE5F6A /* GrantType.swift in Sources */,
 				E6985DDD20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */,
 				E6B09FA821160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6985DDB20690C5D00BE5F6A /* NetworkResponse.swift in Sources */,
 				E6985DD420690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985DEA20690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
+				E6B57DE5230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
 				E6985DED20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6985DD320690C5D00BE5F6A /* MHIdentityKitError.swift in Sources */,
 				E6985DE920690C5D00BE5F6A /* AccessTokenResponseHandler.swift in Sources */,
+				E6279D2522DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
 				E6985DEE20690C5D00BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
+				E6B57DCF230D931D00216421 /* SignatureVerifier.swift in Sources */,
 				E6985DD220690C5D00BE5F6A /* MHIdentityKit.swift in Sources */,
+				E6B57DDE230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
 				E6985DE120690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
 				E6985DE720690C5D00BE5F6A /* Scope.swift in Sources */,
 				E6985DE020690C5D00BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
+				E6B57DD9230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
 				E6985DE820690C5D00BE5F6A /* AccessTokenResponse.swift in Sources */,
 				E6985DD720690C5D00BE5F6A /* IdentityManager.swift in Sources */,
+				E6B57E1B230F13E100216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */,
 				E6985DDF20690C5D00BE5F6A /* IdentityStorage.swift in Sources */,
 				E6985DD520690C5D00BE5F6A /* OSStatus.swift in Sources */,
 				E6985DEB20690C5D00BE5F6A /* AccessTokenRefresher.swift in Sources */,
 				E6985DD620690C5D00BE5F6A /* Keychain.swift in Sources */,
 				E6985DE220690C5D00BE5F6A /* KeychainIdentityStorage.swift in Sources */,
 				E6B1956B22C9FA6000954DED /* ImplicitGrantFlow.swift in Sources */,
+				E6B57DD4230D936900216421 /* RS256SignatureVerifier.swift in Sources */,
+				E6B57DEA230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */,
 				E6985E86206A4F4700BE5F6A /* AuthorizationResponseType.swift in Sources */,
 				E6985DD820690C5D00BE5F6A /* OAuth2IdentityManager.swift in Sources */,
+				E6B57E0D230E9B4400216421 /* SecKeyFactory.swift in Sources */,
+				E6279C6322DA81C7002AF76C /* Scope+OpenID.swift in Sources */,
 				E6985E81206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DDC20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6B09FAD21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6E83B5C211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
+				E6279D3222DD0021002AF76C /* IDToken.swift in Sources */,
+				E6279C3922D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DE520690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6E83B61211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E66CA2AA23EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
@@ -1294,6 +1565,7 @@
 				E6E83B6D211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985DEF20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985DEC20690C5D00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
+				E6B57E1F230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1305,12 +1577,21 @@
 				E6B1956F22CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
 				E6985E1520690C6800BE5F6A /* CredentialsProviderTests.swift in Sources */,
 				E6985E1620690C6800BE5F6A /* IdentityStorageTests.swift in Sources */,
+				E6C96B5822E1E11500C22298 /* JWTTests.swift in Sources */,
 				E6B39C2D206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */,
 				E6985E1420690C6800BE5F6A /* AccessTokenResponseHandlerTests.swift in Sources */,
+				E6FBAF82231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift in Sources */,
 				E6B39C25206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */,
+				E6B57DFC230E7AAC00216421 /* MockRSA.swift in Sources */,
+				E6B57E00230E7C3A00216421 /* MockX509.swift in Sources */,
 				E6985E1920690C6800BE5F6A /* OAuth2IdentityManagerTests.swift in Sources */,
+				E6B57E11230EAD2300216421 /* SecKeyFactoryTests.swift in Sources */,
 				E6B39C29206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift in Sources */,
+				E6FBAF86231025E100AC51DF /* MockRS256.swift in Sources */,
 				E6985E1720690C6800BE5F6A /* RequestAuthorizerTests.swift in Sources */,
+				E6279D2D22DCFB93002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift in Sources */,
+				E6B57DF7230E783200216421 /* SignatureVerifierTests.swift in Sources */,
+				E6FBAF7B2310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift in Sources */,
 				E6985E1320690C6800BE5F6A /* MHIdentityKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1319,18 +1600,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B57DEB230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */,
 				E6985E8D206A588100BE5F6A /* UserAgent.swift in Sources */,
 				E6985DF920690C5D00BE5F6A /* DefaultNetoworkClient.swift in Sources */,
 				E6985E0520690C5D00BE5F6A /* GrantType.swift in Sources */,
 				E6985DFC20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */,
 				E6985DFA20690C5D00BE5F6A /* NetworkResponse.swift in Sources */,
+				E6B57DD5230D936900216421 /* RS256SignatureVerifier.swift in Sources */,
 				E6985DF320690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985E0920690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
+				E6279C6422DA81C7002AF76C /* Scope+OpenID.swift in Sources */,
+				E6C96B5622E1DE9000C22298 /* JSONWebTokenType.swift in Sources */,
 				E6985E0C20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6985DF220690C5D00BE5F6A /* MHIdentityKitError.swift in Sources */,
 				E6985E0820690C5D00BE5F6A /* AccessTokenResponseHandler.swift in Sources */,
 				E6985E0D20690C5D00BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
+				E6B57E20230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
+				E6B57DDF230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
+				E6B57DF0230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift in Sources */,
 				E6985DF120690C5D00BE5F6A /* MHIdentityKit.swift in Sources */,
+				E6279D2622DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
+				E6C96B5122E1DAD800C22298 /* JSONWebToken.swift in Sources */,
+				E6279D3322DD0021002AF76C /* IDToken.swift in Sources */,
 				E6985E0020690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
 				E6B09FAE21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6985E0620690C5D00BE5F6A /* Scope.swift in Sources */,
@@ -1338,6 +1629,7 @@
 				E6985E0720690C5D00BE5F6A /* AccessTokenResponse.swift in Sources */,
 				E6985DF620690C5D00BE5F6A /* IdentityManager.swift in Sources */,
 				E6985DFE20690C5D00BE5F6A /* IdentityStorage.swift in Sources */,
+				E6B57E0E230E9B4400216421 /* SecKeyFactory.swift in Sources */,
 				E6985DF420690C5D00BE5F6A /* OSStatus.swift in Sources */,
 				E6985E0A20690C5D00BE5F6A /* AccessTokenRefresher.swift in Sources */,
 				E66CA2AB23EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
@@ -1349,13 +1641,18 @@
 				E6985E82206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DFB20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6985E0420690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
-				E6A31F1723EB46A400304B16 /* WebViewUserAgentViewController.swift in Sources */,
+				E6B57E18230F13E000216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */,
+				E6B57DDA230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
+				E662042522CA4AAA002F3404 /* WebViewUserAgentViewController.swift in Sources */,
+				E6C96B5D22E2194D00C22298 /* Data+Base64UrlEncoding.swift in Sources */,
 				E6E83B5D211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985DF820690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6E83B62211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985E0220690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985E0F20690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
+				E6279C3A22D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */,
 				E6985E0320690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
+				E6B57DD0230D931D00216421 /* SignatureVerifier.swift in Sources */,
 				E6B09FA921160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6E83B6E211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985E0E20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
@@ -1371,12 +1668,21 @@
 				E6B1957022CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
 				E6985E1D20690C6900BE5F6A /* CredentialsProviderTests.swift in Sources */,
 				E6985E1E20690C6900BE5F6A /* IdentityStorageTests.swift in Sources */,
+				E6C96B5922E1E11500C22298 /* JWTTests.swift in Sources */,
 				E6B39C2E206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */,
 				E6985E1C20690C6900BE5F6A /* AccessTokenResponseHandlerTests.swift in Sources */,
+				E6FBAF83231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift in Sources */,
 				E6B39C26206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */,
+				E6B57DFD230E7AAC00216421 /* MockRSA.swift in Sources */,
+				E6B57E01230E7C3A00216421 /* MockX509.swift in Sources */,
 				E6985E2120690C6900BE5F6A /* OAuth2IdentityManagerTests.swift in Sources */,
+				E6B57E09230E91B200216421 /* SecVerifyTransformSignatureVerifierTests.swift in Sources */,
+				E6B57E12230EAD2300216421 /* SecKeyFactoryTests.swift in Sources */,
+				E6FBAF87231025E100AC51DF /* MockRS256.swift in Sources */,
 				E6B39C2A206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift in Sources */,
 				E6985E1F20690C6900BE5F6A /* RequestAuthorizerTests.swift in Sources */,
+				E6279D2E22DCFB94002AF76C /* OIDCAuthorizationCodeGrantFlowTests.swift in Sources */,
+				E6B57DF8230E783300216421 /* SignatureVerifierTests.swift in Sources */,
 				E6985E1B20690C6900BE5F6A /* MHIdentityKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1652,10 +1958,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MHIdentityKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKit-iOSTestsHost.app/MHIdentityKit-iOSTestsHost";
 			};
@@ -1665,6 +1973,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MHIdentityKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTests;
@@ -1805,6 +2114,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1813,6 +2123,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.KoCMoHaBTa.MHIdentityKit-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKit-tvOSTestsHost.app/MHIdentityKit-tvOSTestsHost";
@@ -1825,6 +2136,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1891,6 +2203,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -1902,6 +2215,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.KoCMoHaBTa.MHIdentityKit-macOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MHIdentityKit-macOSTestsHost.app/Contents/MacOS/MHIdentityKit-macOSTestsHost";
 			};
@@ -1912,6 +2226,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;

@@ -34,14 +34,15 @@ public struct AccessTokenResponseHandler {
         
         //parse the data
         guard
-        let data = networkResponse.data
+        let data = networkResponse.data,
+        let parameters = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         else {
             
             throw MHIdentityKitError.Reason.invalidAccessTokenResponse
         }
         
         //if the error is one of the defined in the OAuth2 framework - throw it
-        if let error = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
+        if let error = ErrorResponse(parameters: parameters) {
             
             throw error
         }
@@ -54,7 +55,6 @@ public struct AccessTokenResponseHandler {
         
         //parse the access token
         guard
-        let parameters = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
         let accessTokenResponse = try? AccessTokenResponse(parameters: parameters)
         else {
             

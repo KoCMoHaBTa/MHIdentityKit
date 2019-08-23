@@ -8,9 +8,9 @@
 
 import Foundation
 
-public struct ErrorResponse: LocalizedError, Codable {
+public struct ErrorResponse: LocalizedError {
     
-    public enum Code: String, Codable {
+    public enum Code: String {
         
         //https://tools.ietf.org/html/rfc6749#section-5.2
         case invalidRequest = "invalid_request"
@@ -25,13 +25,25 @@ public struct ErrorResponse: LocalizedError, Codable {
         case unsupportedResponseType = "unsupported_response_type"
         case serverError = "server_error"
         case temporarilyUnavailable = "temporarily_unavailable"
+        
+        //https://openid.net/specs/openid-connect-core-1_0.html#AuthError
+        case interactionRequired = "interaction_required"
+        case loginRequired = "login_required"
+        case accountSelectionRequired = "account_selection_required"
+        case consentRequired = "consent_required"
+        case invalidRequestUri = "invalid_request_uri"
+        case invalidRequestObject = "invalid_request_object"
+        case requestNotSupported = "request_not_supported"
+        case requestUriNotSupported = "request_uri_not_supported"
+        case registrationNotSupported = "registration_not_supported"
     }
     
     public var code: Code
     public var description: String?
     public var uri: String?
+    public var state: AnyHashable?
     
-    public init(code: Code, description: String? = nil, uri: String? = nil) {
+    public init(code: Code, description: String? = nil, uri: String? = nil, state: Any? = nil) {
         
         self.code = code
         self.description = description
@@ -40,30 +52,18 @@ public struct ErrorResponse: LocalizedError, Codable {
     
     public init?(parameters: [String: Any]) {
         
-        guard let data = try? JSONSerialization.data(withJSONObject: parameters, options: []), let object = try? JSONDecoder().decode(ErrorResponse.self, from: data) else {
+        guard
+        let codeRawValue = parameters["error"] as? String,
+        let code = Code(rawValue: codeRawValue)
+        else {
             
             return nil
         }
         
-        self = object
-    }
-    
-    //MARK: - Codable
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.code = try container.decode(Code.self, forKey: .code)
-        self.description = try? container.decode(String.self, forKey: .description)
-        self.uri = try? container.decode(String.self, forKey: .uri)
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        
-        case code = "error"
-        case description = "error_description"
-        case uri = "error_uri"
+        self.code = code
+        self.description = parameters["error_description"] as? String
+        self.uri = parameters["error_uri"] as? String
+        self.state = parameters["state"] as? AnyHashable
     }
     
     //MARK: - LocalizedError

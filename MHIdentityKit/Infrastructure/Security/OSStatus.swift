@@ -393,6 +393,30 @@ let OSStatusErrorCodeMessageMapping: [OSStatus: String] = [
 
 func OSStatusGetErrorCodeMessage(_ status: OSStatus) -> String {
     
+    #if os(iOS)
+    if #available(iOS 11.3, *) {
+        return SecCopyErrorMessageString(status, nil) as String? ?? OSStatusErrorCodeMessageMapping[status] ?? "Unknown Status \(status)"
+    }
+    #endif
+    
+    #if os(watchOS)
+    if #available(watchOSApplicationExtension 4.3, *) {
+        return SecCopyErrorMessageString(status, nil) as String? ?? OSStatusErrorCodeMessageMapping[status] ?? "Unknown Status \(status)"
+    }
+    #endif
+    
+    #if os(tvOS)
+    if #available(tvOS 11.3, *) {
+        return SecCopyErrorMessageString(status, nil) as String? ?? OSStatusErrorCodeMessageMapping[status] ?? "Unknown Status \(status)"
+    }
+    #endif
+    
+    #if os(macOS)
+    if #available(macOS 10.3, *) {
+        return SecCopyErrorMessageString(status, nil) as String? ?? OSStatusErrorCodeMessageMapping[status] ?? "Unknown Status \(status)"
+    }
+    #endif
+    
     return OSStatusErrorCodeMessageMapping[status] ?? "Unknown Status \(status)"
 }
 

@@ -14,6 +14,8 @@ public enum MHIdentityKitError: LocalizedError {
     case general(description: String, reason: String?)
     case authorizationFailed(reason: LocalizedError)
     case authenticationFailed(reason: LocalizedError)
+    case publicKeyCreationFailed(reason: LocalizedError)
+    case signatureVerificationFailed(reason: LocalizedError)
     
     init(error: Error) {
         
@@ -41,6 +43,14 @@ public enum MHIdentityKitError: LocalizedError {
                 let description = NSLocalizedString("Unable to authenticate the client", comment: "The localized error desciption when client authentication fails")
                 return (description, reason.failureReason, reason.recoverySuggestion)
             
+            case .publicKeyCreationFailed(let reason):
+                let description = NSLocalizedString("Unable to create RSA Public key.", comment: "The error description when creating RSA public key has failed and no system error has been thrown.")
+                return (description, reason.failureReason, reason.recoverySuggestion)
+            
+            case .signatureVerificationFailed(let reason):
+                let description = NSLocalizedString("Unable to verify digital signature.", comment: "The error description when verifying a digital signature has failed, eg when verifying an id token.")
+                return (description, reason.failureReason, reason.recoverySuggestion)
+            
         }
     }
     
@@ -58,6 +68,12 @@ public enum MHIdentityKitError: LocalizedError {
                 return reason is E || (reason as? MHIdentityKitError)?.contains(error: E.self) == true
             
             case .authenticationFailed(let reason):
+                return reason is E || (reason as? MHIdentityKitError)?.contains(error: E.self) == true
+            
+            case .publicKeyCreationFailed(let reason):
+                return reason is E || (reason as? MHIdentityKitError)?.contains(error: E.self) == true
+            
+            case .signatureVerificationFailed(let reason):
                 return reason is E || (reason as? MHIdentityKitError)?.contains(error: E.self) == true
         }
     }
@@ -85,18 +101,30 @@ extension MHIdentityKitError {
     public enum Reason: LocalizedError {
         
         case general(message: String)
+        case unknown
+        
         case clientNotAuthenticated
         case tokenExpired
         case buildAuthenticationHeaderFailed
         case unknownURLResponse
+        
         @available(*, deprecated, message: "Not thrown from framework anymore. Replcaed by `invalidAccessTokenResponse`.") case unableToParseAccessToken
+        
         @available(*, deprecated, message: "Not thrown from framework anymore. Replcaed by `invalidAccessTokenResponse`.") case unableToParseData
         case unknownHTTPResponse(code: Int)
+        
         case invalidRequestURL
         case invalidContentType
         case invalidRequestMethod
         case invalidAccessTokenResponse
         case invalidAuthorizationResponse
+        
+        case typeMismatch(expected: String, actual: String)
+        case invalidCertificate
+        
+        case unableToCreateSecurityTransform
+        case unableToSetSecurityTransformAttributes
+        case unableToExecuteSecurityTransform
         
         private func expand() -> (failureReason: String?, recoverySuggestion: String?) {
             
@@ -104,6 +132,9 @@ extension MHIdentityKitError {
                 
                 case .general(let message):
                     return (message, nil)
+                
+                case .unknown:
+                    return (nil, nil)
                 
                 case .clientNotAuthenticated:
                     
@@ -155,6 +186,27 @@ extension MHIdentityKitError {
                 
                 case .invalidAuthorizationResponse:
                     let reason = NSLocalizedString("The received authorization token response is not valid.", comment: "The localized error description returned when a received authorization token response is not valid due to incorrect or malformed data.")
+                    return (reason, nil)
+                
+                case .typeMismatch(let expected, let actual):
+                    let reasonFormat = NSLocalizedString("Expected <%@> type, but got <%@> type instead.>", comment: "The error reason format when, eg. creating RSA public key, has failed due to type mismatch.")
+                    let reason = String(format: reasonFormat, expected, actual)
+                    return (reason, nil)
+                
+                case .invalidCertificate:
+                    let reason = NSLocalizedString("The certificate is not valid.", comment: "The localized error reason returned when an invalid certificate is the cause of the error.")
+                    return (reason, nil)
+                
+                case .unableToCreateSecurityTransform:
+                    let reason = NSLocalizedString("Unable to create security transform.", comment: "The localized error reason returned when a security transform cannot be created, eg. whe verifiying an id token.")
+                    return (reason, nil)
+                
+                case .unableToSetSecurityTransformAttributes:
+                    let reason = NSLocalizedString("Unable to set attributes to security  transform.", comment: "The localized error reason returned when cannot set one or more attributes to a security transform, eg. whe verifiying an id token.")
+                    return (reason, nil)
+                
+                case .unableToExecuteSecurityTransform:
+                    let reason = NSLocalizedString("Unable to execute security transform.", comment: "The localized error reason returned when a security transform cannot be executed, eg. whe verifiying an id token.")
                     return (reason, nil)
             }
         }
