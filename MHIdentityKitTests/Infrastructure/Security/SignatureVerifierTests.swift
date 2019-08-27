@@ -26,7 +26,14 @@ class SignatureVerifierTests: XCTestCase {
     
     func testHS256SignatureVerifier() {
         
-        XCTFail()
+        XCTAssertNoThrow(try {
+            
+            let mock = MockHS256()
+            let verifier = try HS256SignatureVerifier(secret: mock.secret)
+            let input = mock.input
+            let signature = mock.signature
+            try verifier.verify(input: input, withSignature: signature)
+        }())
     }
     
     func testES256SignatureVerifier() {

@@ -180,10 +180,17 @@ If you find any issues or just have questions - don't hesitate to report and/or 
 	- [ ] tvOS default UserAgent (if possible)
 	- [ ] watchOS default UserAgent (if possible)
 
-- OpenID Connect
+- [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html#toc)
 	- [ ] Service Discovery
-	- [ ] Hybrid Flow
+        - [x] [Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth)
+        - [ ] [Implicit Flow](https://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth)
+	- [ ] [Hybrid Flow](https://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth)
+        - [x] [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken)
 	- [ ] ...
+    
+- [JWT](https://tools.ietf.org/html/rfc7519)
+    - [x] [JWS](https://tools.ietf.org/html/rfc7515)
+    - [ ] [JWE](https://tools.ietf.org/html/rfc7516)
     
 - iOS demos
     - [x] Authorization Code Grant Flow

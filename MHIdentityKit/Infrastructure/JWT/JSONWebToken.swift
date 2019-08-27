@@ -9,11 +9,11 @@
 import Foundation
 import Security
 
-struct JSONWebToken: RawRepresentable {
+public struct JSONWebToken: RawRepresentable {
     
-    let type: JSONWebTokenType
-    let header: [String: Any]
-    let claims: [String: Any]
+    public let type: JSONWebTokenType
+    public let header: [String: Any]
+    public let claims: [String: Any]
     
     //MARK: - RawRepresentable
     
@@ -104,7 +104,7 @@ struct JSONWebToken: RawRepresentable {
         self.claims = claims
     }
     
-    func verify(using verifier: SignatureVerifier) throws {
+    public func verify(using verifier: SignatureVerifier) throws {
 
         switch self.type {
             

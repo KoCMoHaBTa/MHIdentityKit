@@ -244,10 +244,6 @@
 		E6B57DD8230D93E200216421 /* HS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */; };
 		E6B57DD9230D93E200216421 /* HS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */; };
 		E6B57DDA230D93E200216421 /* HS256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */; };
-		E6B57DDC230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
-		E6B57DDD230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
-		E6B57DDE230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
-		E6B57DDF230D93F300216421 /* ES256SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */; };
 		E6B57DE3230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */; };
 		E6B57DE4230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */; };
 		E6B57DE5230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */; };
@@ -320,6 +316,18 @@
 		E6FBAF85231025E100AC51DF /* MockRS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF84231025E100AC51DF /* MockRS256.swift */; };
 		E6FBAF86231025E100AC51DF /* MockRS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF84231025E100AC51DF /* MockRS256.swift */; };
 		E6FBAF87231025E100AC51DF /* MockRS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF84231025E100AC51DF /* MockRS256.swift */; };
+		E6FBAF8F2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF8E2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift */; };
+		E6FBAF902313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF8E2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift */; };
+		E6FBAF912313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF8E2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift */; };
+		E6FBAF922313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAF8E2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift */; };
+		E6FBAFA52314141900AC51DF /* MockHS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA42314141900AC51DF /* MockHS256.swift */; };
+		E6FBAFA62314141900AC51DF /* MockHS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA42314141900AC51DF /* MockHS256.swift */; };
+		E6FBAFA72314141900AC51DF /* MockHS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA42314141900AC51DF /* MockHS256.swift */; };
+		E6FBAFA82314141900AC51DF /* MockHS256.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA42314141900AC51DF /* MockHS256.swift */; };
+		E6FBAFAA231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA9231505AE00AC51DF /* CCHmacSignatureVerifier.swift */; };
+		E6FBAFAB231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA9231505AE00AC51DF /* CCHmacSignatureVerifier.swift */; };
+		E6FBAFAC231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA9231505AE00AC51DF /* CCHmacSignatureVerifier.swift */; };
+		E6FBAFAD231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FBAFA9231505AE00AC51DF /* CCHmacSignatureVerifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -476,7 +484,6 @@
 		E6B57DCC230D931D00216421 /* SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RS256SignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HS256SignatureVerifier.swift; sourceTree = "<group>"; };
-		E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ES256SignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyRawVerifySignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyVerifySignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DEC230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecVerifyTransformSignatureVerifier.swift; sourceTree = "<group>"; };
@@ -503,6 +510,9 @@
 		E6FBAF792310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyRawVerifySignatureVerifierTests.swift; sourceTree = "<group>"; };
 		E6FBAF80231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyVerifySignatureVerifierTests.swift; sourceTree = "<group>"; };
 		E6FBAF84231025E100AC51DF /* MockRS256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRS256.swift; sourceTree = "<group>"; };
+		E6FBAF8E2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONWebSignatureAlgorithm.swift; sourceTree = "<group>"; };
+		E6FBAFA42314141900AC51DF /* MockHS256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHS256.swift; sourceTree = "<group>"; };
+		E6FBAFA9231505AE00AC51DF /* CCHmacSignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCHmacSignatureVerifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,6 +694,7 @@
 				E69D5EEF1ED85BCF0099EE36 /* IdentityStorage */,
 				E69D5EF01ED85BEB0099EE36 /* RequestAuthorizer */,
 				E6C96B4C22E1DAB900C22298 /* JWT */,
+				E6FBAF932313C8B200AC51DF /* JWS */,
 				E66562ED22E7992D0056F954 /* Security */,
 			);
 			path = Infrastructure;
@@ -894,6 +905,7 @@
 				E6B57DEC230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift */,
 				E6B57DE2230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift */,
 				E6B57DE7230D960F00216421 /* SecKeyVerifySignatureVerifier.swift */,
+				E6FBAFA9231505AE00AC51DF /* CCHmacSignatureVerifier.swift */,
 			);
 			path = PlatformSpecific;
 			sourceTree = "<group>";
@@ -903,7 +915,6 @@
 			children = (
 				E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */,
 				E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */,
-				E6B57DDB230D93F300216421 /* ES256SignatureVerifier.swift */,
 			);
 			path = AlgorithmSpecific;
 			sourceTree = "<group>";
@@ -914,6 +925,7 @@
 				E6B57DFA230E7AAC00216421 /* MockRSA.swift */,
 				E6B57DFE230E7C3A00216421 /* MockX509.swift */,
 				E6FBAF84231025E100AC51DF /* MockRS256.swift */,
+				E6FBAFA42314141900AC51DF /* MockHS256.swift */,
 				E6B57E0F230EAD2300216421 /* SecKeyFactoryTests.swift */,
 				E6B57DF1230E780400216421 /* SignatureVerifierTests.swift */,
 				E6B57E06230E91B200216421 /* SecVerifyTransformSignatureVerifierTests.swift */,
@@ -941,6 +953,14 @@
 				E6C96B5A22E1ECFE00C22298 /* Data+Base64UrlEncoding.swift */,
 			);
 			path = JWT;
+			sourceTree = "<group>";
+		};
+		E6FBAF932313C8B200AC51DF /* JWS */ = {
+			isa = PBXGroup;
+			children = (
+				E6FBAF8E2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift */,
+			);
+			path = JWS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1360,7 +1380,7 @@
 				E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */,
 				9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */,
-				E6B57DDC230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
+				E6FBAFAA231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */,
 				E6279D2322DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
 				E6C96B4E22E1DAD800C22298 /* JSONWebToken.swift in Sources */,
@@ -1394,10 +1414,12 @@
 				E61974881EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift in Sources */,
 				E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */,
 				E6B1956922C9FA6000954DED /* ImplicitGrantFlow.swift in Sources */,
+				E6FBAF8F2313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */,
 				E6E83B5A211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6279C3722D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */,
 				E69D5EFA1ED85C240099EE36 /* RequestAuthorizer.swift in Sources */,
 				E6B57DCD230D931D00216421 /* SignatureVerifier.swift in Sources */,
+				E6FBAFA52314141900AC51DF /* MockHS256.swift in Sources */,
 				E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6B09FA621160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E683DB9B1ED4F4BE000D7853 /* AccessTokenResponse.swift in Sources */,
@@ -1454,8 +1476,10 @@
 				E6C96B4F22E1DAD800C22298 /* JSONWebToken.swift in Sources */,
 				E6985D2B2068FDDF00BE5F6A /* GrantType.swift in Sources */,
 				E6985D222068FDD400BE5F6A /* CredentialsProvider.swift in Sources */,
+				E6FBAFA62314141900AC51DF /* MockHS256.swift in Sources */,
 				E6B09FA721160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6985D202068FDD000BE5F6A /* NetworkResponse.swift in Sources */,
+				E6FBAFAB231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6985D192068FDCA00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985D2F2068FDDF00BE5F6A /* ErrorResponse.swift in Sources */,
 				E6B57DE4230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
@@ -1466,7 +1490,6 @@
 				E6985D332068FDE300BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
 				E6B57DCE230D931D00216421 /* SignatureVerifier.swift in Sources */,
 				E6985D172068FDC700BE5F6A /* MHIdentityKit.swift in Sources */,
-				E6B57DDD230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
 				E6985D262068FDD800BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
 				E6985D2C2068FDDF00BE5F6A /* Scope.swift in Sources */,
 				E6985D252068FDD800BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
@@ -1502,6 +1525,7 @@
 				E6E83B6C211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985D342068FDE300BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985D312068FDDF00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
+				E6FBAF902313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */,
 				E6B57E1E230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1517,8 +1541,10 @@
 				E6C96B5022E1DAD800C22298 /* JSONWebToken.swift in Sources */,
 				E6985DE620690C5D00BE5F6A /* GrantType.swift in Sources */,
 				E6985DDD20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */,
+				E6FBAFA72314141900AC51DF /* MockHS256.swift in Sources */,
 				E6B09FA821160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6985DDB20690C5D00BE5F6A /* NetworkResponse.swift in Sources */,
+				E6FBAFAC231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6985DD420690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985DEA20690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
 				E6B57DE5230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
@@ -1529,7 +1555,6 @@
 				E6985DEE20690C5D00BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
 				E6B57DCF230D931D00216421 /* SignatureVerifier.swift in Sources */,
 				E6985DD220690C5D00BE5F6A /* MHIdentityKit.swift in Sources */,
-				E6B57DDE230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
 				E6985DE120690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
 				E6985DE720690C5D00BE5F6A /* Scope.swift in Sources */,
 				E6985DE020690C5D00BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
@@ -1565,6 +1590,7 @@
 				E6E83B6D211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985DEF20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6985DEC20690C5D00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */,
+				E6FBAF912313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */,
 				E6B57E1F230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1616,7 +1642,7 @@
 				E6985E0820690C5D00BE5F6A /* AccessTokenResponseHandler.swift in Sources */,
 				E6985E0D20690C5D00BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
 				E6B57E20230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
-				E6B57DDF230D93F300216421 /* ES256SignatureVerifier.swift in Sources */,
+				E6FBAFAD231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6B57DF0230D966F00216421 /* SecVerifyTransformSignatureVerifier.swift in Sources */,
 				E6985DF120690C5D00BE5F6A /* MHIdentityKit.swift in Sources */,
 				E6279D2622DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
@@ -1649,10 +1675,12 @@
 				E6985DF820690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6E83B62211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E6985E0220690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
+				E6FBAF922313C8A700AC51DF /* JSONWebSignatureAlgorithm.swift in Sources */,
 				E6985E0F20690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6279C3A22D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */,
 				E6985E0320690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
 				E6B57DD0230D931D00216421 /* SignatureVerifier.swift in Sources */,
+				E6FBAFA82314141900AC51DF /* MockHS256.swift in Sources */,
 				E6B09FA921160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6E83B6E211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985E0E20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
