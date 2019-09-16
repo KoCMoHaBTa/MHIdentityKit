@@ -1,5 +1,5 @@
 //
-//  JSONWebToken.swift
+//  JWT.swift
 //  MHIdentityKit
 //
 //  Created by Milen Halachev on 19.07.19.
@@ -9,9 +9,9 @@
 import Foundation
 import Security
 
-public struct JSONWebToken: RawRepresentable {
+public struct JWT: RawRepresentable {
     
-    public let type: JSONWebTokenType
+    public let type: JWTType
     public let header: [String: Any]
     public let claims: [String: Any]
     
@@ -41,7 +41,7 @@ public struct JSONWebToken: RawRepresentable {
             return nil
         }
         
-        guard let type = JSONWebTokenType(jwt: rawValue) else {
+        guard let type = JWTType(jwt: rawValue) else {
             
             return nil
         }
@@ -51,7 +51,7 @@ public struct JSONWebToken: RawRepresentable {
         
         switch type {
             
-            case .jws:
+            case .JWS:
                 
                 /*
                  If the JWT is a JWS, follow the steps specified in [JWS] for
@@ -70,7 +70,7 @@ public struct JSONWebToken: RawRepresentable {
                 messageData = payloadData
                 message = payload
             
-            case .jwe:
+            case .JWE:
                 //JWE is not yet supported
                 return nil
         }
@@ -84,7 +84,7 @@ public struct JSONWebToken: RawRepresentable {
         
         if header["cty"] as? String == "JWT" {
             
-            guard let jwt = JSONWebToken(rawValue: message) else {
+            guard let jwt = JWT(rawValue: message) else {
                 
                 return nil
             }
@@ -108,7 +108,7 @@ public struct JSONWebToken: RawRepresentable {
 
         switch self.type {
             
-            case .jws:
+            case .JWS:
                 let segments = self.rawValue.components(separatedBy: ".")
                 guard
                 let input = (segments[0] + "." + segments[1]).data(using: .utf8),
@@ -120,7 +120,7 @@ public struct JSONWebToken: RawRepresentable {
                 
                 try verifier.verify(input: input, withSignature: signature)
             
-            case .jwe:
+            case .JWE:
                 //not supported
                 throw MHIdentityKitError.signatureVerificationFailed(reason: MHIdentityKitError.Reason.typeMismatch(expected: "JWT token", actual: "JWE token"))
         }

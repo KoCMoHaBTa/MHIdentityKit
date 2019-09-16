@@ -41,7 +41,8 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
     ///If using the HTTP GET method, the request parameters are serialized using URI Query String Serialization, per [Section 13.1](https://openid.net/specs/openid-connect-core-1_0.html#QuerySerialization). If using the HTTP POST method, the request parameters are serialized using Form Serialization, per [Section 13.2](https://openid.net/specs/openid-connect-core-1_0.html#FormSerialization). Default to 'GET'.
     open var authorizationRequestHTTPMethod: String = "GET"
     
-    
+    open var jwsSignatureVerifier: JWSSignatureVerifier = JWSSignatureVerifierRegistry.default
+
     //MARK: - Flow logic
     
     //https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest
@@ -90,10 +91,10 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
             throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse)
         }
         
-//        idToken.vali
+        try self.jwsSignatureVerifier.verify(token: idToken.jwt)
         
         //https://openid.net/specs/openid-connect-core-1_0.html#CodeIDToken
-        fatalError("validate id token hash, if present")
+//        fatalError("validate id token hash, if present")
         
         //https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
         fatalError("validate id token")
@@ -102,5 +103,4 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         fatalError("validate access token")
     }
 }
-
 

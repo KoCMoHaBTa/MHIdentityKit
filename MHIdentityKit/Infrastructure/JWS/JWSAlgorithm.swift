@@ -1,5 +1,5 @@
 //
-//  JSONWebSignatureAlgorithm.swift
+//  JWSAlgorithm.swift
 //  MHIdentityKit
 //
 //  Created by Milen Halachev on 26.08.19.
@@ -32,7 +32,7 @@ import Foundation
  */
 
 
-public struct JSONWebSignatureAlgorithm {
+public struct JWSAlgorithm {
     
     public var value: String
     
@@ -42,20 +42,20 @@ public struct JSONWebSignatureAlgorithm {
     }
 }
 
-extension JSONWebSignatureAlgorithm {
+extension JWSAlgorithm {
     
-    public static let HS256: JSONWebSignatureAlgorithm = "HS256"
-    public static let RS256: JSONWebSignatureAlgorithm = "RS256"
+    public static let HS256: JWSAlgorithm = "HS256"
+    public static let RS256: JWSAlgorithm = "RS256"
     
 }
 
 //MARK: - Hashable
-extension JSONWebSignatureAlgorithm: Hashable {
+extension JWSAlgorithm: Hashable {
     
 }
 
 //MARK: - RawRepresentable
-extension JSONWebSignatureAlgorithm: RawRepresentable {
+extension JWSAlgorithm: RawRepresentable {
     
     public var rawValue: String {
         
@@ -70,7 +70,7 @@ extension JSONWebSignatureAlgorithm: RawRepresentable {
 }
 
 //MARK: - ExpressibleByStringLiteral
-extension JSONWebSignatureAlgorithm: ExpressibleByStringLiteral {
+extension JWSAlgorithm: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         
@@ -89,7 +89,7 @@ extension JSONWebSignatureAlgorithm: ExpressibleByStringLiteral {
 }
 
 //MARK: - CustomStringConvertible
-extension JSONWebSignatureAlgorithm: CustomStringConvertible {
+extension JWSAlgorithm: CustomStringConvertible {
     
     public var description: String {
         

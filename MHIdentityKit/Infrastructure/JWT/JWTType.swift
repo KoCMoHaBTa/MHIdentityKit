@@ -1,5 +1,5 @@
 //
-//  JSONWebTokenType.swift
+//  JWTType.swift
 //  MHIdentityKit
 //
 //  Created by Milen Halachev on 19.07.19.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-public enum JSONWebTokenType {
+public enum JWTType {
     
-    //https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41
-    case jws //json web signature
+    //https://tools.ietf.org/html/rfc7515
+    case JWS //json web signature
     
-    //https://tools.ietf.org/html/draft-ietf-jose-json-web-encryption-40
-    case jwe //json web encryption
+    //https://tools.ietf.org/html/rfc7516
+    case JWE //json web encryption
 }
 
-extension JSONWebTokenType {
+extension JWTType {
     
     //
     ///Tries to determine the type of a given JWT value, based on [Section 9](https://tools.ietf.org/html/draft-ietf-jose-json-web-encryption-40#section-9) of the JWE specification
@@ -28,10 +28,10 @@ extension JSONWebTokenType {
         
         switch segments {
             case 3:
-                self = .jws
+                self = .JWS
             
             case 5:
-                self = .jwe
+                self = .JWE
             
             default:
                 return nil
