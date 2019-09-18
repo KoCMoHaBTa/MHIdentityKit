@@ -398,7 +398,7 @@ func OSStatusGetErrorCodeMessage(_ status: OSStatus) -> String {
 
 func OSStatusGetError(_ status: OSStatus) -> Error {
     
-    return NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(OSStatusGetErrorCodeMessage(status), comment: "")])
+    return NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: [NSLocalizedDescriptionKey: Bundle.main.localizedString(forKey: OSStatusGetErrorCodeMessage(status), value: nil, table: nil)])
 }
 
 

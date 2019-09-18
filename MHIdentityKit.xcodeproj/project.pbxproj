@@ -372,6 +372,7 @@
 		E6B39C27206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHIdentityKitError.swift; sourceTree = "<group>"; };
+		E6C767D32332271100C10BAB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E6DC216B1F028FEA008D182A /* KeychainIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainIdentityStorage.swift; sourceTree = "<group>"; };
 		E6DC216D1F0292C9008D182A /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		E6DC21781F0293D9008D182A /* OSStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSStatus.swift; sourceTree = "<group>"; };
@@ -464,6 +465,7 @@
 		9954AE3B1E9D169700F2A73D = {
 			isa = PBXGroup;
 			children = (
+				E6C767D32332271100C10BAB /* .gitignore */,
 				E66D60571ED85F590049657F /* README.md */,
 				E648E8F6217A296F00FC15BA /* LICENSE */,
 				E648EF9921F8A77F00CC79D6 /* MHIdentityKit.podspec */,
@@ -1529,6 +1531,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKit;
 				PRODUCT_NAME = MHIdentityKit;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1590,6 +1593,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKit;
 				PRODUCT_NAME = MHIdentityKit;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 10.0;
