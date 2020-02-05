@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "MHIdentityKit"
-  s.version      = "1.10.1"
+  s.version      = "1.10.2"
   s.source       = { :git => "https://github.com/KoCMoHaBTa/#{s.name}.git", :tag => "#{s.version}" }
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = "Milen Halachev"
@@ -17,8 +17,11 @@ Pod::Spec.new do |s|
   s.source_files  = "#{s.name}/**/*.swift", "#{s.name}/**/*.{h,m}"
   s.public_header_files = "#{s.name}/**/*.h"
 
-  s.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/tvOS/*.swift", "#{s.name}/**/watchOS/*.swift"
-
+  s.ios.exclude_files = "#{s.name}/**/macOS/*.swift", "#{s.name}/**/tvOS/*.swift", "#{s.name}/**/watchOS/*.swift"
+  s.osx.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/tvOS/*.swift", "#{s.name}/**/watchOS/*.swift"
+  s.tvos.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/watchOS/*.swift"
+  s.watchos.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/tvOS/*.swift"
+  
   s.ios.source_files  = "#{s.name}/**/iOS/*.swift"
   s.osx.source_files  = "#{s.name}/**/macOS/*.swift"
   s.tvos.source_files  = "#{s.name}/**/tvOS/*.swift"

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Milen Halachev. All rights reserved.
 //
 
+#if os(macOS)
+
 import Foundation
 import WebKit
 import Cocoa
@@ -311,3 +313,5 @@ extension WebViewUserAgentViewController {
 
     }
 }
+
+#endif

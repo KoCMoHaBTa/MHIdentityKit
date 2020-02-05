@@ -32,7 +32,6 @@
 		E662041322CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */; };
 		E662041522CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */; };
 		E662041822CA2E48002F3404 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6985DBB206901AD00BE5F6A /* MHIdentityKit.framework */; };
-		E662042522CA4AAA002F3404 /* WebViewUserAgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */; };
 		E675980E1F13A032008C1262 /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E68221AF1F7703B700193B48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68221AE1F7703B700193B48 /* AppDelegate.swift */; };
@@ -181,6 +180,7 @@
 		E69D5EFC1ED85C480099EE36 /* DefaultNetoworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */; };
 		E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
 		E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */; };
+		E6A31F1723EB46A400304B16 /* WebViewUserAgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */; };
 		E6B09F872115D548000A94C8 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9954AE451E9D169700F2A73D /* MHIdentityKit.framework */; };
 		E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09F8C2115E0D1000A94C8 /* WebViewUserAgentViewController.swift */; };
 		E6B09FA621160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */; };
@@ -1339,7 +1339,7 @@
 				E6985E82206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E6985DFB20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */,
 				E6985E0420690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
-				E662042522CA4AAA002F3404 /* WebViewUserAgentViewController.swift in Sources */,
+				E6A31F1723EB46A400304B16 /* WebViewUserAgentViewController.swift in Sources */,
 				E6E83B5D211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985DF820690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6E83B62211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
@@ -1614,6 +1614,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -1629,6 +1630,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -1711,6 +1713,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1733,6 +1736,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1754,6 +1758,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1775,6 +1780,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1838,6 +1844,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1860,6 +1867,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.10.2;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
