@@ -21,10 +21,5 @@ Pod::Spec.new do |s|
   s.osx.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/tvOS/*.swift", "#{s.name}/**/watchOS/*.swift"
   s.tvos.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/watchOS/*.swift"
   s.watchos.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/tvOS/*.swift"
-  
-  s.ios.source_files  = "#{s.name}/**/iOS/*.swift"
-  s.osx.source_files  = "#{s.name}/**/macOS/*.swift"
-  s.tvos.source_files  = "#{s.name}/**/tvOS/*.swift"
-  s.watchos.source_files  = "#{s.name}/**/watchOS/*.swift"
 
 end

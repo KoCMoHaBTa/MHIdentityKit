@@ -183,8 +183,7 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
             return
         }
         
-        let webViewController = WebViewUserAgentViewController()
-        let userAgent = webViewController.makePresentableUserAgent(present: { [weak self] (webViewController) in
+        let userAgent = PresentableUserAgent(WebViewUserAgentViewController(), presentationHandler: { [weak self] (webViewController) in
             
             self?.navigationController?.pushViewController(webViewController, animated: true)
             

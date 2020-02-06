@@ -32,6 +32,10 @@
 		E662041322CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */; };
 		E662041522CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */; };
 		E662041822CA2E48002F3404 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6985DBB206901AD00BE5F6A /* MHIdentityKit.framework */; };
+		E66CA2A823EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */; };
+		E66CA2A923EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */; };
+		E66CA2AA23EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */; };
+		E66CA2AB23EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */; };
 		E675980E1F13A032008C1262 /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E68221AF1F7703B700193B48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68221AE1F7703B700193B48 /* AppDelegate.swift */; };
@@ -312,13 +316,14 @@
 		E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManagerTests.swift; sourceTree = "<group>"; };
 		E645850C1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsIdentityStorage.swift; sourceTree = "<group>"; };
 		E648E8F6217A296F00FC15BA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		E648EF9921F8A77F00CC79D6 /* MHIdentityKit.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = MHIdentityKit.podspec; sourceTree = "<group>"; };
+		E648EF9921F8A77F00CC79D6 /* MHIdentityKit.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = MHIdentityKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E662040E22CA2C6D002F3404 /* ClientCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E662041022CA2C8F002F3404 /* AuthorizationCodeGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E662042122CA3C8E002F3404 /* MHIdentityKit-macOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-macOSTestsHost.entitlements"; sourceTree = "<group>"; };
 		E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewUserAgentViewController.swift; sourceTree = "<group>"; };
+		E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableUserAgent.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponseValidator.swift; sourceTree = "<group>"; };
 		E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLEncodingUtilities.swift; sourceTree = "<group>"; };
@@ -633,6 +638,7 @@
 			children = (
 				E6985E89206A588100BE5F6A /* UserAgent.swift */,
 				E6B09FAA21160873000A94C8 /* AnyUserAgent.swift */,
+				E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */,
 				E6B09F8A2115E0BA000A94C8 /* iOS */,
 				E662042222CA4977002F3404 /* macOS */,
 			);
@@ -1144,6 +1150,7 @@
 				E6E83B6B211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E683DBA31ED6B327000D7853 /* Scope.swift in Sources */,
 				E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */,
+				E66CA2A823EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
 				E69D5EF91ED85C240099EE36 /* HTTPBasicAuthorizer.swift in Sources */,
 				E675980E1F13A032008C1262 /* NetworkResponseValidator.swift in Sources */,
 				E69D5EF41ED85C030099EE36 /* CredentialsProvider.swift in Sources */,
@@ -1232,6 +1239,7 @@
 				E6E83B5B211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985D2A2068FDDB00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6E83B60211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
+				E66CA2A923EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
 				E6985D1E2068FDD000BE5F6A /* NetworkClient.swift in Sources */,
 				E6985D282068FDDB00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985D352068FDE300BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
@@ -1278,6 +1286,7 @@
 				E6E83B5C211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
 				E6985DE520690C5D00BE5F6A /* BearerAccessTokenAuthorizer.swift in Sources */,
 				E6E83B61211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
+				E66CA2AA23EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
 				E6985DD920690C5D00BE5F6A /* NetworkClient.swift in Sources */,
 				E6985DE320690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985DF020690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
@@ -1331,6 +1340,7 @@
 				E6985DFE20690C5D00BE5F6A /* IdentityStorage.swift in Sources */,
 				E6985DF420690C5D00BE5F6A /* OSStatus.swift in Sources */,
 				E6985E0A20690C5D00BE5F6A /* AccessTokenRefresher.swift in Sources */,
+				E66CA2AB23EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */,
 				E6985DF520690C5D00BE5F6A /* Keychain.swift in Sources */,
 				E6985E0120690C5D00BE5F6A /* KeychainIdentityStorage.swift in Sources */,
 				E6B1956C22C9FA6000954DED /* ImplicitGrantFlow.swift in Sources */,

@@ -184,16 +184,19 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
     
     open func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool) {
         
-        self.request = request
-        self.redirectURI = redirectURI
-        self.redirectionHandler = redirectionHandler
-        
-        guard self.isViewLoaded else {
+        DispatchQueue.main.async {
             
-            return
+            self.request = request
+            self.redirectURI = redirectURI
+            self.redirectionHandler = redirectionHandler
+            
+            guard self.isViewLoaded else {
+                
+                return
+            }
+            
+            self.loadData()
         }
-        
-        self.loadData()
     }
 }
 
@@ -208,31 +211,12 @@ extension WebViewUserAgentViewController {
      - note: It is recommended embed the view controller into UINavigationController with visible toolbar, because it contains web navigation controls. If you present it modally within an UINavigationController - it is your responsibility to setup a cancel/close button, based on your needs.
      */
     
+    @available(*, deprecated, message: "Use PresentableUserAgent instead.")
     open func makePresentableUserAgent(present: @escaping (WebViewUserAgentViewController) -> Void, dismiss: @escaping (WebViewUserAgentViewController) -> Void) -> UserAgent {
      
-        return AnyUserAgent { [weak self] (request, redirectURL, redicationHandler) in
-            
-            guard let _self = self else {
-                
-                return
-            }
-            
-            _self.perform(request, redirectURI: redirectURL, redirectionHandler: { (request) -> Bool in
-                
-                let didHandleRedirect = try redicationHandler(request)
-                
-                if didHandleRedirect, let _self = self {
-                    
-                    dismiss(_self)
-                }
-                
-                return didHandleRedirect
-            })
-            
-            present(_self)
-        }
-
+        return PresentableUserAgent(self, presentationHandler: present, dismissHandler: dismiss)
     }
 }
 
 #endif
+
