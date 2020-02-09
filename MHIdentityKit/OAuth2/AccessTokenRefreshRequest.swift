@@ -15,6 +15,12 @@ public struct AccessTokenRefreshRequest {
     public let refreshToken: String
     public let scope: Scope?
     
+    public init(refreshToken: String, scope: Scope?) {
+        
+        self.refreshToken = refreshToken
+        self.scope = scope
+    }
+    
     public var dictionary: [String: Any] {
         
         var dictionary = [String: Any]()
