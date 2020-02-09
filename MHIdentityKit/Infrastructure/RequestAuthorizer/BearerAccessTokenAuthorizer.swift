@@ -16,6 +16,12 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
     public var token: String
     public var method: AuthorizationMethod
     
+    public init(token: String, method: AuthorizationMethod) {
+        
+        self.token = token
+        self.method = method
+    }
+    
     public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
         
         var request = request
