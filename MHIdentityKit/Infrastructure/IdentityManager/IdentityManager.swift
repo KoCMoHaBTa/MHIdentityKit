@@ -137,7 +137,7 @@ extension URLRequest {
 
 extension IdentityManager {
     
-    var responseValidator: NetworkResponseValidator {
+    public var responseValidator: NetworkResponseValidator {
         
         return AnyNetworkResponseValidator(handler: { (response) -> Bool in
             
