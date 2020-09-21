@@ -176,12 +176,12 @@ class AuthorizationCodeGrantFlowInputViewController: NSViewController {
         }
         
         let webViewController = WebViewUserAgentViewController()
-        let userAgent = webViewController.makePresentableUserAgent(present: { [weak self] (webViewController) in
-
+        let userAgent = PresentableUserAgent(webViewController) { [weak self] (webViewController) in
+            
             self?.presentAsSheet(webViewController)
-
-        }) { [weak self] (webViewController) in
-
+        }
+        dismissHandler: { [weak self] (webViewController) in
+            
             self?.dismiss(webViewController)
         }
         
