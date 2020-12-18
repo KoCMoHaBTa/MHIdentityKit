@@ -18,7 +18,7 @@ public struct IDToken {
     public let sub: String
     
     ///Audience(s) that this ID Token is intended for. It MUST contain the OAuth 2.0 client_id of the Relying Party as an audience value. It MAY also contain identifiers for other audiences. In the general case, the aud value is an array of case sensitive strings. In the common special case when there is one audience, the aud value MAY be a single case sensitive string.
-    public let aud: String
+    public let aud: Audience
     
     ///Expiration time on or after which the ID Token MUST NOT be accepted for processing. The processing of this parameter requires that the current date/time MUST be before the expiration date/time listed in the value. Implementers MAY provide for some small leeway, usually no more than a few minutes, to account for clock skew. Its value is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z as measured in UTC until the date/time. See RFC 3339 [RFC3339] for details regarding date/times in general and UTC in particular.
     public let exp: Int
@@ -51,7 +51,7 @@ public struct IDToken {
         let issString = jwt.claims["iss"] as? String,
         let iss = URL(string: issString),
         let sub = jwt.claims["sub"] as? String,
-        let aud = jwt.claims["aud"] as? String,
+        let aud = Audience(jwt.claims["aud"]),
         let exp = jwt.claims["exp"] as? Int,
         let iat = jwt.claims["iat"] as? Int
         else {
@@ -89,5 +89,81 @@ extension IDToken: RawRepresentable {
         }
         
         self.init(jwt: jwt)
+    }
+}
+
+extension IDToken {
+    
+    public enum Audience: ExpressibleByStringLiteral, ExpressibleByArrayLiteral {
+        
+        case value(String)
+        case array([String])
+        
+        public init?(_ claim: Any?) {
+            
+            switch claim {
+                
+                case let claim as String:
+                    self = .value(claim)
+                    
+                case let claim as [String]:
+                    self = .array(claim)
+                    
+                default:
+                    return nil
+            }
+        }
+        
+        public init(stringLiteral value: String) {
+            
+            self.init(value)!
+        }
+        
+        public init(arrayLiteral elements: String...) {
+            
+            self.init(elements)!
+        }
+        
+        func contains(clientID: String) -> Bool {
+            
+            switch self {
+                
+                case .value(let value):
+                    return value == clientID
+                    
+                case .array(let array):
+                    return array.contains(clientID)
+            }
+        }
+        
+        func validate(trusted: Audience?) -> Bool {
+            
+            guard let trusted = trusted else {
+                
+                return true
+            }
+            
+            let trustedValues: [String]
+            switch trusted {
+                case .value(let value):
+                    trustedValues = [value]
+                    
+                case .array(let array):
+                    trustedValues = array
+            }
+            
+            switch self {
+                case .value(let value):
+                    return trustedValues.contains(value)
+                    
+                case .array(let array):
+                    for value in array {
+                        if !trustedValues.contains(value) {
+                            return false
+                        }
+                    }
+                    return true
+            }
+        }
     }
 }

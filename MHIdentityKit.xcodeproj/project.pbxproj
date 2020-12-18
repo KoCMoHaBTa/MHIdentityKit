@@ -67,6 +67,9 @@
 		E683DBA11ED6B226000D7853 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA01ED6B226000D7853 /* GrantType.swift */; };
 		E683DBA31ED6B327000D7853 /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA21ED6B327000D7853 /* Scope.swift */; };
 		E683DCA81ED426BE0075B03B /* XCTestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DCA71ED426BE0075B03B /* XCTestExtensions.swift */; };
+		E686CD04258CD755001EEF1D /* IDTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E686CD03258CD755001EEF1D /* IDTokenTests.swift */; };
+		E686CD0F258CD7A8001EEF1D /* IDTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E686CD03258CD755001EEF1D /* IDTokenTests.swift */; };
+		E686CD1A258CD7A8001EEF1D /* IDTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E686CD03258CD755001EEF1D /* IDTokenTests.swift */; };
 		E6985D162068FDBC00BE5F6A /* MHIdentityKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9954AE481E9D169700F2A73D /* MHIdentityKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6985D172068FDC700BE5F6A /* MHIdentityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */; };
 		E6985D182068FDC700BE5F6A /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
@@ -454,6 +457,7 @@
 		E683DBA01ED6B226000D7853 /* GrantType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrantType.swift; sourceTree = "<group>"; };
 		E683DBA21ED6B327000D7853 /* Scope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scope.swift; sourceTree = "<group>"; };
 		E683DCA71ED426BE0075B03B /* XCTestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExtensions.swift; sourceTree = "<group>"; };
+		E686CD03258CD755001EEF1D /* IDTokenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDTokenTests.swift; sourceTree = "<group>"; };
 		E6985D0E2068FC7B00BE5F6A /* MHIdentityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHIdentityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6985D9F2069018500BE5F6A /* MHIdentityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHIdentityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6985DA72069018600BE5F6A /* MHIdentityKit-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MHIdentityKit-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -899,6 +903,7 @@
 				E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */,
 				E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */,
 				E6C96B5722E1E11500C22298 /* JWTTests.swift */,
+				E686CD03258CD755001EEF1D /* IDTokenTests.swift */,
 				E6B57DF9230E7A9400216421 /* Security */,
 			);
 			path = Infrastructure;
@@ -1462,6 +1467,7 @@
 				E6FBAF7A2310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift in Sources */,
 				E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */,
 				E6FBAF85231025E100AC51DF /* MockRS256.swift in Sources */,
+				E686CD04258CD755001EEF1D /* IDTokenTests.swift in Sources */,
 				E6B57DF6230E783200216421 /* SignatureVerifierTests.swift in Sources */,
 				E6B39C24206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */,
 				E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */,
@@ -1628,6 +1634,7 @@
 			files = (
 				E6985E1220690C6800BE5F6A /* XCTestExtensions.swift in Sources */,
 				E6B1956F22CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
+				E686CD0F258CD7A8001EEF1D /* IDTokenTests.swift in Sources */,
 				E6985E1520690C6800BE5F6A /* CredentialsProviderTests.swift in Sources */,
 				E6985E1620690C6800BE5F6A /* IdentityStorageTests.swift in Sources */,
 				E6C96B5822E1E11500C22298 /* JWTTests.swift in Sources */,
@@ -1724,6 +1731,7 @@
 			files = (
 				E6985E1A20690C6900BE5F6A /* XCTestExtensions.swift in Sources */,
 				E6B1957022CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
+				E686CD1A258CD7A8001EEF1D /* IDTokenTests.swift in Sources */,
 				E6985E1D20690C6900BE5F6A /* CredentialsProviderTests.swift in Sources */,
 				E6985E1E20690C6900BE5F6A /* IdentityStorageTests.swift in Sources */,
 				E6C96B5922E1E11500C22298 /* JWTTests.swift in Sources */,

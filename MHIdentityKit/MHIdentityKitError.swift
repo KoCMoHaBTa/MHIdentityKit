@@ -126,6 +126,8 @@ extension MHIdentityKitError {
         case unableToSetSecurityTransformAttributes
         case unableToExecuteSecurityTransform
         
+        case invalidIDToken(reason: IDTokenValidationError)
+        
         private func expand() -> (failureReason: String?, recoverySuggestion: String?) {
             
             switch self {
@@ -207,6 +209,44 @@ extension MHIdentityKitError {
                 
                 case .unableToExecuteSecurityTransform:
                     let reason = NSLocalizedString("Unable to execute security transform.", comment: "The localized error reason returned when a security transform cannot be executed, eg. whe verifiying an id token.")
+                    return (reason, nil)
+                    
+                case .invalidIDToken(let reason):
+                    return reason.expand()
+            }
+        }
+        
+        public var failureReason: String? {
+            
+            return self.expand().failureReason
+        }
+        
+        public var recoverySuggestion: String? {
+            
+            return self.expand().recoverySuggestion
+        }
+    }
+    
+    public enum IDTokenValidationError: LocalizedError {
+        
+        case invalidIssuer
+        case invalidAudience
+        case invalidAuthorizedParty
+        
+        fileprivate func expand() -> (failureReason: String?, recoverySuggestion: String?) {
+            
+            switch self {
+                
+                case .invalidIssuer:
+                    let reason = NSLocalizedString("Invalid ID Token: Issuer identifier claim (iss) does not match.", comment: "The error reason when validation of ID token fails due to invalid issuer.")
+                    return (reason, nil)
+                    
+                case .invalidAudience:
+                    let reason = NSLocalizedString("Invalid ID Token: Audience claim (aud) do not match with client_id or contains untrusted values", comment: "The error reason when validation of ID token fails due to invalid audience.")
+                    return (reason, nil)
+                    
+                case .invalidAuthorizedParty:
+                    let reason = NSLocalizedString("Invalid ID Token: Authorized party claim (azp) do not match with client_id or is missing.", comment: "The error reason when validation of ID token fails due to invalid authorized party.")
                     return (reason, nil)
             }
         }

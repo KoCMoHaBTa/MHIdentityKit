@@ -13,8 +13,6 @@ extension AccessTokenResponse {
     ///The ID Token raw value, when using an OpenID Connect flow
     var idToken: IDToken? {
         
-        
-        
         guard let rawValue = self.additionalParameters["id_token"] as? String else {
             
             return nil
@@ -25,6 +23,6 @@ extension AccessTokenResponse {
             return nil
         }
         
-        return IDToken(rawValue: rawValue)
+        return IDToken(jwt: jwt)
     }
 }
