@@ -148,6 +148,8 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         
         //https://openid.net/specs/openid-connect-core-1_0.html#CodeIDToken
         fatalError("validate id token hash, if present")
+        //Access Token hash value. Its value is the base64url encoding of the left-most half of the hash of the octets of the ASCII representation of the access_token value, where the hash algorithm used is the hash algorithm used in the alg Header Parameter of the ID Token's JOSE Header.
+        //For instance, if the alg is RS256, hash the access_token value with SHA-256, then take the left-most 128 bits and base64url encode them. The at_hash value is a case sensitive string.
         
         //https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
         //1. If the ID Token is encrypted, decrypt it using the keys and algorithms that the Client specified during Registration that the OP was to use to encrypt the ID Token. If encryption was negotiated with the OP at Registration time and the ID Token is not encrypted, the RP SHOULD reject it.
