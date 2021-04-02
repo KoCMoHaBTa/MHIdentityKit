@@ -41,6 +41,9 @@ public struct IDToken {
     ///Authorized party - the party to which the ID Token was issued. If present, it MUST contain the OAuth 2.0 Client ID of this party. This Claim is only needed when the ID Token has a single audience value and that audience is different than the authorized party. It MAY be included even when the authorized party is the same as the sole audience. The azp value is a case sensitive string containing a StringOrURI value.
     public let azp: String?
     
+    ///Access Token hash value. Its value is the base64url encoding of the left-most half of the hash of the octets of the ASCII representation of the access_token value, where the hash algorithm used is the hash algorithm used in the alg Header Parameter of the ID Token's JOSE Header. For instance, if the alg is RS256, hash the access_token value with SHA-256, then take the left-most 128 bits and base64url encode them. The at_hash value is a case sensitive string.
+    public let at_hash: String?
+    
     public let jwt: JWT
     
     public init?(jwt: JWT) {
@@ -70,6 +73,7 @@ public struct IDToken {
         self.acr = jwt.claims["acr"] as? String
         self.amr = jwt.claims["amr"] as? [String]
         self.azp = jwt.claims["azp"] as? String
+        self.at_hash = jwt.claims["at_hash"] as? String
     }
 }
 
