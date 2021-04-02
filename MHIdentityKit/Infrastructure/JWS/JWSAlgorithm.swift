@@ -31,14 +31,21 @@ import Foundation
  
  */
 
+#warning("How to dynamically load a SignatureVerifier based on algorithm. Looks like we can't do it from here")
+#warning("Will this type have any purpose?")
 
-public struct JWSAlgorithm {
+public struct JWSAlgorithm: RawRepresentable, Hashable, ExpressibleByStringLiteral  {
     
-    public var value: String
+    public var rawValue: String
     
-    public init(value: String) {
+    public init(rawValue: String) {
         
-        self.value = value
+        self.rawValue = rawValue
+    }
+    
+    public init(stringLiteral value: String) {
+        
+        self.init(rawValue: value)
     }
 }
 
@@ -46,54 +53,4 @@ extension JWSAlgorithm {
     
     public static let HS256: JWSAlgorithm = "HS256"
     public static let RS256: JWSAlgorithm = "RS256"
-    
 }
-
-//MARK: - Hashable
-extension JWSAlgorithm: Hashable {
-    
-}
-
-//MARK: - RawRepresentable
-extension JWSAlgorithm: RawRepresentable {
-    
-    public var rawValue: String {
-        
-        get { return self.value }
-        set { self.value = newValue }
-    }
-    
-    public init?(rawValue: String) {
-        
-        self.init(value: rawValue)
-    }
-}
-
-//MARK: - ExpressibleByStringLiteral
-extension JWSAlgorithm: ExpressibleByStringLiteral {
-    
-    public init(stringLiteral value: String) {
-        
-        self.init(value: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
-        
-        self.init(value: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(value: value)
-    }
-}
-
-//MARK: - CustomStringConvertible
-extension JWSAlgorithm: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return self.value
-    }
-}
-

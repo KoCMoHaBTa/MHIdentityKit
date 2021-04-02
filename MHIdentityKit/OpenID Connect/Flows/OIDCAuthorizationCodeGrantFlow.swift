@@ -96,7 +96,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         self.init(issuer: issuer, authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
     }
     
-//    open var jwsSignatureVerifier: JWSSignatureVerifier = JWSSignatureVerifierRegistry.default
+//    open var jwsSignatureVerifier: JWSSignatureVerifier = RS256SignatureVerifier(
 
     //MARK: - Flow logic
     

@@ -13,3 +13,11 @@ public protocol JWSSignatureVerifier {
     
     func verify(token: JWT) throws
 }
+
+extension JWSSignatureVerifier where Self: SignatureVerifier {
+    
+    func verify(token: JWT) throws {
+        
+        try token.verify(using: self)
+    }
+}
