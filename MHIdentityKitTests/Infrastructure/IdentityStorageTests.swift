@@ -50,7 +50,7 @@ class IdentityStorageTests: XCTestCase {
     
     func testKeychainAccessGroupStorage() {
         
-        let storage: IdentityStorage = KeychainIdentityStorage(service: "test", accessGroup: "group.mhidentitykit")
+        let storage: IdentityStorage = KeychainIdentityStorage(service: "test", accessGroup: "KoCMoHaBTa")
         
         // test nil set
         storage.set(nil, forKey: "k1")
@@ -70,6 +70,9 @@ class IdentityStorageTests: XCTestCase {
         XCTAssertNil(storage.value(forKey: "k1"))
     }
     
+    #if !os(macOS)
+    // App Groups behave differently on macOS so we don't expect this test to work the same as on iOS targets
+    // System Extension app-group entitlement explanation - https://developer.apple.com/forums/thread/133677?answerId=422887022#422887022
     func testKeychainMissingAccessGroupStorage() {
         
         // test set missing entitlements access group
@@ -78,4 +81,5 @@ class IdentityStorageTests: XCTestCase {
         storage.set("v1", forKey: "k1")
         XCTAssertNil(storage.value(forKey: "k1"))
     }
+    #endif
 }

@@ -293,6 +293,7 @@
 
 /* Begin PBXFileReference section */
 		434E10062685CF1C00257D8A /* MHIdentityKit-iOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-iOSTestsHost.entitlements"; sourceTree = "<group>"; };
+		434E10082685FD5F00257D8A /* MHIdentityKit-tvOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-tvOSTestsHost.entitlements"; sourceTree = "<group>"; };
 		9954AE451E9D169700F2A73D /* MHIdentityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHIdentityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9954AE481E9D169700F2A73D /* MHIdentityKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MHIdentityKit.h; sourceTree = "<group>"; };
 		9954AE491E9D169700F2A73D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -356,7 +357,6 @@
 		E6985E4120690E7800BE5F6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E6985E4420690E7800BE5F6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E6985E4620690E7800BE5F6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E6985E4720690E7800BE5F6A /* MHIdentityKit_macOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MHIdentityKit_macOSTestsHost.entitlements; sourceTree = "<group>"; };
 		E6985E7E206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantFlow.swift; sourceTree = "<group>"; };
 		E6985E83206A4F4700BE5F6A /* AuthorizationResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationResponseType.swift; sourceTree = "<group>"; };
 		E6985E89206A588100BE5F6A /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
@@ -609,6 +609,7 @@
 		E6985E2720690CB400BE5F6A /* MHIdentityKit-tvOSTestsHost */ = {
 			isa = PBXGroup;
 			children = (
+				434E10082685FD5F00257D8A /* MHIdentityKit-tvOSTestsHost.entitlements */,
 				E6985E2820690CB400BE5F6A /* AppDelegate.swift */,
 				E6985E2A20690CB400BE5F6A /* ViewController.swift */,
 				E6985E2C20690CB400BE5F6A /* Main.storyboard */,
@@ -630,7 +631,6 @@
 				E6985E4120690E7800BE5F6A /* Assets.xcassets */,
 				E6985E4320690E7800BE5F6A /* Main.storyboard */,
 				E6985E4620690E7800BE5F6A /* Info.plist */,
-				E6985E4720690E7800BE5F6A /* MHIdentityKit_macOSTestsHost.entitlements */,
 			);
 			path = "MHIdentityKit-macOSTestsHost";
 			sourceTree = "<group>";
@@ -1939,6 +1939,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-tvOSTestsHost/MHIdentityKit-tvOSTestsHost.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "MHIdentityKit-tvOSTestsHost/Info.plist";
@@ -1958,6 +1959,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-tvOSTestsHost/MHIdentityKit-tvOSTestsHost.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "MHIdentityKit-tvOSTestsHost/Info.plist";
