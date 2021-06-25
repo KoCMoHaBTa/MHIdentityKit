@@ -12,10 +12,12 @@ import Security
 class Keychain {
     
     let service: String
+    let accessGroup: String?
     
-    public init(service: String) {
+    public init(service: String, accessGroup: String? = nil) {
         
         self.service = service
+        self.accessGroup = accessGroup
     }
 }
 
@@ -27,7 +29,8 @@ extension Keychain {
         attributes[kSecClass as String] = kSecClassGenericPassword
         attributes[kSecAttrAccount as String] = username
         attributes[kSecAttrGeneric as String] = password.data(using: .utf8)
-        attributes[kSecAttrService as String] = self.service
+        attributes[kSecAttrService as String] = service
+        attributes[kSecAttrAccessGroup as String] = accessGroup
         
         let status = SecItemAdd(attributes as CFDictionary, nil)
         
@@ -41,7 +44,8 @@ extension Keychain {
         
         var query = [String: Any]()
         query[kSecClass as String] = kSecClassGenericPassword
-        query[kSecAttrService as String] = self.service
+        query[kSecAttrService as String] = service
+        query[kSecAttrAccessGroup as String] = accessGroup
         query[kSecMatchLimit as String] = kSecMatchLimitAll
         query[kSecReturnAttributes as String] = kCFBooleanTrue
         
@@ -74,7 +78,8 @@ extension Keychain {
         
         var query = [String: Any]()
         query[kSecClass as String] = kSecClassGenericPassword
-        query[kSecAttrService as String] = self.service
+        query[kSecAttrService as String] = service
+        query[kSecAttrAccessGroup as String] = accessGroup
         query[kSecAttrAccount as String] = username
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         query[kSecReturnAttributes as String] = kCFBooleanTrue
@@ -97,7 +102,8 @@ extension Keychain {
         
         var query = [String: Any]()
         query[kSecClass as String] = kSecClassGenericPassword
-        query[kSecAttrService as String] = self.service
+        query[kSecAttrService as String] = service
+        query[kSecAttrAccessGroup as String] = accessGroup
         query[kSecAttrAccount as String] = username
         
         let status = SecItemDelete(query as CFDictionary)
@@ -112,7 +118,8 @@ extension Keychain {
         
         var query = [String: Any]()
         query[kSecClass as String] = kSecClassGenericPassword
-        query[kSecAttrService as String] = self.service
+        query[kSecAttrService as String] = service
+        query[kSecAttrAccessGroup as String] = accessGroup
         
         #if os(macOS)
             query[kSecMatchLimit as String] = kSecMatchLimitAll

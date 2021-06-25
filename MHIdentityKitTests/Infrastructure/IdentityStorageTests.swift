@@ -47,4 +47,35 @@ class IdentityStorageTests: XCTestCase {
         storage.set(nil, forKey: "tk")
         XCTAssertNil(storage.value(forKey: "tk"))
     }
+    
+    func testKeychainAccessGroupStorage() {
+        
+        let storage: IdentityStorage = KeychainIdentityStorage(service: "test", accessGroup: "group.mhidentitykit")
+        
+        // test nil set
+        storage.set(nil, forKey: "k1")
+        XCTAssertNil(storage.value(forKey: "k1"))
+        
+        // test set
+        storage.set("v1", forKey: "k1")
+        XCTAssertEqual(storage.value(forKey: "k1"), "v1")
+        XCTAssertNil(storage.value(forKey: "k0"))
+        
+        // test override
+        storage.set("v2", forKey: "k1")
+        XCTAssertEqual(storage.value(forKey: "k1"), "v2")
+        
+        // test delete
+        storage.set(nil, forKey: "k1")
+        XCTAssertNil(storage.value(forKey: "k1"))
+    }
+    
+    func testKeychainMissingAccessGroupStorage() {
+        
+        // test set missing entitlements access group
+        let storage: IdentityStorage = KeychainIdentityStorage(service: "test", accessGroup: "group1")
+        
+        storage.set("v1", forKey: "k1")
+        XCTAssertNil(storage.value(forKey: "k1"))
+    }
 }

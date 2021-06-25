@@ -292,6 +292,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		434E10062685CF1C00257D8A /* MHIdentityKit-iOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-iOSTestsHost.entitlements"; sourceTree = "<group>"; };
 		9954AE451E9D169700F2A73D /* MHIdentityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHIdentityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9954AE481E9D169700F2A73D /* MHIdentityKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MHIdentityKit.h; sourceTree = "<group>"; };
 		9954AE491E9D169700F2A73D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -591,6 +592,7 @@
 		E68221AD1F7703B700193B48 /* MHIdentityKit-iOSTestsHost */ = {
 			isa = PBXGroup;
 			children = (
+				434E10062685CF1C00257D8A /* MHIdentityKit-iOSTestsHost.entitlements */,
 				E68221AE1F7703B700193B48 /* AppDelegate.swift */,
 				E68221B01F7703B700193B48 /* AuthorizationCodeGrantFlowInputViewController.swift */,
 				E6B1957122CA24F600954DED /* ImplicitGrantFlowInputViewController.swift */,
@@ -1680,6 +1682,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-iOSTestsHost/MHIdentityKit-iOSTestsHost.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1698,6 +1701,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MHIdentityKit-iOSTestsHost/MHIdentityKit-iOSTestsHost.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

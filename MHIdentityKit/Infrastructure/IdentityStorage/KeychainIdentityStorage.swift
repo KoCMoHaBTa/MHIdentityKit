@@ -14,9 +14,9 @@ public class KeychainIdentityStorage: IdentityStorage {
     
     private let keychain: Keychain
     
-    public init(service: String) {
+    public init(service: String, accessGroup: String? = nil) {
         
-        self.keychain = Keychain(service: service)
+        self.keychain = Keychain(service: service, accessGroup: accessGroup)
     }
     
     public func set(_ value: String?, forKey key: String) {
