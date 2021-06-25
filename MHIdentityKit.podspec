@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
 
   s.name         = "MHIdentityKit"
-  s.version      = "1.11.0"
+  s.version      = "1.12.0"
   s.source       = { :git => "https://github.com/KoCMoHaBTa/#{s.name}.git", :tag => "#{s.version}" }
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = "Milen Halachev"
   s.summary      = "OAuth2 and OpenID connect iOS Protocol Oriented Swift client library."
   s.homepage     = "https://github.com/KoCMoHaBTa/#{s.name}"
 
-  s.swift_version = "5.3"
+  s.swift_version = "5.4"
   s.ios.deployment_target = "9.0"
   s.osx.deployment_target = "10.10"
   s.watchos.deployment_target = "3.0"
