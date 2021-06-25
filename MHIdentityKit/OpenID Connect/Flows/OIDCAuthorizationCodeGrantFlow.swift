@@ -64,7 +64,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
      
      */
     
-    public init(issuer: URL, authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, redirectURI: URL?, scope: Scope?, state: AnyHashable? = NSUUID().uuidString, clientAuthorizer: RequestAuthorizer?, userAgent: UserAgent, networkClient: NetworkClient = _defaultNetworkClient) {
+    public init(issuer: URL, authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, redirectURI: URL, scope: Scope?, state: String? = NSUUID().uuidString, clientAuthorizer: RequestAuthorizer?, userAgent: UserAgent, networkClient: NetworkClient = .default) {
         
         self.issuer = issuer
         super.init(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
@@ -85,7 +85,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
      
      */
     
-    public convenience init(issuer: URL, authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, secret: String?, redirectURI: URL?, scope: Scope?, state: AnyHashable? = NSUUID().uuidString, userAgent: UserAgent, networkClient: NetworkClient = _defaultNetworkClient) {
+    public convenience init(issuer: URL, authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, secret: String?, redirectURI: URL, scope: Scope?, state: String? = NSUUID().uuidString, userAgent: UserAgent, networkClient: NetworkClient = .default) {
         
         var clientAuthorizer: RequestAuthorizer?
         if let secret = secret {
@@ -106,16 +106,16 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         var parameters = super.authorizationRequestParameters()
         
         //scope is requried and must contain 'openid'
-        parameters["scope"] = self.scope?.addingOpenIDScopeIfNeeded() ?? .openid
-        parameters["response_mode"] = self.responseMode
-        parameters["nounce"] = self.nounce
-        parameters["display"] = self.display
-        parameters["prompt"] = self.prompt
-        parameters["max_age"] = self.maxAge
-        parameters["ui_locales"] = self.uiLocales
-        parameters["id_token_hint"] = self.idTokenHint
-        parameters["login_hint"] = self.loginHint
-        parameters["acr_values"] = self.acrValues
+        parameters["scope"] = scope?.addingOpenIDScopeIfNeeded() ?? .openid
+        parameters["response_mode"] = responseMode
+        parameters["nounce"] = nounce
+        parameters["display"] = display
+        parameters["prompt"] = prompt
+        parameters["max_age"] = maxAge
+        parameters["ui_locales"] = uiLocales
+        parameters["id_token_hint"] = idTokenHint
+        parameters["login_hint"] = loginHint
+        parameters["acr_values"] = acrValues
         
         return parameters
     }
@@ -123,9 +123,9 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
     open override func authorizationRequest(withParameters parameters: [String : Any]) -> URLRequest {
         
         //add support for 'POST' request
-        if self.authorizationRequestHTTPMethod == "POST" {
+        if authorizationRequestHTTPMethod == "POST" {
             
-            let url = self.authorizationEndpoint
+            let url = authorizationEndpoint
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.httpBody = parameters.urlEncodedParametersData
@@ -138,7 +138,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         }
     }
     
-    open override func validate(accessTokenResponse: AccessTokenResponse) throws {
+    open override func validate(accessTokenResponse: AccessTokenResponse) async throws {
         
         //https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse
         guard let idToken = accessTokenResponse.idToken else {
@@ -156,15 +156,15 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         //NOTE: The library does not yet support encrypted tokens (JWE)
         
         //2. The Issuer Identifier for the OpenID Provider (which is typically obtained during Discovery) MUST exactly match the value of the iss (issuer) Claim.
-        guard idToken.iss == self.issuer else {
+        guard idToken.iss == issuer else {
             
             throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidIDToken(reason: .invalidIssuer))
         }
         
         //3. The Client MUST validate that the aud (audience) Claim contains its client_id value registered at the Issuer identified by the iss (issuer) Claim as an audience. The aud (audience) Claim MAY contain an array with more than one element. The ID Token MUST be rejected if the ID Token does not list the Client as a valid audience, or if it contains additional audiences not trusted by the Client.
         
-        guard idToken.aud.contains(clientID: self.clientID)
-           && idToken.aud.validate(trusted: IDToken.Audience(self.trustedAudiences))
+        guard idToken.aud.contains(clientID: clientID)
+           && idToken.aud.validate(trusted: IDToken.Audience(trustedAudiences))
         else {
             
             throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidIDToken(reason: .invalidAudience))
@@ -182,7 +182,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         //5. If an azp (authorized party) Claim is present, the Client SHOULD verify that its client_id is the Claim Value.
         if let azp = idToken.azp {
             
-            guard azp == self.clientID else {
+            guard azp == clientID else {
                 
                 throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidIDToken(reason: .invalidAuthorizedParty))
             }

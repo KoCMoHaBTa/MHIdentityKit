@@ -18,777 +18,631 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
     let credentialsProvider = AnyCredentialsProvider(username: "tu", password: "tp")
     let scope: Scope = "read write"
     
-    func testSuccessWithAllArguments() {
+    func testSuccessWithAllArguments() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 3
+            userAgentCallCount += 1
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
-            
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate successfull redirection
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertTrue(handled)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
-                XCTAssertEqual(request.httpMethod, "POST")
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "authorization_code")
-                XCTAssertEqual(parameters["code"], "abc")
-                XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(parameters["client_id"], nil)
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                completion(NetworkResponse(data: data, response: response, error: nil))
-                
-                e.fulfill()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertEqual(response?.refreshToken, "trt")
-                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
-                
-                e.fulfill()
-            })
+            //simulate successfull redirection
+            return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
+    finishHandler: { error in
+        
+        XCTAssertNil(error)
+    }
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            networkClientCallCount += 1
+            
+            XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
+                
+                throw "Unable to decode body parameters"
+            }
+            
+            XCTAssertEqual(parameters["grant_type"], "authorization_code")
+            XCTAssertEqual(parameters["code"], "abc")
+            XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(parameters["client_id"], nil)
+            
+            let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            
+            return NetworkResponse(data: data, response: response)
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        let response = try await flow.authenticate()
+        
+        XCTAssertEqual(userAgentCallCount, 1)
+        XCTAssertEqual(networkClientCallCount, 1)
+        
+        XCTAssertEqual(response.accessToken, "tat")
+        XCTAssertEqual(response.tokenType, "ttt")
+        XCTAssertEqual(response.expiresIn, 1234)
+        XCTAssertEqual(response.refreshToken, "trt")
+        XCTAssertEqual(response.scope?.rawValue, "ts1 ts2")
     }
     
-    func testSuccessWithoutClientAuthorizer() {
+    func testSuccessWithoutClientAuthorizer() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = nil
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 3
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = nil
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate successfull redirection
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertTrue(handled)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
-                XCTAssertEqual(request.httpMethod, "POST")
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), nil)
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "authorization_code")
-                XCTAssertEqual(parameters["code"], "abc")
-                XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(parameters["client_id"], "jarjar")
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                completion(NetworkResponse(data: data, response: response, error: nil))
-                
-                e.fulfill()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertEqual(response?.refreshToken, "trt")
-                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
-                
-                e.fulfill()
-            })
+            //simulate successfull redirection
+            return  URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
+    finishHandler: { error in
+        
+        XCTAssertNil(error)
+    }
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            networkClientCallCount += 1
+            
+            XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), nil)
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
+                
+                throw "Unable to decode body parameters"
+            }
+            
+            XCTAssertEqual(parameters["grant_type"], "authorization_code")
+            XCTAssertEqual(parameters["code"], "abc")
+            XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(parameters["client_id"], "jarjar")
+            
+            let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            
+            return NetworkResponse(data: data, response: response)
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        let response = try await flow.authenticate()
+        
+        XCTAssertEqual(userAgentCallCount, 1)
+        XCTAssertEqual(networkClientCallCount, 1)
+        
+        XCTAssertEqual(response.accessToken, "tat")
+        XCTAssertEqual(response.tokenType, "ttt")
+        XCTAssertEqual(response.expiresIn, 1234)
+        XCTAssertEqual(response.refreshToken, "trt")
+        XCTAssertEqual(response.scope?.rawValue, "ts1 ts2")
     }
     
-    func testSuccessWithoutRedirectURI() {
+    func testUserAgentCancel() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = nil
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 3
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = nil
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = nil
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now")!)
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], nil)
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, nil)
-                
-                do {
-                    
-                    //simulate successfull redirection
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertTrue(handled)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
-                XCTAssertEqual(request.httpMethod, "POST")
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), nil)
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "authorization_code")
-                XCTAssertEqual(parameters["code"], "abc")
-                XCTAssertEqual(parameters["redirect_uri"], nil)
-                XCTAssertEqual(parameters["client_id"], "jarjar")
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                completion(NetworkResponse(data: data, response: response, error: nil))
-                
-                e.fulfill()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertEqual(response?.refreshToken, "trt")
-                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
-                
-                e.fulfill()
-            })
+            //simulate cancel
+            return nil
         }
+    finishHandler: { error in
+        XCTFail()
+    }
+        
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            XCTFail()
+            throw "since user agent was cancelled, the token request should never be executed"
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        do {
+            _ = try await flow.authenticate()
+        }
+        catch MHIdentityKitError.general(description: "UserAgent has been cancelled", reason: "The UserAgent was unable to return a valid redirect request.") {}
+        
+        XCTAssertEqual(userAgentCallCount, 1)
     }
     
-    func testSuccessWithoutOptionalArguments() {
+    func testSuccessWithoutOptionalArguments() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = nil
+        let clientAuthorizer: RequestAuthorizer? = nil
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 3
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = nil
-            let state: AnyHashable? = nil
-            let clientAuthorizer: RequestAuthorizer? = nil
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], nil)
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now")!)
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], nil)
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], nil)
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, nil)
-                
-                do {
-                    
-                    //simulate successfull redirection
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertTrue(handled)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
-                XCTAssertEqual(request.httpMethod, "POST")
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), nil)
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "authorization_code")
-                XCTAssertEqual(parameters["code"], "abc")
-                XCTAssertEqual(parameters["redirect_uri"], nil)
-                XCTAssertEqual(parameters["client_id"], "jarjar")
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                completion(NetworkResponse(data: data, response: response, error: nil))
-                
-                e.fulfill()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertEqual(response?.refreshToken, "trt")
-                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
-                
-                e.fulfill()
-            })
+            //simulate successfull redirection
+            return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc")!)
         }
+    finishHandler: { error in
+        XCTAssertNil(error)
+    }
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            networkClientCallCount += 1
+            
+            XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), nil)
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
+                
+                throw "Unable to decode body parameters"
+            }
+            
+            XCTAssertEqual(parameters["grant_type"], "authorization_code")
+            XCTAssertEqual(parameters["code"], "abc")
+            XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(parameters["client_id"], "jarjar")
+            
+            let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            
+            return NetworkResponse(data: data, response: response)
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        let response = try await flow.authenticate()
+        
+        XCTAssertEqual(userAgentCallCount, 1)
+        XCTAssertEqual(networkClientCallCount, 1)
+        
+        XCTAssertEqual(response.accessToken, "tat")
+        XCTAssertEqual(response.tokenType, "ttt")
+        XCTAssertEqual(response.expiresIn, 1234)
+        XCTAssertEqual(response.refreshToken, "trt")
+        XCTAssertEqual(response.scope?.rawValue, "ts1 ts2")
     }
     
     //when the state mismatch, the flow should complete with error
-    func testErrorWithInvalidState() {
+    func testErrorWithInvalidState() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 2
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate fake redirection with wrong state
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=fake")!)
-                    _ = try redirectionHandler(redirectRequest)
-                    XCTFail()
-                }
-                catch {
-                    
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                //since state is wrong, the token request should never be executed
-                XCTFail()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNil(response)
-                XCTAssertNotNil(error)
-                
-                e.fulfill()
-            })
+            //simulate fake redirection with wrong state
+            return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=fake")!)
         }
+        
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            XCTFail()
+            //since state is wrong, the token request should never be executed
+            throw "since state is wrong, the token request should never be executed"
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        do {
+            _ = try await flow.authenticate()
+        }
+        catch MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse) {}
+        
+        XCTAssertEqual(userAgentCallCount, 1)
     }
     
-    //When the redirect uri mismatch, the flow should wait for matching uri
-    func testErrorWithRedirectURIMismatch() {
+    //When the redirect uri mismatch, the flow should throw an error
+    func testErrorWithRedirectURIMismatch() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 1
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate fake redirection with wrong url
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.scam.url/here/now?code=abc&state=obi%20one")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertFalse(handled)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTFail()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTFail()
-            })
+            //simulate fake redirection with wrong url
+            return URLRequest(url: URL(string: "ik://my.scam.url/here/now?code=abc&state=obi%20one")!)
         }
+    finishHandler: { error in
+        
+        XCTAssertNotNil(error)
+    }
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            networkClientCallCount += 1
+            throw "this should not be called"
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        do {
+            _ = try await flow.authenticate()
+        }
+        catch MHIdentityKitError.general(description: "Invalid redirect request", reason: "The redirect request does not match the redirectURI") {}
+        
+        XCTAssertEqual(userAgentCallCount, 1)
+        XCTAssertEqual(networkClientCallCount, 0)
     }
     
-    //When the redirect uri mismatch, the flow should wait for matching uri
-    func testSuccessWithMultipleRedirections() {
+    //when the redirect rquest contains an error - it should be thrown
+    func testErrorFromUserAgent() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 3
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate mismatch redirection
-                    let handled = try redirectionHandler(URLRequest(url: URL(string: "ik://my.fake1.url/here/now?code=abc&state=obi%20one")!))
-                    XCTAssertFalse(handled)
-                    
-                    //simulate mismatch redirection
-                    let handled1 = try redirectionHandler(URLRequest(url: URL(string: "ik://fake.redirect.url/here/now?code=abc&state=obi%20one")!))
-                    XCTAssertFalse(handled1)
-                    
-                    //simulate mismatch redirection
-                    let handled2 = try redirectionHandler(URLRequest(url: URL(string: "ik://my.redirect.fake/here/now?code=abc&state=obi%20one")!))
-                    XCTAssertFalse(handled2)
-                    
-                    //simulate mismatch redirection
-                    let handled3 = try redirectionHandler(URLRequest(url: URL(string: "ik://my.redirect.url/here/fake?code=abc&state=obi%20one")!))
-                    XCTAssertFalse(handled3)
-                    
-                    //simulate mismatch redirection
-                    let handled4 = try redirectionHandler(URLRequest(url: URL(string: "ik://my.redirect.url/here/now")!))
-                    XCTAssertFalse(handled4)
-                    
-                    //simulate successfull redirection
-                    let handled5 = try redirectionHandler(URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!))
-                    XCTAssertTrue(handled5)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
-                XCTAssertEqual(request.httpMethod, "POST")
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "authorization_code")
-                XCTAssertEqual(parameters["code"], "abc")
-                XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(parameters["client_id"], nil)
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                completion(NetworkResponse(data: data, response: response, error: nil))
-                
-                e.fulfill()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertEqual(response?.refreshToken, "trt")
-                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
-                
-                e.fulfill()
-            })
+            //simulate fake redirection with error
+            return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?error=access_denied")!)
         }
+    finishHandler: { error in
+        XCTAssertNil(error)
+    }
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            networkClientCallCount += 1
+            throw "this should not be called"
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        do {
+            _ = try await flow.authenticate()
+        }
+        catch let error as ErrorResponse where error.code == .accessDenied {}
+        
+        XCTAssertEqual(userAgentCallCount, 1)
+        XCTAssertEqual(networkClientCallCount, 0)
     }
     
-    //when the state mismatch, the flow should complete with error
-    func testErrorFromUserAgent() {
+    func testErrorFromNetworkClient() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 2
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate fake redirection with wrong state
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?error=access_denied")!)
-                    _ = try redirectionHandler(redirectRequest)
-                    XCTFail()
-                }
-                catch {
-                    
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                //since state is wrong, the token request should never be executed
-                XCTFail()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNil(response)
-                XCTAssertNotNil(error)
-                
-                e.fulfill()
-            })
+            //simulate successfull redirection
+            return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
+    finishHandler: { error in
+        XCTAssertNil(error)
+    }
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
+            
+            networkClientCallCount += 1
+            
+            XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
+                
+                throw "Unable to decode body parameters"
+            }
+            
+            XCTAssertEqual(parameters["grant_type"], "authorization_code")
+            XCTAssertEqual(parameters["code"], "abc")
+            XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(parameters["client_id"], nil)
+            
+            let data = "{\"error\":\"invalid_scope\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 400, httpVersion: nil, headerFields: nil)!
+            
+            return NetworkResponse(data: data, response: response)
+        }
+        
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        
+        do {
+            _ = try await flow.authenticate()
+        }
+        catch let error as ErrorResponse where error.code == .invalidScope {}
+        
+        XCTAssertEqual(userAgentCallCount, 1)
+        XCTAssertEqual(networkClientCallCount, 1)
     }
     
-    func testErrorFromNetworkClient() {
+    func testAdditionalParameters() async throws {
         
-        self.performExpectation { (e) in
+        let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
+        let state: String? = "obi one"
+        let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+        
+        var userAgentCallCount = 0
+        let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
             
-            e.expectedFulfillmentCount = 3
+            userAgentCallCount += 1
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+            XCTAssertEqual(request.url?.scheme, "http")
+            XCTAssertEqual(request.url?.host, "foo.bar")
+            XCTAssertEqual(request.url?.path, "/auth")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "tampered jarjar")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
+            XCTAssertEqual(request.url!.query!.urlDecodedParameters["additional_parameter_1"], "ap1")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
-                
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate successfull redirection
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertTrue(handled)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
-            
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
-                XCTAssertEqual(request.httpMethod, "POST")
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "authorization_code")
-                XCTAssertEqual(parameters["code"], "abc")
-                XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(parameters["client_id"], nil)
-                
-                let data = "{\"error\":\"invalid_scope\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 400, httpVersion: nil, headerFields: nil)
-                
-                completion(NetworkResponse(data: data, response: response, error: nil))
-                
-                e.fulfill()
-            })
-            
-            let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNil(response)
-                XCTAssertNotNil(error)
-                
-                e.fulfill()
-            })
+            //simulate successfull redirection
+            return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
+    finishHandler: { error in
+        XCTAssertNil(error)
     }
-    
-    func testAdditionalParameters() {
         
-        self.performExpectation { (e) in
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
             
-            e.expectedFulfillmentCount = 3
+            networkClientCallCount += 1
             
-            let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
-            let state: AnyHashable? = "obi one"
-            let clientAuthorizer: RequestAuthorizer? = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
+            XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+            XCTAssertNotNil(request.httpBody)
             
-            let userAgent: UserAgent = TestUserAgent(handler: { (request, redirectURI, redirectionHandler) in
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
                 
-                XCTAssertEqual(request.url?.scheme, "http")
-                XCTAssertEqual(request.url?.host, "foo.bar")
-                XCTAssertEqual(request.url?.path, "/auth")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["response_type"], "code")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["client_id"], "tampered jarjar")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["scope"], "read write")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["state"], "obi one")
-                XCTAssertEqual(request.url!.query!.urlDecodedParameters["additional_parameter_1"], "ap1")
-                XCTAssertEqual(request.httpMethod, "GET")
-                XCTAssertEqual(redirectURI, URL(string: "ik://my.redirect.url/here/now"))
-                
-                do {
-                    
-                    //simulate successfull redirection
-                    let redirectRequest = URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
-                    let handled = try redirectionHandler(redirectRequest)
-                    XCTAssertTrue(handled)
-                }
-                catch {
-                    
-                    XCTFail()
-                }
-                
-                e.fulfill()
-            })
+                throw "Unable to decode body parameters"
+            }
             
-            let networkClient: NetworkClient = TestNetworkClient(handler: { (request, completion) in
-                
-                XCTAssertEqual(request.url, URL(string: "http://foo.bar/token"))
-                XCTAssertEqual(request.httpMethod, "POST")
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "authorization_code")
-                XCTAssertEqual(parameters["code"], "tampered abc")
-                XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
-                XCTAssertEqual(parameters["client_id"], nil)
-                XCTAssertEqual(parameters["additional_parameter_2"], "ap2")
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                completion(NetworkResponse(data: data, response: response, error: nil))
-                
-                e.fulfill()
-            })
+            XCTAssertEqual(parameters["grant_type"], "authorization_code")
+            XCTAssertEqual(parameters["code"], "tampered abc")
+            XCTAssertEqual(parameters["redirect_uri"], "ik://my.redirect.url/here/now")
+            XCTAssertEqual(parameters["client_id"], nil)
+            XCTAssertEqual(parameters["additional_parameter_2"], "ap2")
             
-            let flow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
+            let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\",\"scope\":\"ts1 ts2\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)!
             
-            //set additional  parameters and override some of existing ones
-            flow.additionalAuthorizationRequestParameters = ["additional_parameter_1": "ap1", "client_id": "tampered jarjar"]
-            flow.additionalAccessTokenRequestParameters = ["additional_parameter_2": "ap2", "code": "tampered abc"]
-            
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertEqual(response?.refreshToken, "trt")
-                XCTAssertEqual(response?.scope?.value, "ts1 ts2")
-                
-                e.fulfill()
-            })
+            return NetworkResponse(data: data, response: response)
         }
+        
+        let flow = AuthorizationCodeGrantFlow(
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
+            clientID: clientID,
+            redirectURI: redirectURI,
+            scope: scope,
+            state: state,
+            clientAuthorizer: clientAuthorizer,
+            userAgent: userAgent,
+            networkClient: networkClient
+        )
+        
+        //set additional  parameters and override some of existing ones
+        flow.additionalAuthorizationRequestParameters = ["additional_parameter_1": "ap1", "client_id": "tampered jarjar"]
+        flow.additionalAccessTokenRequestParameters = ["additional_parameter_2": "ap2", "code": "tampered abc"]
+        
+        let response = try await flow.authenticate()
+        
+        XCTAssertEqual(userAgentCallCount, 1)
+        XCTAssertEqual(networkClientCallCount, 1)
+        
+        XCTAssertEqual(response.accessToken, "tat")
+        XCTAssertEqual(response.tokenType, "ttt")
+        XCTAssertEqual(response.expiresIn, 1234)
+        XCTAssertEqual(response.refreshToken, "trt")
+        XCTAssertEqual(response.scope?.rawValue, "ts1 ts2")
+        
     }
 }
 

@@ -11,20 +11,46 @@ import Foundation
 ///A default, closures based, implementation of UserAgent
 public struct AnyUserAgent: UserAgent {
     
-    public let handler: (_ request: URLRequest, _ redirectURI: URL?, _ redirectionHandler: @escaping (URLRequest) throws -> Bool) -> Void
+    public typealias PerformRequestHandler = (_ request: URLRequest, _ redirectURI: URL) async -> URLRequest?
+    public typealias FinishHandler = (_ error: Error?) async -> Void
     
-    public init(handler: @escaping (_ request: URLRequest, _ redirectURI: URL?, _ redirectionHandler: @escaping (URLRequest) throws -> Bool) -> Void) {
+    public let performRequestHandler: PerformRequestHandler
+    public let finishHandler: FinishHandler?
+    
+    public init(performRequestHandler: @escaping PerformRequestHandler, finishHandler: FinishHandler? = nil) {
         
-        self.handler = handler
+        self.performRequestHandler = performRequestHandler
+        self.finishHandler = finishHandler
     }
     
     public init(other userAgent: UserAgent) {
         
-        self.handler = userAgent.perform(_:redirectURI:redirectionHandler:)
+        self.init(
+            performRequestHandler: userAgent.perform(_:redirectURI:),
+            finishHandler: userAgent.finish(with:)
+        )
     }
     
-    public func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool) {
+    //MARK: - UserAgent
     
-        self.handler(request, redirectURI, redirectionHandler)
+    public func perform(_ request: URLRequest, redirectURI: URL) async -> URLRequest? {
+    
+        await performRequestHandler(request, redirectURI)
+    }
+    
+    public func finish(with error: Error?) async {
+        
+        await finishHandler?(error)
+    }
+}
+
+extension UserAgent where Self == AnyUserAgent {
+    
+    public static func any(performRequestHandler: @escaping Self.PerformRequestHandler, finishHandler: Self.FinishHandler? = nil) -> Self {
+        
+        .init(
+            performRequestHandler: performRequestHandler,
+            finishHandler: finishHandler
+        )
     }
 }

@@ -29,7 +29,7 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
      
      */
     
-    public init(tokenEndpoint: URL, scope: Scope? = nil, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = _defaultNetworkClient) {
+    public init(tokenEndpoint: URL, scope: Scope? = nil, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = .default) {
         
         self.tokenEndpoint = tokenEndpoint
         self.scope = scope
@@ -58,22 +58,23 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
         return request
     }
     
-    open func authorize(_ request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+    
+    open func authorize(_ request: URLRequest) async throws -> URLRequest {
         
-        self.clientAuthorizer.authorize(request: request, handler: handler)
+        try await clientAuthorizer.authorize(request: request)
     }
     
-    open func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
+    open func perform(_ request: URLRequest) async throws -> NetworkResponse {
         
-        self.networkClient.perform(request, completion: completion)
+        try await networkClient.perform(request)
     }
     
     open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
         
-        return try AccessTokenResponseHandler().handle(response: networkResponse)
+        try AccessTokenResponseHandler().handle(response: networkResponse)
     }
     
-    open func validate(_ accessTokenResponse: AccessTokenResponse) throws {
+    open func validate(_ accessTokenResponse: AccessTokenResponse) async throws {
         
         //https://tools.ietf.org/html/rfc6749#section-4.4.3
         //A refresh token SHOULD NOT be included
@@ -83,47 +84,23 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
         }
     }
     
-    open func authenticate(using request: URLRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func authenticate(using request: URLRequest) async throws -> AccessTokenResponse {
         
-        self.authorize(request, handler: { (request, error) in
-            
-            guard error == nil else {
-                
-                handler(nil, error)
-                return
-            }
-            
-            self.perform(request, completion: { (response) in
-                
-                do {
-                    
-                    let accessTokenResponse = try self.accessTokenResponse(from: response)
-                    try self.validate(accessTokenResponse)
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(accessTokenResponse, nil)
-                    }
-                }
-                catch {
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(nil, error)
-                    }
-                }
-            })
-        })
+        let request = try await authorize(request)
+        let response = try await perform(request)
+        let accessTokenResponse = try accessTokenResponse(from: response)
+        try await validate(accessTokenResponse)
+        return accessTokenResponse
     }
     
     //MARK: - AuthorizationGrantFlow
     
-    open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func authenticate() async throws -> AccessTokenResponse {
         
         //build the request
-        let accessTokenRequest = AccessTokenRequest(scope: self.scope)
-        let request = self.urlRequest(from: accessTokenRequest)
-        self.authenticate(using: request, handler: handler)
+        let accessTokenRequest = AccessTokenRequest(scope: scope)
+        let request = urlRequest(from: accessTokenRequest)
+        return try await authenticate(using: request)
     }
 }
 
@@ -145,8 +122,8 @@ extension ClientCredentialsGrantFlow {
         public var dictionary: [String: Any] {
             
             var dictionary = [String: Any]()
-            dictionary["grant_type"] = self.grantType.rawValue
-            dictionary["scope"] = self.scope?.value
+            dictionary["grant_type"] = grantType.rawValue
+            dictionary["scope"] = scope?.rawValue
             
             return dictionary
         }

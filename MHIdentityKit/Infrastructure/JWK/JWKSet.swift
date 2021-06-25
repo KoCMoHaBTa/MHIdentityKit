@@ -15,64 +15,39 @@ public class JWKSet {
     public let networkClient: NetworkClient
     public private(set) var keys: [JWK] = []
     
-    public init(url: URL, networkClient: NetworkClient = _defaultNetworkClient) {
+    public init(url: URL, networkClient: NetworkClient = .default) {
         
         self.url = url
         self.networkClient = networkClient
-        
-        update()
     }
     
-    public func update(_ completion: ((Swift.Error?) -> Void)? = nil) {
+    public func update() async throws {
         
         let request = URLRequest(url: url)
-        networkClient.perform(request) { (response) in
+        let response = try await networkClient.perform(request)
+        let data = response.data
+        
+        guard
+        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+        let keys = json["keys"] as? [[String: Any]]
+        else {
             
-            if let error = response.error {
-                
-                completion?(error)
-                return
-            }
-            
-            do {
-                
-                guard
-                let data = response.data,
-                let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                let keys = json["keys"] as? [[String: Any]]
-                else {
-                    
-                    completion?(Error.unableToParseJWKSet)
-                    return
-                }
-                
-                try self.keys = keys.map { try .init(parameters: $0) }
-            }
-            catch {
-                
-                completion?(error)
-            }
+            throw Error.unableToParseJWKSet
         }
+        
+        try self.keys = keys.map { try .init(parameters: $0) }
     }
     
-    public func findKey(withID kid: String) -> JWK? {
-        
-        keys.first(where: { $0.kid == kid })
-    }
+    public func findKey(withID kid: String) async -> JWK? {
     
-    public func findKey(withID kid: String, completion: @escaping (JWK?) -> Void) {
-        
-        if let key = findKey(withID: kid) {
+        if let key = keys.first(where: { $0.kid == kid }) {
             
-            completion(key)
-            return
+            return key
         }
         
-        update { [weak self] (_) in
-            
-            let key = self?.findKey(withID: kid)
-            completion(key)
-        }
+        try? await update()
+        
+        return keys.first(where: { $0.kid == kid })
     }
 }
 

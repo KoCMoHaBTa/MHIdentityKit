@@ -23,15 +23,15 @@ extension Dictionary {
     
     private func urlEncode(_ object: Any) -> String {
         
-        return self.urlEncode(String(describing: object))
+        urlEncode(String(describing: object))
     }
     
     var urlEncodedParametersString: String {
         
-        var result = self.reduce("") { (result, element) -> String in
+        var result = reduce("") { (result, element) -> String in
             
-            let key = self.urlEncode(element.key)
-            let value = self.urlEncode(element.value)
+            let key = urlEncode(element.key)
+            let value = urlEncode(element.value)
             
             let result = result + "&" + key + "=" + value
             return result
@@ -46,7 +46,7 @@ extension Dictionary {
     
     var urlEncodedParametersData: Data? {
         
-        return self.urlEncodedParametersString.data(using: .utf8)
+        urlEncodedParametersString.data(using: .utf8)
     }
 }
 
@@ -56,7 +56,7 @@ extension String {
     
     var urlDecodedParameters: [String: String] {
         
-        let pairs = self.components(separatedBy: "&")
+        let pairs = components(separatedBy: "&")
         let parameters = pairs.reduce([:]) { (result, pair) -> [String: String] in
             
             let components = pair.components(separatedBy: "=")
@@ -85,7 +85,7 @@ extension Data {
     
     var urlDecodedParameters: [String: String]? {
         
-        return String(data: self, encoding: .utf8)?.urlDecodedParameters
+        String(data: self, encoding: .utf8)?.urlDecodedParameters
     }
 }
 
@@ -93,7 +93,7 @@ extension Data {
 
 func +(lhs: URL, rhs: String) -> URL {
     
-    return lhs.appendingPathComponent(rhs)
+    lhs.appendingPathComponent(rhs)
 }
 
 infix operator +? : AdditionPrecedence
@@ -108,5 +108,5 @@ func +?(lhs: URL, rhs: [String: Any]) -> URL? {
 infix operator +?! : AdditionPrecedence
 func +?!(lhs: URL, rhs: [String: Any]) -> URL {
     
-    return (lhs +? rhs)!
+    (lhs +? rhs)!
 }

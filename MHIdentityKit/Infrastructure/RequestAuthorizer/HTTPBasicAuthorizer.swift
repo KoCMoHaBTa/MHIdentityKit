@@ -20,19 +20,17 @@ public struct HTTPBasicAuthorizer: RequestAuthorizer {
         self.password = password
     }
     
-    public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+    public func authorize(request: URLRequest) async throws -> URLRequest {
         
         guard let credentials = (username + ":" + password).data(using: .utf8)?.base64EncodedString() else {
             
-            let error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.buildAuthenticationHeaderFailed)
-            handler(request, error)
-            return
+            throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.buildAuthenticationHeaderFailed)
         }
         
         var request = request
         let header = "Basic " + credentials
         request.setValue(header, forHTTPHeaderField: "Authorization")
-        handler(request, nil)
+        return request
     }
 }
 
@@ -41,5 +39,18 @@ extension HTTPBasicAuthorizer {
     public init(clientID: String, secret: String) {
         
         self.init(username: clientID, password: secret)
+    }
+}
+
+extension RequestAuthorizer where Self == HTTPBasicAuthorizer {
+    
+    public static func basic(username: String, password: String) -> Self {
+        
+        .init(username: username, password: password)
+    }
+    
+    public static func basic(clientID: String, secret: String) -> Self {
+        
+        .init(clientID: clientID, secret: secret)
     }
 }

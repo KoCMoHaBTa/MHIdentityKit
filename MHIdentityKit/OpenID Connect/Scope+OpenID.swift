@@ -14,14 +14,14 @@ extension Scope {
     
     public func addingOpenIDScopeIfNeeded() -> Scope {
         
-        var components = self.components
-        if components.contains(Scope.openid.value) {
+        var components = components
+        if components.contains(Scope.openid.rawValue) {
             
             return self
         }
         
-        components.append(Scope.openid.value)
+        components.append(Scope.openid.rawValue)
         
-        return Scope(components: components)
+        return .init(components: components)
     }
 }

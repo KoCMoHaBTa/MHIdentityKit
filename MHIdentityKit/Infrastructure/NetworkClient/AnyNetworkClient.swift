@@ -11,20 +11,28 @@ import Foundation
 ///A default, closure based implementation of NetworkClient
 public struct AnyNetworkClient: NetworkClient {
     
-    public let handler: (_ request: URLRequest, _ completion: @escaping (NetworkResponse) -> Void) -> Void
+    public let handler: (_ request: URLRequest) async throws -> NetworkResponse
     
-    public init(handler: @escaping (_ request: URLRequest, _ completion: @escaping (NetworkResponse) -> Void) -> Void) {
+    public init(handler: @escaping (_ request: URLRequest) async throws -> NetworkResponse) {
         
         self.handler = handler
     }
     
-    public init(other userAgent: NetworkClient) {
+    public init(other networkClient: NetworkClient) {
         
-        self.handler = userAgent.perform(_:completion:)
+        self.init(handler: networkClient.perform)
     }
     
-    public func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
+    public func perform(_ request: URLRequest) async throws -> NetworkResponse {
         
-        self.handler(request, completion)
+        try await handler(request)
+    }
+}
+
+extension NetworkClient where Self == AnyNetworkClient {
+    
+    public static func any(handler: @escaping (_ request: URLRequest) async throws -> NetworkResponse) -> Self {
+        
+        .init(handler: handler)
     }
 }

@@ -14,54 +14,22 @@ open class DefaultAccessTokenRefresher: AccessTokenRefresher {
     public let networkClient: NetworkClient
     public let clientAuthorizer: RequestAuthorizer
     
-    public init(tokenEndpoint: URL, networkClient: NetworkClient = _defaultNetworkClient, clientAuthorizer: RequestAuthorizer) {
+    public init(tokenEndpoint: URL, networkClient: NetworkClient = .default, clientAuthorizer: RequestAuthorizer) {
         
         self.tokenEndpoint = tokenEndpoint
         self.networkClient = networkClient
         self.clientAuthorizer = clientAuthorizer
     }
     
-    open func refresh(using requestModel: AccessTokenRefreshRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
         
-        var request = URLRequest(url: self.tokenEndpoint)
+        var request = URLRequest(url: tokenEndpoint)
         request.httpMethod = "POST"
         request.httpBody = requestModel.dictionary.urlEncodedParametersData
-        
-        request.authorize(using: self.clientAuthorizer) { (request, error) in
-            
-            guard error == nil else {
-                
-                handler(nil, error)
-                return
-            }
-            
-            self.networkClient.perform(request) { (response) in
-                
-                do {
-                    
-                    let accessTokenResponse = try AccessTokenResponseHandler().handle(response: response)
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(accessTokenResponse, nil)
-                    }
-                }
-                catch let error as LocalizedError {
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(nil, MHIdentityKitError.authenticationFailed(reason: error))
-                    }
-                }
-                catch {
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(nil, MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: error)))
-                    }
-                }
-            }
-        }
+        try await request.authorize(using: clientAuthorizer)
+        let networkResponse = try await networkClient.perform(request)
+        let accessTokenResponse = try AccessTokenResponseHandler().handle(response: networkResponse)
+        return accessTokenResponse
     }
 }
 
@@ -70,5 +38,18 @@ extension DefaultAccessTokenRefresher {
     public convenience init(tokenEndpoint: URL, clientID: String, secret: String) {
         
         self.init(tokenEndpoint: tokenEndpoint, clientAuthorizer: HTTPBasicAuthorizer(clientID: clientID, secret: secret))
+    }
+}
+
+extension AccessTokenRefresher where Self == DefaultAccessTokenRefresher {
+    
+    public static func `default`(tokenEndpoint: URL, networkClient: NetworkClient = .default, clientAuthorizer: RequestAuthorizer) -> Self {
+        
+        .init(tokenEndpoint: tokenEndpoint, networkClient: networkClient, clientAuthorizer: clientAuthorizer)
+    }
+    
+    public static func `default`(tokenEndpoint: URL, clientID: String, secret: String) -> Self {
+        
+        .init(tokenEndpoint: tokenEndpoint, clientAuthorizer: HTTPBasicAuthorizer(clientID: clientID, secret: secret))
     }
 }

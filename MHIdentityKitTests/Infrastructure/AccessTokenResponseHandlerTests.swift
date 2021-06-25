@@ -12,149 +12,95 @@ import XCTest
 
 class AccessTokenResponseHandlerTests: XCTestCase {
     
-    func testSuccess() {
+    func testSuccess() async throws {
         
-        self.performExpectation { (e) in
-            
-            e.fulfilUnlessThrowing {
-                
-                let data = "{\"access_token\":\"gg\", \"token_type\":\"Bearer\", \"expires_in\": 1234, \"refresh_token\":\"rtgg\", \"scope\":\"read write\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-                let accessTokenResponse = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
-                XCTAssertEqual(accessTokenResponse.accessToken, "gg")
-                XCTAssertEqual(accessTokenResponse.tokenType, "Bearer")
-                XCTAssertEqual(accessTokenResponse.expiresIn, 1234)
-                XCTAssertEqual(accessTokenResponse.refreshToken, "rtgg")
-                XCTAssertEqual(accessTokenResponse.scope?.rawValue, "read write")
-            }
-        }
+        let data = "{\"access_token\":\"gg\", \"token_type\":\"Bearer\", \"expires_in\": 1234, \"refresh_token\":\"rtgg\", \"scope\":\"read write\"}".data(using: .utf8)!
+        let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+        let accessTokenResponse = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response))
+        
+        XCTAssertEqual(accessTokenResponse.accessToken, "gg")
+        XCTAssertEqual(accessTokenResponse.tokenType, "Bearer")
+        XCTAssertEqual(accessTokenResponse.expiresIn, 1234)
+        XCTAssertEqual(accessTokenResponse.refreshToken, "rtgg")
+        XCTAssertEqual(accessTokenResponse.scope?.rawValue, "read write")
     }
     
-    func testNetworkClientError() {
+    func testMissingURLError() async throws {
         
-        self.performExpectation { (e) in
-            
-            e.fulfilOnThrowing("err", { 
-                
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: nil, error: "err"))
-            })
+        do {
+            _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: Data(), response: URLResponse()))
+            XCTFail("An error should be thrown")
         }
+        catch MHIdentityKitError.Reason.unknownURLResponse {}
     }
     
-    func testMissingResponseError() {
+    func testOAuth2Error() async throws {
         
-        self.performExpectation { (e) in
-            
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.unknownURLResponse, {
-                
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: nil, error: nil))
-            })
+        do {
+            let data = "{\"error\":\"invalid_grant\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)!
+            _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response))
+            XCTFail("An error should be thrown")
         }
+        catch let error as ErrorResponse where error.code == .invalidGrant {}
     }
     
-    func testMissingURLError() {
+    func testServerError() async throws {
         
-        self.performExpectation { (e) in
-            
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.unknownURLResponse, {
-                
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: URLResponse(), error: nil))
-            })
+        do {
+            let data = "{}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)!
+            _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response))
+            XCTFail("An error should be thrown")
         }
+        catch MHIdentityKitError.Reason.unknownHTTPResponse(code: 555) {}
     }
     
-    func testNilDataError() {
+    func testEmptyJSONError() async throws {
         
-        self.performExpectation { (e) in
-            
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.invalidAccessTokenResponse, {
-                
-                let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: nil, response: response, error: nil))
-            })
+        do {
+            let data = "{}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response))
+            XCTFail("An error should be thrown")
         }
+        catch MHIdentityKitError.Reason.invalidAccessTokenResponse {}
     }
     
-    func testOAuth2Error() {
+    func testAdditioanlParameteres() async throws {
         
-        self.performExpectation { (e) in
-            
-            e.fulfilOnThrowing(ErrorResponse(code: .invalidGrant), {
-                
-                let data = "{\"error\":\"invalid_grant\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
-            })
-        }
+        let data =
+        """
+        { "access_token":"gg", "token_type":"Bearer", "expires_in": 1234, "refresh_token":"rtgg", "scope":"read write", "custom_param1": true, "custom_str": "zagreo", "my_int": 5 }
+        """
+        .data(using: .utf8)!
+        
+        let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+        let accessTokenResponse = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response))
+        
+        XCTAssertEqual(accessTokenResponse.accessToken, "gg")
+        XCTAssertEqual(accessTokenResponse.tokenType, "Bearer")
+        XCTAssertEqual(accessTokenResponse.expiresIn, 1234)
+        XCTAssertEqual(accessTokenResponse.refreshToken, "rtgg")
+        XCTAssertEqual(accessTokenResponse.scope?.rawValue, "read write")
+        XCTAssertEqual(accessTokenResponse.additionalParameters["custom_param1"] as? Bool, true)
+        XCTAssertEqual(accessTokenResponse.additionalParameters["custom_str"] as? String, "zagreo")
+        XCTAssertEqual(accessTokenResponse.additionalParameters["my_int"] as? Int, 5)
     }
     
-    func testServerError() {
+    func testMissingRequiredParameters() async throws {
         
-        self.performExpectation { (e) in
+        do {
+            let data =
+            """
+            { "access_token":"gg", "expires_in": 1234, "refresh_token":"rtgg", "scope":"read write", "custom_param1": true, "custom_str": "zagreo", "my_int": 5 }
+            """
+            .data(using: .utf8)!
             
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.unknownHTTPResponse(code: 555), {
-                
-                let data = "{}".data(using: .utf8)
-                let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 555, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
-            })
+            let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response))
+            XCTFail("An error should be thrown")
         }
-    }
-    
-    func testEmptyJSONError() {
-        
-        self.performExpectation { (e) in
-            
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.invalidAccessTokenResponse, {
-                
-                let data = "{}".data(using: .utf8)
-                let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
-            })
-        }
-    }
-    
-    func testAdditioanlParameteres() {
-        
-        self.performExpectation { (e) in
-            
-            e.fulfilUnlessThrowing {
-                
-                let data =
-                """
-                { "access_token":"gg", "token_type":"Bearer", "expires_in": 1234, "refresh_token":"rtgg", "scope":"read write", "custom_param1": true, "custom_str": "zagreo", "my_int": 5 }
-                """
-                .data(using: .utf8)
-                
-                let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-                let accessTokenResponse = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
-                XCTAssertEqual(accessTokenResponse.accessToken, "gg")
-                XCTAssertEqual(accessTokenResponse.tokenType, "Bearer")
-                XCTAssertEqual(accessTokenResponse.expiresIn, 1234)
-                XCTAssertEqual(accessTokenResponse.refreshToken, "rtgg")
-                XCTAssertEqual(accessTokenResponse.scope?.rawValue, "read write")
-                XCTAssertEqual(accessTokenResponse.additionalParameters["custom_param1"] as? Bool, true)
-                XCTAssertEqual(accessTokenResponse.additionalParameters["custom_str"] as? String, "zagreo")
-                XCTAssertEqual(accessTokenResponse.additionalParameters["my_int"] as? Int, 5)
-            }
-        }
-    }
-    
-    func testMissingRequiredParameters() {
-        
-        self.performExpectation { (e) in
-            
-            e.fulfilOnThrowing(MHIdentityKitError.Reason.invalidAccessTokenResponse) {
-                
-                let data =
-                """
-                { "access_token":"gg", "expires_in": 1234, "refresh_token":"rtgg", "scope":"read write", "custom_param1": true, "custom_str": "zagreo", "my_int": 5 }
-                """
-                .data(using: .utf8)
-                
-                let response = HTTPURLResponse(url: URL(string: "http://foo.bar")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-                _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response, error: nil))
-            }
-        }
+        catch MHIdentityKitError.Reason.invalidAccessTokenResponse {}
     }
 }

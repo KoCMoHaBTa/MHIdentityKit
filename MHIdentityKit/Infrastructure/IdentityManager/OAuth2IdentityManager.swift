@@ -10,7 +10,7 @@ import Foundation
 
 ///Perform an authorization using an OAuth2 AuthorizationGrantFlow for authentication with a behaviour that refresh a token if possible and preserves a state.
 ///The core logic is ilustrated here - https://tools.ietf.org/html/rfc6749#section-1.5
-open class OAuth2IdentityManager: IdentityManager {
+open actor OAuth2IdentityManager: IdentityManager {
     
     //used for authentication - getting OAuth2 access token
     public let flow: AuthorizationGrantFlow
@@ -23,16 +23,6 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //used to provide an authorizer that authorize the request using the provided access token response
     public let tokenAuthorizerProvider: (AccessTokenResponse) -> RequestAuthorizer
-    
-    //    private let queue = DispatchQueue(label: bundleIdentifier + ".OAuth2IdentityManager", qos: .default)
-    private var queue: OperationQueue = {
-        
-        let queue = OperationQueue()
-        queue.name = bundleIdentifier + ".OAuth2IdentityManager"
-        queue.maxConcurrentOperationCount = 1
-        
-        return queue
-    }()
     
     /**
      Creates an instnce of the receiver.
@@ -54,17 +44,30 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //MARK: - Configuration
     
-    ///Controls whenver an authentication should be forced if a refresh fails. If `true`, when a refresh token fails, an authentication will be performed automatically using the flow provided. If `false` an error will be returned. Default to `true`.
-    open var forceAuthenticateOnRefreshError = true
+    public struct Configuration {
+        
+        ///Controls whenver an authentication should be forced if a refresh fails. If `true`, when a refresh token fails, an authentication will be performed automatically using the flow provided. If `false` an error will be returned. Default to `true`.
+        public var forceAuthenticateOnRefreshError = true
+        
+        /***
+         Controls whenever an authorization should be retried if an authentication fails. If `true`, when an authentication fails - the authorization will be retried automatically untill there is a successfull authentication. If `false` an error will be returned. Default to `false`.
+         
+         - note: This behaviour is needed when the authorization requires user input, like in the `ResourceOwnerPasswordCredentialsGrantFlow` where the `CredentialsProvider` is a login screen. As opposite it is not needed when user input is not involved, because it could lead to infinite loop of authorizations.
+         
+         */
+        
+        public var retryAuthorizationOnAuthenticationError = false
+        
+        public init() {}
+    }
     
-    /***
-     Controls whenever an authorization should be retried if an authentication fails. If `true`, when an authentication fails - the authorization will be retried automatically untill there is a successfull authentication. If `false` an error will be returned. Default to `false`.
-     
-     - note: This behaviour is needed when the authorization requires user input, like in the `ResourceOwnerPasswordCredentialsGrantFlow` where the `CredentialsProvider` is a login screen. As opposite it is not needed when user input is not involved, because it could lead to infinite loop of authorizations.
-     
-     */
+    open var configuration: Configuration = .init()
     
-    open var retryAuthorizationOnAuthenticationError = false
+    ///Updates the recevier's configuration
+    open func configure(_ configurator: (_ configuration: inout Configuration) -> Void) {
+        
+        configurator(&configuration)
+    }
     
     //MARK: - State
     
@@ -99,139 +102,140 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //MARK: - IdentityManager
     
-    private func performAuthentication(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    private func performAuthentication() async throws-> AccessTokenResponse {
         
-        self.postWillAuthenticateNotification()
+        postWillAuthenticateNotification()
         
-        self.flow.authenticate { (response, error) in
+        do {
             
-            self.didFinishAuthenticating(with: response, error: error)
-            handler(response, error)
+            let respone = try await flow.authenticate()
+            didFinishAuthenticating(with: respone)
+            return respone
+        }
+        catch {
+            
+            didFailAuthenticating(with: error)
+            throw error
         }
     }
     
-    private func authenticate(forced: Bool, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
-        
+    //make the authentication serial
+    private var authenticateTaskHandle: Any? = nil
+    private func authenticate(forced: Bool) async throws -> AccessTokenResponse {
+
+        if #available(iOS 15.0, *) {
+
+            if let authenticateTaskHandle = authenticateTaskHandle as? Task.Handle<AccessTokenResponse, Error> {
+
+                return try await authenticateTaskHandle.get()
+            }
+
+            let authenticateTaskHandle = async {
+
+                try await _authenticate(forced: forced)
+            }
+
+            self.authenticateTaskHandle = authenticateTaskHandle
+
+            let response = try await authenticateTaskHandle.get()
+            self.authenticateTaskHandle = nil
+            return response
+        }
+        else { fatalError("Xcode 13 Beta 1 requires iOS 15 for all async/await APIs ") }
+    }
+    
+    private func _authenticate(forced: Bool) async throws -> AccessTokenResponse {
+                
         //force authenticate
         if forced {
             
             //authenticate
-            self.performAuthentication(handler: handler)
-            return
+            return try await performAuthentication()
         }
         
         //refresh if possible
-        if let refresher = self.refresher,
-        let refreshToken = self.refreshToken {
+        if let refresher = refresher, let refreshToken = refreshToken {
             
-            let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: self.scope)
-            refresher.refresh(using: request, handler: { [weak self] (response, error) in
+            do {
+                let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: scope)
+                return try await refresher.refresh(using: request)
+            }
+            catch {
                 
                 if let error = error as? MHIdentityKitError, error.contains(error: ErrorResponse.self) {
                 
                     //if the error returned is ErrorResponse - clear the existing refresh token
-                    self?.accessTokenResponse?.refreshToken = nil
+                    accessTokenResponse?.refreshToken = nil
                     
                     //if force authentication is enabled upon refresh error, and the error returned is ErrorResponse - perform a new authentication
-                    if self?.forceAuthenticateOnRefreshError == true {
+                    if configuration.forceAuthenticateOnRefreshError == true {
                         
                         //authenticate
-                        self?.performAuthentication(handler: handler)
-                        return
+                        return try await performAuthentication()
                     }
                 }
                 
-                //complete
-                handler(response, error)
-            })
-            
-            return
+                throw error
+            }
         }
         
         //authenticate
-        self.performAuthentication(handler: handler)
+        return try await performAuthentication()
     }
     
-    private func performAuthorization(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
+    private func performAuthorization(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
         
-        if forceAuthenticate == false, let response = self.accessTokenResponse, response.isExpired == false   {
+        if forceAuthenticate == false, let response = accessTokenResponse, response.isExpired == false   {
             
-            self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
-            return
+            return try await tokenAuthorizerProvider(response).authorize(request: request)
         }
         
-        self.authenticate(forced: forceAuthenticate) { (response, error) in
+        do {
+            let response = try await authenticate(forced: forceAuthenticate)
+            accessTokenResponse = response
+            return try await tokenAuthorizerProvider(response).authorize(request: request)
+        }
+        catch {
             
-            guard
-            error == nil,
-            let response = response
-            else {
+            if configuration.retryAuthorizationOnAuthenticationError == true && error is ErrorResponse {
                 
-                if self.retryAuthorizationOnAuthenticationError == true && error is ErrorResponse {
-                    
-                    self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: handler)
-                }
-                else {
-                    
-                    handler(request, error)
-                }
-                
-                return
+                return try await performAuthorization(request: request, forceAuthenticate: forceAuthenticate)
             }
             
-            self.accessTokenResponse = response
-            self.tokenAuthorizerProvider(response).authorize(request: request, handler: handler)
+            throw error
         }
     }
     
     //MARK: - IdentityManager
     
-    open func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
+    open func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
         
-        self.queue.addOperation {
-            
-            let semaphore = DispatchSemaphore(value: 0)
-            
-            self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: { (request, error) in
-                
-                handler(request, error)
-                
-                semaphore.signal()
-            })
-            
-            semaphore.wait()
-        }
+        try await performAuthorization(request: request, forceAuthenticate: forceAuthenticate)
     }
     
-    open func revokeAuthenticationState() {
+    open func revokeAuthenticationState() async {
         
-        self.queue.addOperation {
+        accessTokenResponse = nil
             
-            self.accessTokenResponse = nil
-            
-            //TODO: implement token revocation trough server
-        }
+        //TODO: implement token revocation trough server
     }
     
-    open func revokeAuthorizationState() {
+    open func revokeAuthorizationState() async {
         
-        self.queue.addOperation {
-            
-            self.accessTokenResponse?.expiresIn = 0
-        }
+        accessTokenResponse?.expiresIn = 0
     }
     
     open var responseValidator: NetworkResponseValidator = {
-       
+
         struct PlaceholderIdentityManager: IdentityManager {
-            
-            func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {}
-            func revokeAuthenticationState() {}
-            func revokeAuthorizationState() {}
-            
+
+            func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest { request }
+            func revokeAuthenticationState() async {}
+            func revokeAuthorizationState() async {}
+
             static let defaultResponseValidator = PlaceholderIdentityManager().responseValidator
         }
-        
+
         return PlaceholderIdentityManager.defaultResponseValidator
     }()
 }
@@ -269,29 +273,29 @@ extension OAuth2IdentityManager {
     public static let errorUserInfoKey = "error"
     
     ///notify that authentication will begin
-    func postWillAuthenticateNotification() {
+    private func postWillAuthenticateNotification() {
         
         let notification = Notification(name: type(of: self).willAuthenticate, object: self, userInfo: nil)
         NotificationQueue.default.enqueue(notification, postingStyle: .now)
     }
     
     ///notify that authentication has finished
-    func didFinishAuthenticating(with accessTokenResponse: AccessTokenResponse?, error: Error?) {
+    private func didFinishAuthenticating(with accessTokenResponse: AccessTokenResponse) {
         
         var userInfo = [AnyHashable: Any]()
-        userInfo[type(of: self).accessTokenResponseUserInfoKey] = accessTokenResponse
-        userInfo[type(of: self).errorUserInfoKey] = error
+        userInfo[Self.accessTokenResponseUserInfoKey] = accessTokenResponse
         
-        if error == nil {
-            
-            let notification = Notification(name: type(of: self).didAuthenticate, object: self, userInfo: userInfo)
-            NotificationQueue.default.enqueue(notification, postingStyle: .now)
-        }
-        else {
-            
-            let notification = Notification(name: type(of: self).didFailToAuthenticate, object: self, userInfo: userInfo)
-            NotificationQueue.default.enqueue(notification, postingStyle: .now)
-        }
+        let notification = Notification(name: Self.didAuthenticate, object: self, userInfo: userInfo)
+        NotificationQueue.default.enqueue(notification, postingStyle: .now)
+    }
+    
+    private func didFailAuthenticating(with error: Error) {
+        
+        var userInfo = [AnyHashable: Any]()
+        userInfo[Self.errorUserInfoKey] = error
+        
+        let notification = Notification(name: Self.didFailToAuthenticate, object: self, userInfo: userInfo)
+        NotificationQueue.default.enqueue(notification, postingStyle: .now)
     }
 }
 
@@ -311,15 +315,8 @@ extension IdentityStorage {
     
     fileprivate var refreshToken: String? {
         
-        get {
-            
-            return self[refreshTokenKey]
-        }
-        
-        set {
-            
-            self[refreshTokenKey] = newValue
-        }
+        get { self[refreshTokenKey] }
+        set { self[refreshTokenKey] = newValue }
     }
 }
 
@@ -332,19 +329,7 @@ extension IdentityStorage {
     
     fileprivate var scope: Scope? {
         
-        get {
-            
-            guard let value = self[scopeValueKey] else {
-                
-                return nil
-            }
-            
-            return Scope(value: value)
-        }
-        
-        set {
-            
-            self[scopeValueKey] = newValue?.value
-        }
+        get { self[scopeValueKey].map { .init(rawValue: $0) } }
+        set { self[scopeValueKey] = newValue?.rawValue }
     }
 }

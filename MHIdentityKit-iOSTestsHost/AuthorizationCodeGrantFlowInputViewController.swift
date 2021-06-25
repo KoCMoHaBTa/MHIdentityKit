@@ -159,7 +159,7 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
         var scope: Scope? = nil
         if let scopeString = self.scopeTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), scopeString.isEmpty == false {
             
-            scope = Scope(value: scopeString)
+            scope = Scope(rawValue: scopeString)
         }
         
         guard let authorizationURLString = self.authorizationURLTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), authorizationURLString.isEmpty == false, let authorizationURL = URL(string: authorizationURLString) else {
@@ -192,23 +192,30 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
             self?.navigationController?.popViewController(animated: true)
         }
         
-        let networkClient = AnyNetworkClient { [weak self] (request, completion) in
+        let networkClient = AnyNetworkClient { [weak self] request in
             
             self?.accessTokenRequest = request
-            _defaultNetworkClient.perform(request, completion: completion)
+            return try await DefaultNetoworkClient.shared.perform(request)
         }
         
-        var flow: AuthorizationGrantFlow? = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationURL, tokenEndpoint: tokenURL, clientID: client, secret: secret, redirectURI: redirectURL, scope: scope, userAgent: userAgent, networkClient: networkClient)
+        let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationURL, tokenEndpoint: tokenURL, clientID: client, secret: secret, redirectURI: redirectURL, scope: scope, userAgent: userAgent, networkClient: networkClient)
 
-        flow?.authenticate { [weak self] (accessTokenResponse, error) in
-
-            self?.accessTokenResponse = accessTokenResponse
-            self?.accessTokenError = error
+        if #available(iOS 15.0, *) {
             
-            self?.showResult()
-            
-            flow = nil
+            async { [weak self] in
+                do {
+                    
+                    self?.accessTokenResponse = try await flow.authenticate()
+                }
+                catch {
+                    
+                    self?.accessTokenError = error
+                }
+                
+                self?.showResult()
+            }
         }
+        else { fatalError("Xcode 13 Beta 1 requires iOS 15 for all async/await APIs ") }
     }
     
     //MARK: - UITableViewDataSource & UITableViewDelegate

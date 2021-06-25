@@ -161,7 +161,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowInputViewController: UITableViewC
         var scope: Scope? = nil
         if let scopeString = self.scopeTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), scopeString.isEmpty == false {
             
-            scope = Scope(value: scopeString)
+            scope = Scope(rawValue: scopeString)
         }
         
         guard let tokenURLString = self.tokenURLTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), tokenURLString.isEmpty == false, let tokenURL = URL(string: tokenURLString) else {
@@ -185,31 +185,37 @@ class ResourceOwnerPasswordCredentialsGrantFlowInputViewController: UITableViewC
             return
         }
         
-        
-        let networkClient = AnyNetworkClient { [weak self] (request, completion) in
+        let networkClient = AnyNetworkClient { [weak self] request in
             
             self?.accessTokenRequest = request
-            _defaultNetworkClient.perform(request, completion: completion)
+            return try await DefaultNetoworkClient.shared.perform(request)
         }
         
-        let credentialsProvider = AnyCredentialsProvider { (handler) in
+        let credentialsProvider = AnyCredentialsProvider {
             
-            handler(username, password)
+            return (username, password)
         }
         
         let clientAuthorizer = HTTPBasicAuthorizer(clientID: client, secret: secret)
         
-        var flow: AuthorizationGrantFlow? = ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: tokenURL, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+        let flow: AuthorizationGrantFlow = ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: tokenURL, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
         
-        flow?.authenticate { [weak self] (accessTokenResponse, error) in
+        if #available(iOS 15.0, *) {
             
-            self?.accessTokenResponse = accessTokenResponse
-            self?.accessTokenError = error
-            
-            self?.showResult()
-            
-            flow = nil
+            async { [weak self] in
+                do {
+                    
+                    self?.accessTokenResponse = try await flow.authenticate()
+                }
+                catch {
+                    
+                    self?.accessTokenError = error
+                }
+                
+                self?.showResult()
+            }
         }
+        else { fatalError("Xcode 13 Beta 1 requires iOS 15 for all async/await APIs ") }
     }
     
     //MARK: - UITableViewDataSource & UITableViewDelegate

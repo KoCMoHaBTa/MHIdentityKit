@@ -67,14 +67,6 @@ public struct ErrorResponse: LocalizedError {
     }
     
     //MARK: - LocalizedError
-    
-    public var errorDescription: String? {
-        
-        return self.code.rawValue
-    }
-    
-    public var failureReason: String? {
-        
-        return self.description
-    }
+    public var errorDescription: String? { code.rawValue }
+    public var failureReason: String? { description }
 }

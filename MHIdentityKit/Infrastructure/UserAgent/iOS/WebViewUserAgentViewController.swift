@@ -83,7 +83,7 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
     
     private var request: URLRequest?
     private var redirectURI: URL?
-    private var redirectionHandler:  ((URLRequest) throws -> Bool)?
+    private var continuationHandler: ((URLRequest?) -> Void)?
     
     deinit {
         
@@ -96,6 +96,8 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
             self.webViewIsLoadingObserver.invalidate()
             self.webViewEstimatedProgressObserver.invalidate()
         }
+        
+        continuationHandler?(nil)
     }
     
     open override func viewDidLoad() {
@@ -120,6 +122,11 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
     }
     
     private func loadData() {
+        
+        guard self.isViewLoaded else {
+            
+            return
+        }
         
         guard let request = self.request else {
             
@@ -168,35 +175,46 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
     
     //MARK: - WKNavigationDelegate
     
-    open func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
         
-        if (try? self.redirectionHandler?(navigationAction.request)) == true {
-            
-            decisionHandler(.cancel)
-        }
+        let redirectRequest = navigationAction.request
+        
+        //it must match with the url of the request, by ignoring the query parameters
+        guard
+        let redirectURI = redirectURI,
+        redirectURI.scheme == redirectRequest.url?.scheme,
+        redirectURI.host == redirectRequest.url?.host,
+        redirectURI.path == redirectRequest.url?.path
         else {
-            
-            decisionHandler(.allow)
+        
+            return .allow
         }
+        
+        continuationHandler?(redirectRequest)
+        continuationHandler = nil
+        return .cancel
     }
     
     //MARK: - UserAgent
     
-    open func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool) {
+    open func perform(_ request: URLRequest, redirectURI: URL) async -> URLRequest? {
         
-        DispatchQueue.main.async {
-            
-            self.request = request
-            self.redirectURI = redirectURI
-            self.redirectionHandler = redirectionHandler
-            
-            guard self.isViewLoaded else {
+        if #available(iOS 15.0, *) {
+            return await withCheckedContinuation { continuation in
                 
-                return
+                self.request = request
+                self.redirectURI = redirectURI
+                self.continuationHandler = continuation.resume(returning:)
+                
+                loadData()
             }
-            
-            self.loadData()
         }
+        else { fatalError("Xcode 13 Beta 1 requires iOS 15 for all async/await APIs ") }
+    }
+    
+    public func finish(with error: Error?) async {
+        
+        error.map { print($0) }
     }
 }
 

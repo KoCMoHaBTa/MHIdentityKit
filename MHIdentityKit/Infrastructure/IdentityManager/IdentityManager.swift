@@ -15,23 +15,22 @@ public protocol IdentityManager {
     /**
      Authorizes an instance of URLRequest.
      
-     Upon success, in the callback handler, the provided request will be authorized, otherwise the original request will be provided.
-     
      - parameter request: The request to authorize.
      - parameter forceAuthenticate: If true, an authentication is always performed, otherwise authentication is done only if internal state requires it, like the access token has expired
-     - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
+     - throws: Error if authorization fails.
+     - returns: An authorized copy of the request.
      */
     
-    func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void)
+    func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest
     
     ///Clears any authentication state, leading to next authorization to require authentication. (eg Logout)
-    func revokeAuthenticationState()
+    func revokeAuthenticationState() async
     
     ///Clears any authorization state, leading to next authorization to require refresh or authentication. (eg revoke the access token only)
-    func revokeAuthorizationState()
+    func revokeAuthorizationState() async
     
     ///Validates a network response based on whenever it requires authorization or not. Returns true if the response is valid and does not require authorization, otherwise return false. Default implementation checks whenever the HTTP status code != 401 for a valid response.
-    var responseValidator: NetworkResponseValidator { get }
+    nonisolated var responseValidator: NetworkResponseValidator { get }
 }
 
 extension IdentityManager {
@@ -39,27 +38,23 @@ extension IdentityManager {
     /**
      Authorizes an instance of URLRequest.
      
-     Upon success, in the callback handler, the provided request will be authorized, otherwise the original request will be provided.
-     
      - parameter request: The request to authorize.
-     - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
+     - throws: Error if authorization fails.
+     - returns: An authorized copy of the request.
      */
     
-    public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+    public func authorize(request: URLRequest) async throws -> URLRequest {
         
-        self.authorize(request: request, forceAuthenticate: false, handler: handler)
+        try await authorize(request: request, forceAuthenticate: false)
     }
     
     ///Performs forced authentication on a placeholder request. Can be used when you want to authenticate in advance, without authorizing a particular request
-    public func forceAuthenticate(handler: ((Error?) -> Void)? = nil) {
+    public func forceAuthenticate() async throws {
         
         let placeholderURL = URL(string: "http://foo.bar")!
         let placeholderRequest = URLRequest(url: placeholderURL)
         
-        self.authorize(request: placeholderRequest, forceAuthenticate: true) { (_, error) in
-            
-            handler?(error)
-        }
+        _ = try await authorize(request: placeholderRequest, forceAuthenticate: true)
     }
 }
 
@@ -68,70 +63,28 @@ extension URLRequest {
     /**
      Authorize the receiver using a given identity manager.
      
-     Upon success, in the callback handler, the provided request will be an authorized copy of the receiver, otherwise a copy of the original receiver will be provided.
-     
      - note: The implementation of this method simply calls `authorize` on the `authorizer`. For more information see `URLRequestAuthorizer`.
      
      - parameter authorizer: The authorizer used to authorize the receiver.
-     - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
+     - throws: Error if authorization fails.
+     - returns: An authorized copy of the receiver.
      
      */
-    public func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false, handler: @escaping (URLRequest, Error?) -> Void) {
+    public func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false) async throws -> URLRequest {
         
-        identityManager.authorize(request: self, forceAuthenticate: forceAuthenticate, handler: handler)
+        try await identityManager.authorize(request: self, forceAuthenticate: forceAuthenticate)
     }
     
     /**
-     Synchronously authorize the receiver using a given identity manager.
-     
-     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
+     Authorize the receiver using a given identity manager.
      
      - parameter authorizer: The authorizer used to authorize the receiver.
-     
-     - throws: An authorization error.
-     - returns: An authorized copy of the recevier.
-     */
-    public func authorized(using identityManager: IdentityManager, forceAuthenticate: Bool = false) throws -> URLRequest {
-        
-        var request = self
-        var error: Error? = nil
-        
-        let semaphore = DispatchSemaphore(value: 0)
-        
-        DispatchQueue(label: bundleIdentifier + ".authorization", qos: .default).async {
-            
-            self.authorize(using: identityManager, forceAuthenticate: forceAuthenticate, handler: { (r, e) in
-                
-                request = r
-                error = e
-                
-                semaphore.signal()
-            })
-        }
-        
-        semaphore.wait()
-        
-        guard error == nil else {
-            
-            throw error!
-        }
-        
-        return request
-    }
-    
-    /**
-     Synchronously authorize the receiver using a given identity manager.
-     
-     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
-     
-     - parameter authorizer: The authorizer used to authorize the receiver.
-     
      - throws: An authorization error.
      */
     
-    public mutating func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false) throws {
+    public mutating func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false) async throws {
         
-        try self = self.authorized(using: identityManager, forceAuthenticate: forceAuthenticate)
+        self = try await self.authorize(using: identityManager, forceAuthenticate: forceAuthenticate)
     }
 }
 
@@ -153,33 +106,24 @@ extension IdentityManager {
      - parameter retryAttempts: The number of times to retry the request if the validation fails.
      - parameter validator: The validator, used to determine if a request must be reauthorized with forced authentication and retried, based on the network response. Default to `responseValidator` if nil is passed.
      - parameter forceAuthenticate: Whenver to force authentication during authorization. Default to false.
-     - parameter completion: The completion handler called when the request completes.
+     - throws: Error if network request fails.
+     - returns: The network response of the  performed request.
      
      - note: The implementation of this menthod, simple checks if the HTTP response status code is 401 Unauthorized and if so - authorizes the request again by forcing the authentication. Then the request is retried.
      */
     
-    public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false, completion: @escaping (NetworkResponse) -> Void) {
+    public func perform(_ request: URLRequest, using networkClient: NetworkClient = .default, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async throws -> NetworkResponse {
         
-        self.authorize(request: request, forceAuthenticate: forceAuthenticate) { (request, error) in
+        let request = try await authorize(request: request, forceAuthenticate: forceAuthenticate)
+        let response = try await networkClient.perform(request)
+        let validator = validator ?? responseValidator
+        
+        if validator.validate(response) == false && retryAttempts > 0 {
             
-            guard error == nil else {
-                
-                completion(NetworkResponse(data: nil, response: nil, error: error))
-                return
-            }
-            
-            networkClient.perform(request) { (response) in
-                
-                let validator = validator ?? self.responseValidator
-                if validator.validate(response) == false && retryAttempts > 0 {
-                    
-                    self.perform(request, using: networkClient, retryAttempts: retryAttempts - 1, validator: validator, forceAuthenticate: true, completion: completion)
-                    return
-                }
-                
-                completion(response)
-            }
+            return try await perform(request, using: networkClient, retryAttempts: retryAttempts - 1, validator: validator, forceAuthenticate: true)
         }
+        
+        return response
     }
 }
 

@@ -22,35 +22,28 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
         self.method = method
     }
     
-    public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+    public func authorize(request: URLRequest) async throws -> URLRequest {
         
         var request = request
-        var error: Error? = nil
-        
-        defer {
-            
-            handler(request, error)
-        }
         
         switch self.method {
             
             case .header:
                 request.setValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
+                return request
             
             case .body:
                 
                 //make sure the request content type is correct
                 guard request.value(forHTTPHeaderField: "Content-Type") == "application/x-www-form-urlencoded" else {
                     
-                    error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidContentType)
-                    return
+                    throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidContentType)
                 }
             
                 //make sure the request method is supported
                 guard let method = request.httpMethod, method != "GET" else {
                 
-                    error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestMethod)
-                    return
+                    throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestMethod)
                 }
                 
                 //TODO: Add body validation
@@ -70,6 +63,7 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
             
                 //update the request
                 request.httpBody = body.data(using: .utf8)
+                return request
             
             case .query:
                 
@@ -79,8 +73,7 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
                 else {
                     
-                    error = MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestURL)
-                    return
+                    throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestURL)
                 }
                 
                 var query = components.query ?? ""
@@ -96,6 +89,7 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
             
                 //update the request URL
                 request.url = components.url
+                return request
         }
     }
 }
@@ -112,5 +106,13 @@ extension BearerAccessTokenAuthorizer {
         
         //https://tools.ietf.org/html/rfc6750#section-2.3
         case query
+    }
+}
+
+extension RequestAuthorizer where Self == BearerAccessTokenAuthorizer {
+    
+    public static func bearer(token: String, method: Self.AuthorizationMethod = .header) -> Self {
+        
+        .init(token: token, method: method)
     }
 }

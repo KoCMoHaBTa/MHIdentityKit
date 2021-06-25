@@ -12,19 +12,25 @@ import Foundation
 public protocol UserAgent {
     
     /**
-     Performs a request within the user agent and execute a redirectionHandler when a redirection occurs for a given or default redirect URL.
+     Performs a request within the user agent and returns the redirect request that matches the redirect URI.
      
      - parameter request: The request to be performed by the user agent.
      - parameter redirectURI: The redirect URL provided by the client.
-     - parameter redirectionHandler: The handler to be called when a redirection occur for the specified `redirectURI`. The handler takes as argument the redirect `URLRequest` and returns boolean value that indicates whenver the redirect request has been successfully handled. An error is thrown if the redirect request is an [error response](https://tools.ietf.org/html/rfc6749#section-4.1.2.1)
-     
-     - important: Because the `redirectURI` is optional in the context of the client flow, when that is the case, the user agent is responsible to pass the correct rediction request to the `redirectionHandler`. Such case may occur when the server provides the ability to define a default `redirectURI` that will be used when none is provided in the flow. In case the `redirectURI` is provided, the user agent should pass the correct rediction request based on the `redirectURI`.
-     
-     - important: Since it is possible that multiple redirections may occur. If the returned value of `redirectionHandler` is `false` - this means that the redirection has not been handled and the user agent should continue. If the returned value is `true` - this means that the redirection has been handled and the user agent should complete.
-     
-     - note: In the context of `AuthorizationCodeGrantFlow` - a redirectin is handled if it matches the [Authorization Response specifications](https://tools.ietf.org/html/rfc6749#section-4.1.2). In that case the web browser should be closed after which an access token rquest is issued.
-     
+     - returns: The redirect URLRequest, that matches the redirectURI or `nil` if the user agent has been cancelled, eg when the user closes the browser.
+     - note: Returning `nil` from this method will instruct the caller that it should cancel the authorization process. 
      */
+    func perform(_ request: URLRequest, redirectURI: URL) async -> URLRequest?
     
-    func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool)
+    /**
+     Called when the redirect request has finshed processing.
+     
+     - parameter error: An optional `Error` if the redirect request processing has failed.
+     - note: When this method is called, the user agent should return the user to the application.
+     */
+    func finish(with error: Error?) async
 }
+
+
+
+//- parameter redirectionHandler: The handler to be called when a redirection occur for the specified `redirectURI`. The handler takes as argument the redirect `URLRequest` and returns boolean value that indicates whenver the redirect request has been successfully handled. An error is thrown if the redirect request is an [error response](https://tools.ietf.org/html/rfc6749#section-4.1.2.1)
+//- note: In the context of `AuthorizationCodeGrantFlow` - a redirecting is handled if it matches the [Authorization Response specifications](https://tools.ietf.org/html/rfc6749#section-4.1.2). In that case the web browser should be closed after which an access token rquest is issued.

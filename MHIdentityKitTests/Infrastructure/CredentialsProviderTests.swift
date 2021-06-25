@@ -12,18 +12,12 @@ import XCTest
 
 class CredentialsProviderTests: XCTestCase {
     
-    func testDefaultCredentialsProvider() {
+    func testDefaultCredentialsProvider() async throws {
         
         let provider: CredentialsProvider = AnyCredentialsProvider(username: "tuname", password: "tpsswd")
+        let (username, password) = await provider.credentials()
         
-        self.performExpectation { (e) in
-            
-            provider.credentials { (username, password) in
-             
-                XCTAssertEqual(username, "tuname")
-                XCTAssertEqual(password, "tpsswd")
-                e.fulfill()
-            }
-        }
+        XCTAssertEqual(username, "tuname")
+        XCTAssertEqual(password, "tpsswd")
     }
 }

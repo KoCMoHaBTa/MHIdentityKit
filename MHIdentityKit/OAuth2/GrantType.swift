@@ -8,14 +8,21 @@
 
 import Foundation
 
-public struct GrantType  {
+public struct GrantType: RawRepresentable, ExpressibleByStringLiteral, CustomStringConvertible  {
     
-    public var value: String
+    public var rawValue: String
     
-    public init(value: String) {
+    public init(rawValue: String) {
         
-        self.value = value
+        self.rawValue = rawValue
     }
+    
+    public init(stringLiteral value: String) {
+        
+        self.init(rawValue: value)
+    }
+    
+    public var description: String { rawValue }
 }
 
 //predefined grant types
@@ -25,47 +32,4 @@ extension GrantType {
     public static let refreshToken: GrantType = "refresh_token"
     public static let clientCredentials: GrantType = "client_credentials"
     public static let authorizationCode: GrantType = "authorization_code"
-}
-
-//MARK: - RawRepresentable
-extension GrantType: RawRepresentable {
-    
-    public var rawValue: String {
-        
-        get { return self.value }
-        set { self.value = newValue }
-    }
-    
-    public init?(rawValue: String) {
-        
-        self.init(value: rawValue)
-    }
-}
-
-//MARK: - ExpressibleByStringLiteral
-extension GrantType: ExpressibleByStringLiteral {
-    
-    public init(stringLiteral value: String) {
-        
-        self.init(value: value)
-    }
-    
-    public init(unicodeScalarLiteral value: String) {
-        
-        self.init(value: value)
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        
-        self.init(value: value)
-    }
-}
-
-//MARK: - CustomStringConvertible
-extension GrantType: CustomStringConvertible {
-    
-    public var description: String {
-        
-        return self.value
-    }
 }

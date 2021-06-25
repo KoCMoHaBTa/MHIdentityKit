@@ -34,7 +34,7 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
      
      */
     
-    public init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = _defaultNetworkClient) {
+    public init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = .default) {
         
         self.tokenEndpoint = tokenEndpoint
         self.credentialsProvider = credentialsProvider
@@ -47,99 +47,79 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     open func parameters(from accessTokenRequest: AccessTokenRequest) -> [String: Any] {
         
-        return accessTokenRequest.dictionary.merging(self.additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
+        accessTokenRequest.dictionary.merging(self.additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
     }
     
     open func data(from parameters: [String: Any]) -> Data? {
         
-        return parameters.urlEncodedParametersData
+        parameters.urlEncodedParametersData
     }
     
     open func urlRequest(from accessTokenRequest: AccessTokenRequest) -> URLRequest {
         
-        var request = URLRequest(url: self.tokenEndpoint)
+        var request = URLRequest(url: tokenEndpoint)
         request.httpMethod = "POST"
-        request.httpBody = self.data(from: self.parameters(from: accessTokenRequest))
+        request.httpBody = data(from: parameters(from: accessTokenRequest))
         
         return request
     }
     
-    open func authorize(_ request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+    open func authorize(_ request: URLRequest) async throws -> URLRequest {
         
-        self.clientAuthorizer.authorize(request: request, handler: handler)
+        try await clientAuthorizer.authorize(request: request)
     }
     
-    open func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
+    open func perform(_ request: URLRequest) async throws -> NetworkResponse {
         
-        self.networkClient.perform(request, completion: completion)
+        try await networkClient.perform(request)
     }
     
     open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
         
-        return try AccessTokenResponseHandler().handle(response: networkResponse)
+        try AccessTokenResponseHandler().handle(response: networkResponse)
     }
     
-    open func validate(_ accessTokenResponse: AccessTokenResponse) throws {
+    open func validate(_ accessTokenResponse: AccessTokenResponse) async throws {
         
         //nothing to validate here
     }
     
-    open func authenticate(using request: URLRequest, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func authenticate(using request: URLRequest) async throws -> AccessTokenResponse {
         
-        self.authorize(request, handler: { (request, error) in
-            
-            guard error == nil else {
-                
-                handler(nil, error)
-                return
-            }
-            
-            self.perform(request, completion: { (response) in
-                
-                do {
-                    
-                    let accessTokenResponse = try self.accessTokenResponse(from: response)
-                    try self.validate(accessTokenResponse)
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(accessTokenResponse, nil)
-                    }
-                }
-                catch {
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(nil, error)
-                    }
-                }
-            })
-        })
+        let request = try await authorize(request)
+        let netoworkRessponse = try await perform(request)
+        let accessTokenResponse = try accessTokenResponse(from: netoworkRessponse)
+        try await validate(accessTokenResponse)
+         
+        return accessTokenResponse
     }
     
     //MARK: - AuthorizationGrantFlow
     
-    open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func authenticate() async throws -> AccessTokenResponse {
         
-        self.credentialsProvider.credentials { (username, password) in
+        do {
             
-            //build the request
-            let accessTokenRequest = AccessTokenRequest(username: username, password: password, scope: self.scope)
-            let request = self.urlRequest(from: accessTokenRequest)
+            //get credentials
+            let (username, password) = await credentialsProvider.credentials()
             
-            self.authenticate(using: request, handler: { (response, error) in
+            //build & perform the request
+            let accessTokenRequest = AccessTokenRequest(username: username, password: password, scope: scope)
+            let request = urlRequest(from: accessTokenRequest)
+            let response = try await authenticate(using: request)
             
-                if let error = error {
-                    
-                    self.credentialsProvider.didFailAuthenticating(with: error)
-                }
-                else {
-                    
-                    self.credentialsProvider.didFinishAuthenticating()
-                }
-                
-                handler(response, error)
-            })
+            //notify credentials provider about success
+            credentialsProvider.didFinishAuthenticating()
+            
+            return response
+        }
+        catch {
+            
+            //notify credentials provider about failure
+            credentialsProvider.didFailAuthenticating(with: error)
+            
+            //rethrow the error
+            throw error
         }
     }
 }
@@ -158,11 +138,15 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
      
      */
     
-    public convenience init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = _defaultNetworkClient) {
+    public convenience init(tokenEndpoint: URL, credentialsProvider: CredentialsProvider, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = .default) {
         
-        let clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
-        
-        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+        self.init(
+            tokenEndpoint: tokenEndpoint,
+            credentialsProvider: credentialsProvider,
+            scope: scope,
+            clientAuthorizer: .basic(clientID: clientID, secret: secret),
+            networkClient: networkClient
+        )
     }
     
     /**
@@ -179,12 +163,17 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
      - note: It is highly recommended to implement your own CredentialsProvider and use it instead of providing username and password directly. This way you could implement a loginc screen as a CredentialsProvider and allow the user to enter their username and password when needed.
      */
     
-    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = _defaultNetworkClient) {
+    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientID: String, secret: String, networkClient: NetworkClient = .default) {
         
         let credentialsProvider = AnyCredentialsProvider(username: username, password: password)
-        let clientAuthorizer = HTTPBasicAuthorizer(clientID: clientID, secret: secret)
         
-        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+        self.init(
+            tokenEndpoint: tokenEndpoint,
+            credentialsProvider: credentialsProvider,
+            scope: scope,
+            clientAuthorizer: .basic(clientID: clientID, secret: secret),
+            networkClient: networkClient
+        )
     }
     
     /**
@@ -200,11 +189,17 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
      - note: It is highly recommended to implement your own CredentialsProvider and use it instead of providing username and password directly. This way you could implement a loginc screen as a CredentialsProvider and allow the user to enter their username and password when needed.
      */
     
-    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = _defaultNetworkClient) {
+    public convenience init(tokenEndpoint: URL, username: String, password: String, scope: Scope?, clientAuthorizer: RequestAuthorizer, networkClient: NetworkClient = .default) {
         
         let credentialsProvider = AnyCredentialsProvider(username: username, password: password)
         
-        self.init(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+        self.init(
+            tokenEndpoint: tokenEndpoint,
+            credentialsProvider: credentialsProvider,
+            scope: scope,
+            clientAuthorizer: clientAuthorizer,
+            networkClient: networkClient
+        )
     }
 }
 
@@ -231,10 +226,10 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
         public var dictionary: [String: Any] {
             
             var dictionary = [String: Any]()
-            dictionary["grant_type"] = self.grantType.rawValue
-            dictionary["username"] = self.username
-            dictionary["password"] = self.password
-            dictionary["scope"] = self.scope?.value
+            dictionary["grant_type"] = grantType.rawValue
+            dictionary["username"] = username
+            dictionary["password"] = password
+            dictionary["scope"] = scope?.rawValue
             
             return dictionary
         }

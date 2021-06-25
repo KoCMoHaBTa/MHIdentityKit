@@ -17,80 +17,36 @@ public protocol RequestAuthorizer {
      Upon success, in the callback handler, the provided request will be authorized, otherwise the original request will be provided.
      
      - parameter request: The request to authorize.
-     - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
+     - throws: Error if the request cannot be authorized.
+     - returns: An authorized copy of the request.
      */
-    func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void)
+    func authorize(request: URLRequest) async throws -> URLRequest
 }
 
 extension URLRequest {
     
     /**
-     Authorize the receiver using a given authorizer. 
-     
-     Upon success, in the callback handler, the provided request will be an authorized copy of the receiver, otherwise a copy of the original receiver will be provided.
-     
-     - note: The implementation of this method simply calls `authorize` on the `authorizer`. For more information see `URLRequestAuthorizer`.
+     Authorize the receiver using a given authorizer.
      
      - parameter authorizer: The authorizer used to authorize the receiver.
-     - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
-     
-     */
-    public func authorize(using authorizer: RequestAuthorizer, handler: @escaping (URLRequest, Error?) -> Void) {
-        
-        authorizer.authorize(request: self, handler: handler)
-    }
-    
-    /**
-     Synchronously authorize the receiver using a given authorizer.
-     
-     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
-     
-     - parameter authorizer: The authorizer used to authorize the receiver.
-     
-     - throws: An authorization error.
+     - throws: An error, if the authorized cannot authorize the request.
      - returns: An authorized copy of the recevier.
      */
-    public func authorized(using authorizer: RequestAuthorizer) throws -> URLRequest {
+    public func authorized(using authorizer: RequestAuthorizer) async throws -> URLRequest {
         
-        var request = self
-        var error: Error? = nil
-        
-        let semaphore = DispatchSemaphore(value: 0)
-        
-        DispatchQueue(label: bundleIdentifier + ".authorization", qos: .default).async {
-            
-            self.authorize(using: authorizer, handler: { (r, e) in
-                
-                request = r
-                error = e
-                
-                semaphore.signal()
-            })
-        }
-        
-        semaphore.wait()
-        
-        guard error == nil else {
-            
-            throw error!
-        }
-        
-        return request
+        try await authorizer.authorize(request: self)
     }
     
     /**
-     Synchronously authorize the receiver using a given authorizer.
-     
-     - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
+     Authorize the receiver using a given authorizer.
      
      - parameter authorizer: The authorizer used to authorize the receiver.
-     
-     - throws: An authorization error.
+     - throws: An error, if the authorized cannot authorize the request..
      */
     
-    public mutating func authorize(using authorizer: RequestAuthorizer) throws {
+    public mutating func authorize(using authorizer: RequestAuthorizer) async throws {
         
-        try self = self.authorized(using: authorizer)
+        self = try await authorized(using: authorizer)
     }
 }
 

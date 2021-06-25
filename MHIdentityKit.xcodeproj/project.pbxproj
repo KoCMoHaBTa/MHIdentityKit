@@ -22,7 +22,6 @@
 		E61974921EE160F000DAFC15 /* RequestAuthorizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */; };
 		E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */; };
 		E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */; };
-		E61974AB1EE5635200DAFC15 /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
 		E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */; };
 		E61974B01EE5684500DAFC15 /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
 		E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */; };
@@ -78,6 +77,7 @@
 		E686CD04258CD755001EEF1D /* IDTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E686CD03258CD755001EEF1D /* IDTokenTests.swift */; };
 		E686CD0F258CD7A8001EEF1D /* IDTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E686CD03258CD755001EEF1D /* IDTokenTests.swift */; };
 		E686CD1A258CD7A8001EEF1D /* IDTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E686CD03258CD755001EEF1D /* IDTokenTests.swift */; };
+		E6910B152682EA7300F1913F /* JWTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5722E1E11500C22298 /* JWTTests.swift */; };
 		E6985D162068FDBC00BE5F6A /* MHIdentityKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9954AE481E9D169700F2A73D /* MHIdentityKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6985D172068FDC700BE5F6A /* MHIdentityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */; };
 		E6985D182068FDC700BE5F6A /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
@@ -88,7 +88,6 @@
 		E6985D1D2068FDCD00BE5F6A /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
 		E6985D1E2068FDD000BE5F6A /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EEB1ED85BA30099EE36 /* NetworkClient.swift */; };
 		E6985D1F2068FDD000BE5F6A /* DefaultNetoworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */; };
-		E6985D202068FDD000BE5F6A /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
 		E6985D212068FDD000BE5F6A /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E6985D222068FDD400BE5F6A /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */; };
 		E6985D242068FDD800BE5F6A /* IdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF11ED85BFC0099EE36 /* IdentityStorage.swift */; };
@@ -120,7 +119,6 @@
 		E6985DD820690C5D00BE5F6A /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
 		E6985DD920690C5D00BE5F6A /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EEB1ED85BA30099EE36 /* NetworkClient.swift */; };
 		E6985DDA20690C5D00BE5F6A /* DefaultNetoworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */; };
-		E6985DDB20690C5D00BE5F6A /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
 		E6985DDC20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E6985DDD20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */; };
 		E6985DDF20690C5D00BE5F6A /* IdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF11ED85BFC0099EE36 /* IdentityStorage.swift */; };
@@ -150,7 +148,6 @@
 		E6985DF720690C5D00BE5F6A /* OAuth2IdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */; };
 		E6985DF820690C5D00BE5F6A /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EEB1ED85BA30099EE36 /* NetworkClient.swift */; };
 		E6985DF920690C5D00BE5F6A /* DefaultNetoworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */; };
-		E6985DFA20690C5D00BE5F6A /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */; };
 		E6985DFB20690C5D00BE5F6A /* NetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */; };
 		E6985DFC20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF31ED85C030099EE36 /* CredentialsProvider.swift */; };
 		E6985DFE20690C5D00BE5F6A /* IdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EF11ED85BFC0099EE36 /* IdentityStorage.swift */; };
@@ -214,7 +211,6 @@
 		E69D5EFC1ED85C480099EE36 /* DefaultNetoworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */; };
 		E69D5F041ED85D0C0099EE36 /* InMemoryIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F031ED85D0C0099EE36 /* InMemoryIdentityStorage.swift */; };
 		E69D5F061ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69D5F051ED85D3A0099EE36 /* BearerAccessTokenAuthorizer.swift */; };
-		E6A31F1723EB46A400304B16 /* WebViewUserAgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */; };
 		E6B09F872115D548000A94C8 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9954AE451E9D169700F2A73D /* MHIdentityKit.framework */; };
 		E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09F8C2115E0D1000A94C8 /* WebViewUserAgentViewController.swift */; };
 		E6B09FA621160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */; };
@@ -305,6 +301,10 @@
 		E6DC216C1F028FEA008D182A /* KeychainIdentityStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216B1F028FEA008D182A /* KeychainIdentityStorage.swift */; };
 		E6DC216E1F0292C9008D182A /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216D1F0292C9008D182A /* Keychain.swift */; };
 		E6DC21791F0293D9008D182A /* OSStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC21781F0293D9008D182A /* OSStatus.swift */; };
+		E6E79488267E128500FFB352 /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79487267E128500FFB352 /* NetworkResponse.swift */; };
+		E6E79489267E128500FFB352 /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79487267E128500FFB352 /* NetworkResponse.swift */; };
+		E6E7948A267E128500FFB352 /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79487267E128500FFB352 /* NetworkResponse.swift */; };
+		E6E7948B267E128500FFB352 /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79487267E128500FFB352 /* NetworkResponse.swift */; };
 		E6E83B5A211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */; };
 		E6E83B5B211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */; };
 		E6E83B5C211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */; };
@@ -431,7 +431,6 @@
 		E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAuthorizerTests.swift; sourceTree = "<group>"; };
 		E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenRefreshRequest.swift; sourceTree = "<group>"; };
 		E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAccessTokenRefresher.swift; sourceTree = "<group>"; };
-		E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponse.swift; sourceTree = "<group>"; };
 		E61974AD1EE5683B00DAFC15 /* IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityManager.swift; sourceTree = "<group>"; };
 		E61974AF1EE5684500DAFC15 /* OAuth2IdentityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManager.swift; sourceTree = "<group>"; };
 		E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManagerTests.swift; sourceTree = "<group>"; };
@@ -506,7 +505,6 @@
 		E6B39C27206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHIdentityKitError.swift; sourceTree = "<group>"; };
-		E6C767D32332271100C10BAB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E6B57DCC230D931D00216421 /* SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RS256SignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HS256SignatureVerifier.swift; sourceTree = "<group>"; };
@@ -521,6 +519,7 @@
 		E6B57E0F230EAD2300216421 /* SecKeyFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyFactoryTests.swift; sourceTree = "<group>"; };
 		E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecKeyFactory+RSAPublicKey.swift"; sourceTree = "<group>"; };
 		E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecKeyFactory+X509Certificate.swift"; sourceTree = "<group>"; };
+		E6C767D32332271100C10BAB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E6C96B4D22E1DAD800C22298 /* JWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWT.swift; sourceTree = "<group>"; };
 		E6C96B5222E1DE9000C22298 /* JWTType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTType.swift; sourceTree = "<group>"; };
 		E6C96B5722E1E11500C22298 /* JWTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTTests.swift; sourceTree = "<group>"; };
@@ -528,6 +527,7 @@
 		E6DC216B1F028FEA008D182A /* KeychainIdentityStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainIdentityStorage.swift; sourceTree = "<group>"; };
 		E6DC216D1F0292C9008D182A /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		E6DC21781F0293D9008D182A /* OSStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSStatus.swift; sourceTree = "<group>"; };
+		E6E79487267E128500FFB352 /* NetworkResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponse.swift; sourceTree = "<group>"; };
 		E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNetworkClient.swift; sourceTree = "<group>"; };
 		E6E83B5E211F10C60062CB99 /* AnyCredentialsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCredentialsProvider.swift; sourceTree = "<group>"; };
 		E6E83B6A211F13AC0062CB99 /* AnyRequestAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequestAuthorizer.swift; sourceTree = "<group>"; };
@@ -693,8 +693,8 @@
 				E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */,
 				995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */,
 				E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */,
-				E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */,
 				E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */,
+				E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */,
 				9954AE701E9D248400F2A73D /* Flows */,
 			);
 			path = OAuth2;
@@ -849,7 +849,7 @@
 				E69D5EEB1ED85BA30099EE36 /* NetworkClient.swift */,
 				E6E83B59211F0EEA0062CB99 /* AnyNetworkClient.swift */,
 				E69D5EFB1ED85C480099EE36 /* DefaultNetoworkClient.swift */,
-				E61974AA1EE5635200DAFC15 /* NetworkResponse.swift */,
+				E6E79487267E128500FFB352 /* NetworkResponse.swift */,
 				E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */,
 				E6B09FA521160851000A94C8 /* AnyNetworkResponseValidator.swift */,
 			);
@@ -1449,13 +1449,13 @@
 				9954AE6D1E9D1E8000F2A73D /* MHIdentityKit.swift in Sources */,
 				E6985E84206A4F4700BE5F6A /* AuthorizationResponseType.swift in Sources */,
 				E619748C1EE1520C00DAFC15 /* ClientCredentialsGrantFlow.swift in Sources */,
+				E6E79488267E128500FFB352 /* NetworkResponse.swift in Sources */,
 				E63CE2DD26173AF400BD5833 /* JWK.swift in Sources */,
 				E6B57E1D230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
 				E6985E7F206A4CE200BE5F6A /* AuthorizationCodeGrantFlow.swift in Sources */,
 				E69D5EFC1ED85C480099EE36 /* DefaultNetoworkClient.swift in Sources */,
 				E63CE30B261754B000BD5833 /* JWKSet.swift in Sources */,
 				E6B57DD7230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
-				E61974AB1EE5635200DAFC15 /* NetworkResponse.swift in Sources */,
 				E6C96B6022E2194E00C22298 /* Data+Base64UrlEncoding.swift in Sources */,
 				E6FBAFBE23157C5A00AC51DF /* JWSSignatureVerifierRegistry.swift in Sources */,
 				998405CE1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
@@ -1485,6 +1485,7 @@
 				E6FBAF81231023D000AC51DF /* SecKeyVerifySignatureVerifierTests.swift in Sources */,
 				E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */,
 				E6B57DFB230E7AAC00216421 /* MockRSA.swift in Sources */,
+				E6910B152682EA7300F1913F /* JWTTests.swift in Sources */,
 				E6B39C2C206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */,
 				E6FBAF7A2310087500AC51DF /* SecKeyRawVerifySignatureVerifierTests.swift in Sources */,
 				E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */,
@@ -1527,7 +1528,6 @@
 				E6985D222068FDD400BE5F6A /* CredentialsProvider.swift in Sources */,
 				E6FBAFA62314141900AC51DF /* MockHS256.swift in Sources */,
 				E6B09FA721160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
-				E6985D202068FDD000BE5F6A /* NetworkResponse.swift in Sources */,
 				E6FBAFAB231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6985D192068FDCA00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985D2F2068FDDF00BE5F6A /* ErrorResponse.swift in Sources */,
@@ -1542,6 +1542,7 @@
 				E6985D172068FDC700BE5F6A /* MHIdentityKit.swift in Sources */,
 				E6985D262068FDD800BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
 				E6985D2C2068FDDF00BE5F6A /* Scope.swift in Sources */,
+				E6E79489267E128500FFB352 /* NetworkResponse.swift in Sources */,
 				E6985D252068FDD800BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
 				E6B57DD8230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
 				E6985D2D2068FDDF00BE5F6A /* AccessTokenResponse.swift in Sources */,
@@ -1597,7 +1598,6 @@
 				E6985DDD20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */,
 				E6FBAFA72314141900AC51DF /* MockHS256.swift in Sources */,
 				E6B09FA821160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
-				E6985DDB20690C5D00BE5F6A /* NetworkResponse.swift in Sources */,
 				E6FBAFAC231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6985DD420690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985DEA20690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
@@ -1612,6 +1612,7 @@
 				E6985DD220690C5D00BE5F6A /* MHIdentityKit.swift in Sources */,
 				E6985DE120690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
 				E6985DE720690C5D00BE5F6A /* Scope.swift in Sources */,
+				E6E7948A267E128500FFB352 /* NetworkResponse.swift in Sources */,
 				E6985DE020690C5D00BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
 				E6B57DD9230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
 				E6985DE820690C5D00BE5F6A /* AccessTokenResponse.swift in Sources */,
@@ -1691,7 +1692,6 @@
 				E6985DF920690C5D00BE5F6A /* DefaultNetoworkClient.swift in Sources */,
 				E6985E0520690C5D00BE5F6A /* GrantType.swift in Sources */,
 				E6985DFC20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */,
-				E6985DFA20690C5D00BE5F6A /* NetworkResponse.swift in Sources */,
 				E6B57DD5230D936900216421 /* RS256SignatureVerifier.swift in Sources */,
 				E6985DF320690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
 				E6985E0920690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
@@ -1710,6 +1710,7 @@
 				E6C96B5122E1DAD800C22298 /* JWT.swift in Sources */,
 				E6279D3322DD0021002AF76C /* IDToken.swift in Sources */,
 				E6985E0020690C5D00BE5F6A /* UserDefaultsIdentityStorage.swift in Sources */,
+				E6E7948B267E128500FFB352 /* NetworkResponse.swift in Sources */,
 				E6B09FAE21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6985E0620690C5D00BE5F6A /* Scope.swift in Sources */,
 				E6985DFF20690C5D00BE5F6A /* InMemoryIdentityStorage.swift in Sources */,
@@ -1733,7 +1734,6 @@
 				E6B57E18230F13E000216421 /* SecKeyFactory+RSAPublicKey.swift in Sources */,
 				E63CE30E261754B000BD5833 /* JWKSet.swift in Sources */,
 				E6B57DDA230D93E200216421 /* HS256SignatureVerifier.swift in Sources */,
-				E662042522CA4AAA002F3404 /* WebViewUserAgentViewController.swift in Sources */,
 				E6C96B5D22E2194D00C22298 /* Data+Base64UrlEncoding.swift in Sources */,
 				E6FBAFC123157C5A00AC51DF /* JWSSignatureVerifierRegistry.swift in Sources */,
 				E6E83B5D211F0EEA0062CB99 /* AnyNetworkClient.swift in Sources */,
@@ -2087,6 +2087,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "MHIdentityKit-iOSTestsHost/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTestsHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2105,6 +2106,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "MHIdentityKit-iOSTestsHost/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KoCMoHaBTa.MHIdentityKitTestsHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";

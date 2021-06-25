@@ -13,8 +13,8 @@ import Foundation
 public struct PresentableUserAgent<T: UserAgent>: UserAgent {
     
     public var userAgent: T
-    public var presentationHandler: (T) -> Void
-    public var dismissHandler: (T) -> Void
+    public var presentationHandler: (T) async -> Void
+    public var dismissHandler: (T) async -> Void
     
     /**
     Makes a presentable UserAgent of a given user agent.
@@ -33,33 +33,27 @@ public struct PresentableUserAgent<T: UserAgent>: UserAgent {
         self.dismissHandler = dismissHandler
     }
     
-    public func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool) {
+    public func present() async {
         
-        DispatchQueue.main.async {
-            
-            self.userAgent.perform(request, redirectURI: redirectURI, redirectionHandler: { (request) -> Bool in
-                
-                let didHandleRedirect = try redirectionHandler(request)
-                
-                if didHandleRedirect {
-                    
-                    self.dismiss()
-                }
-                
-                return didHandleRedirect
-            })
-            
-            self.present()
-        }
+        await presentationHandler(userAgent)
     }
     
-    public func present() {
+    public func dismiss() async {
         
-        self.presentationHandler(self.userAgent)
+        await dismissHandler(userAgent)
     }
     
-    public func dismiss() {
+    //MARK: - UserAgent
+    
+    public func perform(_ request: URLRequest, redirectURI: URL) async -> URLRequest? {
         
-        self.dismissHandler(self.userAgent)
+        await present()
+        return await userAgent.perform(request, redirectURI: redirectURI)
+    }
+    
+    public func finish(with error: Error?) async {
+        
+        await userAgent.finish(with: error)
+        await dismissHandler(userAgent)
     }
 }

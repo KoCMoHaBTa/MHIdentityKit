@@ -14,9 +14,9 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     public let authorizationEndpoint: URL
     public let tokenEndpoint: URL
     public let clientID: String
-    public let redirectURI: URL?
+    public let redirectURI: URL
     public let scope: Scope?
-    public let state: AnyHashable?
+    public let state: String?
     public let clientAuthorizer: RequestAuthorizer?
     public let userAgent: UserAgent
     public let networkClient: NetworkClient
@@ -44,7 +44,7 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
      
      */
 
-    public init(authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, redirectURI: URL?, scope: Scope?, state: AnyHashable? = NSUUID().uuidString, clientAuthorizer: RequestAuthorizer?, userAgent: UserAgent, networkClient: NetworkClient = _defaultNetworkClient) {
+    public init(authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, redirectURI: URL, scope: Scope?, state: String? = NSUUID().uuidString, clientAuthorizer: RequestAuthorizer?, userAgent: UserAgent, networkClient: NetworkClient = .default) {
 
         self.authorizationEndpoint = authorizationEndpoint
         self.tokenEndpoint = tokenEndpoint
@@ -71,7 +71,7 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
      
      */
     
-    public convenience init(authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, secret: String?, redirectURI: URL?, scope: Scope?, state: AnyHashable? = NSUUID().uuidString, userAgent: UserAgent, networkClient: NetworkClient = _defaultNetworkClient) {
+    public convenience init(authorizationEndpoint: URL, tokenEndpoint: URL, clientID: String, secret: String?, redirectURI: URL, scope: Scope?, state: String? = NSUUID().uuidString, userAgent: UserAgent, networkClient: NetworkClient = .default) {
         
         var clientAuthorizer: RequestAuthorizer?
         if let secret = secret {
@@ -89,13 +89,13 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         
         var parameters = [String: Any]()
         parameters["response_type"] = AuthorizationResponseType.code.rawValue
-        parameters["client_id"] = self.clientID
-        parameters["redirect_uri"] = self.redirectURI
-        parameters["scope"] = self.scope?.value
-        parameters["state"] = self.state
+        parameters["client_id"] = clientID
+        parameters["redirect_uri"] = redirectURI
+        parameters["scope"] = scope?.rawValue
+        parameters["state"] = state
 
         //merge with any additionally provided parameteres
-        parameters.merge(self.additionalAuthorizationRequestParameters, uniquingKeysWith: { $1 })
+        parameters.merge(additionalAuthorizationRequestParameters, uniquingKeysWith: { $1 })
         
         return parameters
     }
@@ -103,38 +103,32 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     ///Construct the [Authorization Request](https://tools.ietf.org/html/rfc6749#section-4.1.1) using the supplied parameters
     open func authorizationRequest(withParameters parameters: [String: Any]) -> URLRequest {
         
-        let url = self.authorizationEndpoint +?! parameters
+        let url = authorizationEndpoint +?! parameters
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
         return request
     }
     
-    ///Determine whenever the provided redirect request can be handled
-    open func canHandle(redirectRequest: URLRequest) -> Bool {
+    ///Determine whenever the provided redirect request is valid
+    open func validate(redirectRequest: URLRequest) async throws {
         
-        //if redirectURI is provided
-        if let redirectURI = self.redirectURI {
-            
-            //it must match with the url of the request, by ignoring the query parameters
-            guard
-            redirectURI.scheme == redirectRequest.url?.scheme,
-            redirectURI.host == redirectRequest.url?.host,
-            redirectURI.path == redirectRequest.url?.path
-            else {
-            
-                return false
-            }
+        guard
+        redirectURI.scheme == redirectRequest.url?.scheme,
+        redirectURI.host == redirectRequest.url?.host,
+        redirectURI.path == redirectRequest.url?.path
+        else {
+        
+            throw MHIdentityKitError.general(description: "Invalid redirect request", reason: "The redirect request does not match the redirectURI")
+
         }
         
         //the request url must contain either `code` or `error` query parameter
         let parameters = redirectRequest.url?.query?.urlDecodedParameters
         guard parameters?["code"] != nil || parameters?["error"] != nil else {
             
-            return false
+            throw MHIdentityKitError.general(description: "Invalid redirect request", reason: "Missing code or error parameter")
         }
-        
-        return true
     }
     
     ///Retrieves and returns the parameters for the [Authorization Response](https://tools.ietf.org/html/rfc6749#section-4.1.2) from the provided redirect request
@@ -158,10 +152,10 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     }
     
     ///Validates the [Authorization Response](https://tools.ietf.org/html/rfc6749#section-4.1.2) parameters
-    open func validate(authorizationResponseParameters parameters: [String: Any]) throws {
+    open func validate(authorizationResponseParameters parameters: [String: Any]) async throws {
         
         //the 'code' should be present and the 'state' sohuld not be tampered
-        guard parameters["code"] != nil && parameters["state"] as? AnyHashable == self.state else {
+        guard parameters["code"] != nil && parameters["state"] as? String == state else {
             
             throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse)
         }
@@ -176,11 +170,11 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         var parameters = [String: Any]()
         parameters["grant_type"] = GrantType.authorizationCode.rawValue
         parameters["code"] = code
-        parameters["redirect_uri"] = self.redirectURI
-        parameters["client_id"] = self.clientAuthorizer == nil ? self.clientID : nil
+        parameters["redirect_uri"] = redirectURI
+        parameters["client_id"] = clientAuthorizer == nil ? clientID : nil
         
         //merge with any additionally provided parameteres
-        parameters.merge(self.additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
+        parameters.merge(additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
         
         return parameters
     }
@@ -188,7 +182,7 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     ///Construct the [Access Token Request](https://tools.ietf.org/html/rfc6749#section-4.1.3) using the supplied parameters
     open func accessTokenRequest(withParameteres parameteres: [String: Any]) -> URLRequest {
         
-        var request = URLRequest(url: self.tokenEndpoint)
+        var request = URLRequest(url: tokenEndpoint)
         request.httpMethod = "POST"
         request.httpBody = parameteres.urlEncodedParametersData
         
@@ -196,115 +190,63 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     }
     
     ///Authorize the access token request, if needed
-    open func authorize(accesTokenRequest: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
+    open func authorize(accesTokenRequest: URLRequest) async throws -> URLRequest {
         
-        guard let clientAuthorizer = self.clientAuthorizer else {
+        guard let clientAuthorizer = clientAuthorizer else {
             
-            handler(accesTokenRequest, nil)
-            return
+            return accesTokenRequest
         }
         
-        clientAuthorizer.authorize(request: accesTokenRequest, handler: handler)
+        return try await clientAuthorizer.authorize(request: accesTokenRequest)
     }
     
     ///Retrieves and returns the parameters for the [Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.1.4) from the provided network response
     open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
      
-        return try AccessTokenResponseHandler().handle(response: networkResponse)
+        try AccessTokenResponseHandler().handle(response: networkResponse)
     }
     
     ///Validates the [Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.1.4) parameters
-    open func validate(accessTokenResponse: AccessTokenResponse) throws {
+    open func validate(accessTokenResponse: AccessTokenResponse) async throws {
         
         //nothing to validate here
     }
     
     //MARK: - AuthorizationGrantFlow
     
-    open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    open func authenticate() async throws -> AccessTokenResponse {
         
         let authorizationRequestParameters = self.authorizationRequestParameters()
         let authorizationRequest = self.authorizationRequest(withParameters: authorizationRequestParameters)
         
-        self.userAgent.perform(authorizationRequest, redirectURI: self.redirectURI) { [weak self] (redirectRequest) throws -> Bool in
+        guard let redirectRequest = await userAgent.perform(authorizationRequest, redirectURI: redirectURI) else {
             
-            //utility to fail and complete
-            func fail(with error: Error) -> Error  {
-                
-                handler(nil, error)
-                return error
-            }
-            
-            //utility to try or fail and complete
-            func orFail<T>(_ closure: @autoclosure () throws -> T) throws -> T {
-                
-                do {
-                    
-                    return try closure()
-                }
-                catch {
-                    
-                    throw fail(with: error)
-                }
-            }
-            
-            //if self was deallocated, there is no point to continue
-            guard let _self = self else {
-                
-                throw fail(with: MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.general(message: "Flow was deallocated")))
-            }
-            
-            //check if the redirectRequest can be handled
-            guard _self.canHandle(redirectRequest: redirectRequest) else {
-                
-                return false
-            }
-            
-            //create the authorizagtion response and validate it
-            let authorizationResponseParameters = try orFail(_self.authorizationResponseParameters(fromRedirectRequest: redirectRequest))
-            try orFail(_self.validate(authorizationResponseParameters: authorizationResponseParameters))
-            
-            //prepare for authentication
-            let accessTokenRequestParameters = try _self.accessTokenRequestParameters(fromAuthorizationResponseParameters: authorizationResponseParameters)
-            let accesTokenRequest = _self.accessTokenRequest(withParameteres: accessTokenRequestParameters)
-            
-            //authorize the token request
-            _self.authorize(accesTokenRequest: accesTokenRequest, handler: { (accesTokenRequest, error) in
-                
-                guard error == nil else {
-                    
-                    DispatchQueue.main.async {
-                        
-                        handler(nil, error)
-                    }
-                    
-                    return
-                }
-                
-                //perform the token request
-                _self.networkClient.perform(accesTokenRequest, completion: { (networkResponse) in
-                    
-                    do {
-                        
-                        let accessTokenResponse = try _self.accessTokenResponse(from: networkResponse)
-                        try _self.validate(accessTokenResponse: accessTokenResponse)
-                        
-                        DispatchQueue.main.async {
-                            
-                            handler(accessTokenResponse, nil)
-                        }
-                    }
-                    catch {
-                        
-                        DispatchQueue.main.async {
-                            
-                            handler(nil, error)
-                        }
-                    }
-                })
-            })
-            
-            return true
+            throw MHIdentityKitError.general(description: "UserAgent has been cancelled", reason: "The UserAgent was unable to return a valid redirect request.")
         }
+        
+        do {
+            try await validate(redirectRequest: redirectRequest)
+            await userAgent.finish(with: nil)
+        }
+        catch {
+            await userAgent.finish(with: error)
+            throw error
+        }
+        
+        //create the authorizagtion response and validate it
+        let authorizationResponseParameters = try authorizationResponseParameters(fromRedirectRequest: redirectRequest)
+        try await validate(authorizationResponseParameters: authorizationResponseParameters)
+        
+        //prepare for authentication
+        let accessTokenRequestParameters = try accessTokenRequestParameters(fromAuthorizationResponseParameters: authorizationResponseParameters)
+        var accesTokenRequest = accessTokenRequest(withParameteres: accessTokenRequestParameters)
+        accesTokenRequest = try await authorize(accesTokenRequest: accesTokenRequest)
+        
+        //perform the token request
+        let networkResponse = try await networkClient.perform(accesTokenRequest)
+        let accessTokenResponse = try accessTokenResponse(from: networkResponse)
+        try await validate(accessTokenResponse: accessTokenResponse)
+        
+        return accessTokenResponse
     }
 }

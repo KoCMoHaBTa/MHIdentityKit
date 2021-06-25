@@ -20,21 +20,16 @@ public struct AccessTokenResponseHandler {
     
     public func handle(response networkResponse: NetworkResponse) throws -> AccessTokenResponse {
         
-        //if there is an error - throw it
-        if let error = networkResponse.error {
-            
-            throw error
-        }
-        
         //if response is unknown - throw an error
         guard let response = networkResponse.response as? HTTPURLResponse else {
             
             throw MHIdentityKitError.Reason.unknownURLResponse
         }
         
+        let data = networkResponse.data
+        
         //parse the data
         guard
-        let data = networkResponse.data,
         let parameters = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         else {
             

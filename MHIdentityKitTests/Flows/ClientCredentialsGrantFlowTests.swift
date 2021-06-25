@@ -17,195 +17,162 @@ class ClientCredentialsGrantFlowTests: XCTestCase {
     let scope: Scope = "read write"
     let clientAuthorizer = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
     
-    func testClientCredentialsGrantFlow() {
+    func testClientCredentialsGrantFlow() async throws {
         
-        self.performExpectation { (e) in
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
             
-            e.expectedFulfillmentCount = 2
+            networkClientCallCount += 1
             
-            let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
+            XCTAssertEqual(request.url, self.tokenEndpoint)
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
                 
-                XCTAssertEqual(request.url, self.tokenEndpoint)
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "client_credentials")
-                XCTAssertEqual(parameters["scope"], "read write")
-                
-                e.fulfill()
-                
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                handler(NetworkResponse(data: data, response: response, error: nil))
+                throw "Unable to decode body parameters"
             }
             
-            let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
-                
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertNil(response?.refreshToken)
-                XCTAssertNil(response?.scope)
-                
-                e.fulfill()
-            })
+            XCTAssertEqual(parameters["grant_type"], "client_credentials")
+            XCTAssertEqual(parameters["scope"], "read write")
+            
+            let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            
+            return NetworkResponse(data: data, response: response)
         }
+        
+        let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(
+            tokenEndpoint: tokenEndpoint,
+            scope: scope,
+            clientAuthorizer: clientAuthorizer,
+            networkClient: networkClient
+        )
+        
+        let response = try await flow.authenticate()
+        
+        XCTAssertEqual(response.accessToken, "tat")
+        XCTAssertEqual(response.tokenType, "ttt")
+        XCTAssertEqual(response.expiresIn, 1234)
+        XCTAssertNil(response.refreshToken)
+        XCTAssertNil(response.scope)
+        
+        
     }
     
-    func testErrorDueToProvidedRefreshToken() {
+    func testErrorDueToProvidedRefreshToken() async throws {
         
-        self.performExpectation { (e) in
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
             
-            e.expectedFulfillmentCount = 2
+            networkClientCallCount += 1
             
-            let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
+            XCTAssertEqual(request.url, self.tokenEndpoint)
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
                 
-                XCTAssertEqual(request.url, self.tokenEndpoint)
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "client_credentials")
-                XCTAssertEqual(parameters["scope"], "read write")
-                
-                e.fulfill()
-                
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                handler(NetworkResponse(data: data, response: response, error: nil))
+                throw "Unable to decode body parameters"
             }
             
-            let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
+            XCTAssertEqual(parameters["grant_type"], "client_credentials")
+            XCTAssertEqual(parameters["scope"], "read write")
             
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNil(response)
-                XCTAssertNotNil(error)
-                
-                e.fulfill()
-            })
+            let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234,\"refresh_token\":\"trt\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            
+            return NetworkResponse(data: data, response: response)
         }
+        
+        let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(
+            tokenEndpoint: tokenEndpoint,
+            scope: scope,
+            clientAuthorizer: clientAuthorizer,
+            networkClient: networkClient
+        )
+        
+        
+        do {
+            _ = try await flow.authenticate()
+            XCTFail("An error should be thrown")
+        }
+        catch MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse) {}
     }
     
-    func testErrorFromNetworkClient() {
+    func testErrorFromNetworkClient() async throws {
         
-        self.performExpectation { (e) in
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
             
-            e.expectedFulfillmentCount = 2
+            networkClientCallCount += 1
             
-            let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
+            XCTAssertEqual(request.url, self.tokenEndpoint)
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
                 
-                XCTAssertEqual(request.url, self.tokenEndpoint)
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "client_credentials")
-                XCTAssertEqual(parameters["scope"], "read write")
-                
-                e.fulfill()
-                
-                
-                let data = "{\"error\":\"invalid_grant\"}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 400, httpVersion: nil, headerFields: nil)
-                
-                handler(NetworkResponse(data: data, response: response, error: nil))
+                throw "Unable to decode body parameters"
             }
             
-            let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
+            XCTAssertEqual(parameters["grant_type"], "client_credentials")
+            XCTAssertEqual(parameters["scope"], "read write")
             
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNil(response)
-                XCTAssertNotNil(error)
-                
-                e.fulfill()
-            })
+            let data = "{\"error\":\"invalid_grant\"}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 400, httpVersion: nil, headerFields: nil)!
+            
+            return NetworkResponse(data: data, response: response)
         }
+        
+        let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+        
+        do {
+            _ = try await flow.authenticate()
+            XCTFail("An error should be thrown")
+        }
+        catch let error as ErrorResponse where error.code == .invalidGrant {}
     }
     
-    func testAdditionalParameters() {
+    func testAdditionalParameters() async throws {
         
-        self.performExpectation { (e) in
+        
+        var networkClientCallCount = 0
+        let networkClient: NetworkClient = AnyNetworkClient { request in
             
-            e.expectedFulfillmentCount = 2
+            networkClientCallCount += 1
             
-            let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
+            XCTAssertEqual(request.url, self.tokenEndpoint)
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
+            XCTAssertNotNil(request.httpBody)
+            
+            guard let parameters = request.httpBody?.urlDecodedParameters else {
                 
-                XCTAssertEqual(request.url, self.tokenEndpoint)
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dGNpZDp0cw==")
-                XCTAssertNotNil(request.httpBody)
-                
-                guard
-                let parameters = request.httpBody?.urlDecodedParameters
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                XCTAssertEqual(parameters["grant_type"], "client_credentials")
-                XCTAssertEqual(parameters["scope"], "tampered scope")
-                XCTAssertEqual(parameters["additional_parameter"], "ap")
-                
-                e.fulfill()
-                
-                
-                let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234}".data(using: .utf8)
-                let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)
-                
-                handler(NetworkResponse(data: data, response: response, error: nil))
+                throw "Unable to decode body parameters"
             }
             
-            let flow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
+            XCTAssertEqual(parameters["grant_type"], "client_credentials")
+            XCTAssertEqual(parameters["scope"], "tampered scope")
+            XCTAssertEqual(parameters["additional_parameter"], "ap")
             
-            flow.additionalAccessTokenRequestParameters = ["additional_parameter": "ap", "scope": "tampered scope"]
+            let data = "{\"access_token\":\"tat\",\"token_type\":\"ttt\",\"expires_in\":1234}".data(using: .utf8)!
+            let response = HTTPURLResponse(url: self.tokenEndpoint, statusCode: 200, httpVersion: nil, headerFields: nil)!
             
-            flow.authenticate(handler: { (response, error) in
-                
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-                
-                XCTAssertEqual(response?.accessToken, "tat")
-                XCTAssertEqual(response?.tokenType, "ttt")
-                XCTAssertEqual(response?.expiresIn, 1234)
-                XCTAssertNil(response?.refreshToken)
-                XCTAssertNil(response?.scope)
-                
-                e.fulfill()
-            })
+            return NetworkResponse(data: data, response: response)
         }
+        
+        let flow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: networkClient)
+        
+        flow.additionalAccessTokenRequestParameters = ["additional_parameter": "ap", "scope": "tampered scope"]
+        
+        let response = try await flow.authenticate()
+        
+        XCTAssertEqual(response.accessToken, "tat")
+        XCTAssertEqual(response.tokenType, "ttt")
+        XCTAssertEqual(response.expiresIn, 1234)
+        XCTAssertNil(response.refreshToken)
+        XCTAssertNil(response.scope)
     }
 }
 

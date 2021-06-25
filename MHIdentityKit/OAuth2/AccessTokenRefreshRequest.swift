@@ -12,8 +12,8 @@ import Foundation
 public struct AccessTokenRefreshRequest {
     
     public let grantType: GrantType = .refreshToken
-    public let refreshToken: String
-    public let scope: Scope?
+    public var refreshToken: String
+    public var scope: Scope?
     
     public init(refreshToken: String, scope: Scope?) {
         
@@ -26,7 +26,7 @@ public struct AccessTokenRefreshRequest {
         var dictionary = [String: Any]()
         dictionary["grant_type"] = self.grantType.rawValue
         dictionary["refresh_token"] = self.refreshToken
-        dictionary["scope"] = self.scope?.value
+        dictionary["scope"] = self.scope?.rawValue
         
         return dictionary
     }

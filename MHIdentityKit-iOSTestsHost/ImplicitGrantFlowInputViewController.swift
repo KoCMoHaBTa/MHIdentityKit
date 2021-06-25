@@ -123,7 +123,7 @@ class ImplicitGrantFlowInputViewController: UITableViewController, UITextFieldDe
         var scope: Scope? = nil
         if let scopeString = self.scopeTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), scopeString.isEmpty == false {
             
-            scope = Scope(value: scopeString)
+            scope = Scope(rawValue: scopeString)
         }
         
         guard let authorizationURLString = self.authorizationURLTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), authorizationURLString.isEmpty == false, let authorizationURL = URL(string: authorizationURLString) else {
@@ -149,17 +149,24 @@ class ImplicitGrantFlowInputViewController: UITableViewController, UITextFieldDe
             self?.navigationController?.popViewController(animated: true)
         }
         
-        var flow: AuthorizationGrantFlow? = ImplicitGrantFlow(authorizationEndpoint: authorizationURL, clientID: client, redirectURI: redirectURL, scope: scope, userAgent: userAgent)
+        let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationURL, clientID: client, redirectURI: redirectURL, scope: scope, userAgent: userAgent)
         
-        flow?.authenticate { [weak self] (accessTokenResponse, error) in
+        if #available(iOS 15.0, *) {
             
-            self?.accessTokenResponse = accessTokenResponse
-            self?.accessTokenError = error
-            
-            self?.showResult()
-            
-            flow = nil
+            async { [weak self] in
+                do {
+                    
+                    self?.accessTokenResponse = try await flow.authenticate()
+                }
+                catch {
+                    
+                    self?.accessTokenError = error
+                }
+                
+                self?.showResult()
+            }
         }
+        else { fatalError("Xcode 13 Beta 1 requires iOS 15 for all async/await APIs ") }
     }
     
     //MARK: - UITableViewDataSource & UITableViewDelegate

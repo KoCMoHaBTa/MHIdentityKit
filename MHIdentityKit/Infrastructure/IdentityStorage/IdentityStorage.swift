@@ -9,7 +9,7 @@
 import Foundation
 
 ///A type that stores identity information. It is preferable that this implementation stores the data into a secure place, like the keychain
-public protocol IdentityStorage: class {
+public protocol IdentityStorage: AnyObject {
     
     ///Stores or updates a value for a given key. If value is nil - previously stored value is removed.
     func set(_ value: String?, forKey key: String)
@@ -23,15 +23,8 @@ extension IdentityStorage {
     //implements a subscript behaviour
     public subscript(key: String) -> String? {
         
-        get {
-            
-            return self.value(forKey: key)
-        }
-        
-        set {
-            
-            self.set(newValue, forKey: key)
-        }
+        get { value(forKey: key) }
+        set { set(newValue, forKey: key) }
     }
 }
 

@@ -11,11 +11,8 @@ import Foundation
 ///A type that provides credentials
 public protocol CredentialsProvider {
     
-    typealias Username = String
-    typealias Password = String
-    
     ///Provides credentials in an asynchronous manner. Can be implemented in a way to show a login screen.
-    func credentials(handler: @escaping (Username, Password) -> Void)
+    func credentials() async -> (username: String, password: String)
     
     ///(Optional) Called to notify the receiver that authentication has been successful with the suplied credentials.
     func didFinishAuthenticating()
@@ -26,14 +23,6 @@ public protocol CredentialsProvider {
 
 extension CredentialsProvider {
     
-    public func didFinishAuthenticating() {
-        
-        
-    }
-    
-    public func didFailAuthenticating(with error: Error) {
-        
-    }
+    public func didFinishAuthenticating() {}
+    public func didFailAuthenticating(with error: Error) {}
 }
-
-

@@ -10,43 +10,17 @@ import XCTest
 @testable import MHIdentityKit
 
 extension String: Error {}
-
-class TestNetworkClient: NetworkClient {
+extension String: LocalizedError {
     
-    let handler: (URLRequest, (NetworkResponse) -> Void) -> Void
-    
-    init(handler: @escaping (URLRequest, (NetworkResponse) -> Void) -> Void) {
-        
-        self.handler = handler
-    }
-    
-    func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
-        
-        self.handler(request, completion)
-    }
-}
-
-class TestUserAgent: UserAgent {
-    
-    let handler: (URLRequest, URL?, @escaping (URLRequest) throws -> Bool) -> Void
-    
-    init(handler: @escaping (URLRequest, URL?, @escaping (URLRequest) throws -> Bool) -> Void) {
-        
-        self.handler = handler
-    }
-    
-    func perform(_ request: URLRequest, redirectURI: URL?, redirectionHandler: @escaping (URLRequest) throws -> Bool) {
-        
-        self.handler(request, redirectURI, redirectionHandler)
-    }
+    public var errorDescription: String? { self }
 }
 
 class MHIdentityKitTests: XCTestCase {
     
     func testScope() {
         
-        XCTAssertEqual(Scope(value: "read write").components, ["read", "write"])
-        XCTAssertEqual(Scope(components: ["read", "write"]).value, "read write")
+        XCTAssertEqual(Scope(rawValue: "read write").components, ["read", "write"])
+        XCTAssertEqual(Scope(components: ["read", "write"]).rawValue, "read write")
     }
     
     func testKeychain() {
@@ -73,4 +47,10 @@ class MHIdentityKitTests: XCTestCase {
         XCTAssertNil(keychain.genericPassword(forUsername: "gg2"))
         XCTAssertNil(keychain.genericPassword(forUsername: "gg3"))
     }
+}
+
+func XCTAwait<T>(_ value: @autoclosure () async -> T, assert: (_ value: T) -> Void) async {
+    
+    let value = await value()
+    assert(value)
 }

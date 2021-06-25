@@ -11,18 +11,24 @@ import Foundation
 ///A default, closure based implementation of CredentialsProvider
 public struct AnyCredentialsProvider: CredentialsProvider {
     
-    private let credentialsHandler: (_ handler: @escaping (CredentialsProvider.Username, CredentialsProvider.Password) -> Void) -> Void
-    private let didFinishAuthenticatingHandler: (() -> Void)?
-    private let didFailAuthenticatingHandler: ((Error) -> Void)?
+    public typealias CredentialsHandler = () async -> (username: String, password: String)
+    public typealias DidFinishAuthenticatingHandler = () -> Void
+    public typealias DidFailAuthenticatingHandler = (_ error: Error) -> Void
     
-    public init(credentialsHandler: @escaping (_ handler: @escaping (CredentialsProvider.Username, CredentialsProvider.Password) -> Void) -> Void) {
-        
-        self.init(credentialsHandler: credentialsHandler, didFinishAuthenticatingHandler: nil, didFailAuthenticatingHandler: nil)
-    }
+    private let credentialsHandler: CredentialsHandler
+    private let didFinishAuthenticatingHandler: DidFinishAuthenticatingHandler?
+    private let didFailAuthenticatingHandler: DidFailAuthenticatingHandler?
     
-    public init(credentialsHandler: @escaping (_ handler: @escaping (CredentialsProvider.Username, CredentialsProvider.Password) -> Void) -> Void, didFinishAuthenticatingHandler: (() -> Void)?, didFailAuthenticatingHandler: ((Error) -> Void)?) {
+    public init(credentialsHandler: @escaping CredentialsHandler, didFinishAuthenticatingHandler: DidFinishAuthenticatingHandler? = nil, didFailAuthenticatingHandler: DidFailAuthenticatingHandler? = nil) {
         
         self.credentialsHandler = credentialsHandler
+        self.didFinishAuthenticatingHandler = didFinishAuthenticatingHandler
+        self.didFailAuthenticatingHandler = didFailAuthenticatingHandler
+    }
+    
+    public init(username: String, password: String, didFinishAuthenticatingHandler: DidFinishAuthenticatingHandler? = nil, didFailAuthenticatingHandler: DidFailAuthenticatingHandler? = nil) {
+        
+        self.credentialsHandler = { (username, password) }
         self.didFinishAuthenticatingHandler = didFinishAuthenticatingHandler
         self.didFailAuthenticatingHandler = didFailAuthenticatingHandler
     }
@@ -34,36 +40,42 @@ public struct AnyCredentialsProvider: CredentialsProvider {
         self.didFailAuthenticatingHandler = credentialsProvider.didFailAuthenticating
     }
     
-    public init(username: Username, password: Password) {
-        
-        self.init(username: username, password: password, didFinishAuthenticatingHandler: nil, didFailAuthenticatingHandler: nil)
-    }
-    
-    public init(username: Username, password: Password, didFinishAuthenticatingHandler: (() -> Void)?, didFailAuthenticatingHandler: ((Error) -> Void)?) {
-        
-        self.credentialsHandler = { handler in
-            
-            handler(username, password)
-        }
-        
-        self.didFinishAuthenticatingHandler = didFinishAuthenticatingHandler
-        self.didFailAuthenticatingHandler = didFailAuthenticatingHandler
-    }
-    
     //MARK: - CredentialsProvider
     
-    public func credentials(handler: @escaping (CredentialsProvider.Username, CredentialsProvider.Password) -> Void) {
+    public func credentials() async -> (username: String, password: String) {
         
-        self.credentialsHandler(handler)
+        await credentialsHandler()
     }
     
     public func didFinishAuthenticating() {
         
-        self.didFinishAuthenticatingHandler?()
+        didFinishAuthenticatingHandler?()
     }
     
     public func didFailAuthenticating(with error: Error) {
         
-        self.didFailAuthenticatingHandler?(error)
+        didFailAuthenticatingHandler?(error)
+    }
+}
+
+extension CredentialsProvider where Self == AnyCredentialsProvider {
+    
+    public static func any(credentialsHandler: @escaping Self.CredentialsHandler, didFinishAuthenticatingHandler: Self.DidFinishAuthenticatingHandler? = nil, didFailAuthenticatingHandler: Self.DidFailAuthenticatingHandler? = nil) -> Self {
+        
+        .init(
+            credentialsHandler: credentialsHandler,
+            didFinishAuthenticatingHandler: didFinishAuthenticatingHandler,
+            didFailAuthenticatingHandler: didFailAuthenticatingHandler
+        )
+    }
+    
+    public static func any(username: String, password: String, didFinishAuthenticatingHandler: Self.DidFinishAuthenticatingHandler? = nil, didFailAuthenticatingHandler: Self.DidFailAuthenticatingHandler? = nil) -> Self {
+        
+        .init(
+            username: username,
+            password: password,
+            didFinishAuthenticatingHandler: didFinishAuthenticatingHandler,
+            didFailAuthenticatingHandler: didFailAuthenticatingHandler
+        )
     }
 }

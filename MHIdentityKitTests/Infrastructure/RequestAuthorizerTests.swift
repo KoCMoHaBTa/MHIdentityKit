@@ -12,215 +12,125 @@ import XCTest
 
 class RequestAuthorizerTests: XCTestCase {
     
-    func testHTTPBasicAuthorizer() {
+    func testHTTPBasicAuthorizer() async throws {
         
         let authorizer: RequestAuthorizer = HTTPBasicAuthorizer(username: "tun", password: "tps")
         let request = URLRequest(url: URL(string: "http://foo.bar")!)
+        let authorizedRequest = try await authorizer.authorize(request: request)
         
-        self.performExpectation { (e) in
-        
-            authorizer.authorize(request: request) { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic dHVuOnRwcw==")
-                
-                e.fulfill()
-            }
-        }
+        XCTAssertEqual(authorizedRequest.value(forHTTPHeaderField: "Authorization"), "Basic dHVuOnRwcw==")
     }
     
-    func testBearerAccessTokenAuthorizerUsingHeader() {
+    func testBearerAccessTokenAuthorizerUsingHeader() async throws {
         
         let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .header)
+        let request = URLRequest(url: URL(string: "http://foo.bar/test")!)
+        let authorizedRequest = try await authorizer.authorize(request: request)
         
-        self.performExpectation { (e) in
-            
-            let request = URLRequest(url: URL(string: "http://foo.bar/test")!)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer test_token")
-                
-                e.fulfill()
-            })
-        }
+        XCTAssertEqual(authorizedRequest.value(forHTTPHeaderField: "Authorization"), "Bearer test_token")
     }
     
-    func testBearerAccessTokenAuthorizerUsingBody() {
+    func testBearerAccessTokenAuthorizerUsingBodyWithInvalidContentType() async throws {
+        
+        do {
+            let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .body)
+            let request = URLRequest(url: URL(string: "http://foo.bar")!)
+            _ = try await authorizer.authorize(request: request)
+            XCTFail("An error should be thrown")
+        }
+        catch MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidContentType) {}
+    }
+    
+    func testBearerAccessTokenAuthorizerUsingBodyWithInvalidRequestMethod() async throws {
+        
+        do {
+            let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .body)
+            var request = URLRequest(url: URL(string: "http://foo.bar")!)
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            _ = try await authorizer.authorize(request: request)
+            XCTFail("An error should be thrown")
+        }
+        catch MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestMethod) {}
+    }
+    
+    func testBearerAccessTokenAuthorizerUsingNilBody() async throws {
         
         let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .body)
         
-        self.performExpectation { (e) in
-            
-            let request = URLRequest(url: URL(string: "http://foo.bar")!)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNotNil(error)
-                XCTAssertNil(request.httpBody)
-                
-                guard
-                let error = error as? MHIdentityKitError,
-                case MHIdentityKitError.authorizationFailed(let reason) = error,
-                case MHIdentityKitError.Reason.invalidContentType = reason
-                else {
-                 
-                    XCTFail()
-                    return
-                }
-                
-                e.fulfill()
-            })
-        }
+        var request = URLRequest(url: URL(string: "http://foo.bar")!)
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
         
-        self.performExpectation { (e) in
-            
-            var request = URLRequest(url: URL(string: "http://foo.bar")!)
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNotNil(error)
-                XCTAssertNil(request.httpBody)
-                
-                guard
-                let error = error as? MHIdentityKitError,
-                case MHIdentityKitError.authorizationFailed(let reason) = error,
-                case MHIdentityKitError.Reason.invalidRequestMethod = reason
-                else {
-                    
-                    XCTFail()
-                    return
-                }
-                
-                e.fulfill()
-            })
-        }
+        let authorizedRequest = try await authorizer.authorize(request: request)
         
-        self.performExpectation { (e) in
-            
-            var request = URLRequest(url: URL(string: "http://foo.bar")!)
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            request.httpMethod = "POST"
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.httpBody?.base64EncodedString(), "YWNjZXNzX3Rva2VuPXRlc3RfdG9rZW4=")
-                
-                e.fulfill()
-            })
-        }
-        
-        self.performExpectation { (e) in
-            
-            var request = URLRequest(url: URL(string: "http://foo.bar")!)
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            request.httpMethod = "POST"
-            request.httpBody = "".data(using: .utf8)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.httpBody?.base64EncodedString(), "YWNjZXNzX3Rva2VuPXRlc3RfdG9rZW4=")
-                
-                e.fulfill()
-            })
-        }
-        
-        self.performExpectation { (e) in
-            
-            var request = URLRequest(url: URL(string: "http://foo.bar")!)
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            request.httpMethod = "POST"
-            request.httpBody = "tdp=tdv".data(using: .utf8)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.httpBody?.base64EncodedString(), "dGRwPXRkdiZhY2Nlc3NfdG9rZW49dGVzdF90b2tlbg==")
-                
-                e.fulfill()
-            })
-        }
+        XCTAssertEqual(authorizedRequest.httpBody?.base64EncodedString(), "YWNjZXNzX3Rva2VuPXRlc3RfdG9rZW4=")
     }
     
-    func testBearerAccessTokenAuthorizerUsingQuery() {
+    func testBearerAccessTokenAuthorizerUsingEmptyBody() async throws {
         
-        let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .query)
+        let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .body)
         
-        self.performExpectation { (e) in
-            
-            let request = URLRequest(url: URL(string: "http://foo.bar")!)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.url?.absoluteString, "http://foo.bar?access_token=test_token")
-                
-                e.fulfill()
-            })
-        }
+        var request = URLRequest(url: URL(string: "http://foo.bar")!)
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = "".data(using: .utf8)
         
-        self.performExpectation { (e) in
-            
-            let request = URLRequest(url: URL(string: "http://foo.bar/")!)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.url?.absoluteString, "http://foo.bar/?access_token=test_token")
-                
-                e.fulfill()
-            })
-        }
+        let authorizedRequest = try await authorizer.authorize(request: request)
         
-        self.performExpectation { (e) in
-            
-            let request = URLRequest(url: URL(string: "http://foo.bar/?")!)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.url?.absoluteString, "http://foo.bar/?access_token=test_token")
-                
-                e.fulfill()
-            })
-        }
-        
-        self.performExpectation { (e) in
-            
-            let request = URLRequest(url: URL(string: "http://foo.bar/test?")!)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.url?.absoluteString, "http://foo.bar/test?access_token=test_token")
-                
-                e.fulfill()
-            })
-        }
-        
-        self.performExpectation { (e) in
-            
-            let request = URLRequest(url: URL(string: "http://foo.bar/test?gg=5")!)
-            
-            authorizer.authorize(request: request, handler: { (request, error) in
-                
-                XCTAssertNil(error)
-                XCTAssertEqual(request.url?.absoluteString, "http://foo.bar/test?gg=5&access_token=test_token")
-                
-                e.fulfill()
-            })
-        }
+        XCTAssertEqual(authorizedRequest.httpBody?.base64EncodedString(), "YWNjZXNzX3Rva2VuPXRlc3RfdG9rZW4=")
     }
     
-    func testSynchronousAuthorization() {
+    func testBearerAccessTokenAuthorizerUsingBody() async throws {
+        
+        let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .body)
+        
+        var request = URLRequest(url: URL(string: "http://foo.bar")!)
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = "tdp=tdv".data(using: .utf8)
+        
+        let authorizedRequest = try await authorizer.authorize(request: request)
+        
+        XCTAssertEqual(authorizedRequest.httpBody?.base64EncodedString(), "dGRwPXRkdiZhY2Nlc3NfdG9rZW49dGVzdF90b2tlbg==")
+    }
+    
+    func testBearerAccessTokenAuthorizerUsingEmptyQueryNoTrailingSlash() async throws {
         
         let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .query)
-        let request = try! URLRequest(url: URL(string: "http://foo.bar")!).authorized(using: authorizer)
+        let request = try await URLRequest(url: URL(string: "http://foo.bar")!).authorized(using: authorizer)
         
-        XCTAssertEqual(request.url?.absoluteString, "http://foo.bar?access_token=test_token")
+        XCTAssertEqual(request, URLRequest(url: URL(string: "http://foo.bar?access_token=test_token")!))
+    }
+    
+    func testBearerAccessTokenAuthorizerUsingEmptyQueryWithTrailingSlash() async throws {
+        
+        let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .query)
+        let request = try await URLRequest(url: URL(string: "http://foo.bar/")!).authorized(using: authorizer)
+        
+        XCTAssertEqual(request, URLRequest(url: URL(string: "http://foo.bar/?access_token=test_token")!))
+    }
+    
+    func testBearerAccessTokenAuthorizerUsingEmptyQueryWithTrailingQuestionMark() async throws {
+        
+        let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .query)
+        let request = try await URLRequest(url: URL(string: "http://foo.bar/?")!).authorized(using: authorizer)
+        
+        XCTAssertEqual(request, URLRequest(url: URL(string: "http://foo.bar/?access_token=test_token")!))
+    }
+    
+    func testBearerAccessTokenAuthorizerUsingEmptyQueryWithTrailingQuestionMarkAndPath() async throws {
+        
+        let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .query)
+        let request = try await URLRequest(url: URL(string: "http://foo.bar/test?")!).authorized(using: authorizer)
+        
+        XCTAssertEqual(request, URLRequest(url: URL(string: "http://foo.bar/test?access_token=test_token")!))
+    }
+    
+    func testBearerAccessTokenAuthorizerUsingQuery() async throws {
+        
+        let authorizer: RequestAuthorizer = BearerAccessTokenAuthorizer(token: "test_token", method: .query)
+        let request = try await URLRequest(url: URL(string: "http://foo.bar/test?gg=5")!).authorized(using: authorizer)
+        
+        XCTAssertEqual(request, URLRequest(url: URL(string: "http://foo.bar/test?gg=5&access_token=test_token")!))
     }
 }

@@ -13,17 +13,20 @@ public class InMemoryIdentityStorage: IdentityStorage {
     
     private var storage: [String: String] = [:]
     
-    public init() {
-        
-    }
+    public init() {}
     
     public func set(_ value: String?, forKey key: String) {
         
-        self.storage[key] = value
+        storage[key] = value
     }
     
     public func value(forKey key: String) -> String? {
         
-        return self.storage[key]
+        return storage[key]
     }
+}
+
+extension IdentityStorage where Self == InMemoryIdentityStorage {
+    
+    public static var inMemory: Self { .init() }
 }

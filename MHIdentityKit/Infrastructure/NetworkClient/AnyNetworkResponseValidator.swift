@@ -28,3 +28,11 @@ public struct AnyNetworkResponseValidator: NetworkResponseValidator {
         return self.handler(response)
     }
 }
+
+extension NetworkResponseValidator where Self == AnyNetworkResponseValidator {
+    
+    public static func any(handler: @escaping (NetworkResponse) -> Bool) -> Self {
+        
+        .init(handler: handler)
+    }
+}

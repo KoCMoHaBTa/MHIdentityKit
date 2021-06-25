@@ -10,14 +10,12 @@ import Foundation
 
 public struct NetworkResponse {
     
-    public var data: Data?
-    public var response: URLResponse?
-    public var error: Error?
+    public var data: Data
+    public var response: URLResponse
     
-    public init(data: Data? = nil, response: URLResponse? = nil, error: Error? = nil) {
+    public init(data: Data, response: URLResponse) {
         
         self.data = data
         self.response = response
-        self.error = error
     }
 }

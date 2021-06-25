@@ -13,19 +13,27 @@ public class UserDefaultsIdentityStorage: IdentityStorage {
     
     public let userDefaults: UserDefaults
     
-    public init(userDefaults: UserDefaults) {
+    public init(_ userDefaults: UserDefaults) {
         
         self.userDefaults = userDefaults
     }
     
     public func set(_ value: String?, forKey key: String) {
         
-        self.userDefaults.set(value, forKey: key)
-        self.userDefaults.synchronize()
+        userDefaults.set(value, forKey: key)
+        userDefaults.synchronize()
     }
     
     public func value(forKey key: String) -> String? {
      
-        return self.userDefaults.value(forKey: key) as? String
+        return userDefaults.value(forKey: key) as? String
+    }
+}
+
+extension IdentityStorage where Self == UserDefaultsIdentityStorage {
+    
+    public static func userDefaults(_ userDefaults: UserDefaults) -> Self {
+        
+        .init(userDefaults)
     }
 }
