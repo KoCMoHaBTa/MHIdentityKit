@@ -12,7 +12,7 @@
 		9954AE561E9D169700F2A73D /* MHIdentityKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9954AE481E9D169700F2A73D /* MHIdentityKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9954AE6D1E9D1E8000F2A73D /* MHIdentityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */; };
 		9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE711E9D249200F2A73D /* AuthorizationGrantFlow.swift */; };
-		995CD1E61E9E69450024BFA4 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */; };
+		995CD1E61E9E69450024BFA4 /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* OAuth2Error.swift */; };
 		998405CE1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998405CD1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift */; };
 		E61974881EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */; };
 		E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974891EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift */; };
@@ -101,7 +101,7 @@
 		E6985D2C2068FDDF00BE5F6A /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA21ED6B327000D7853 /* Scope.swift */; };
 		E6985D2D2068FDDF00BE5F6A /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E6985D2E2068FDDF00BE5F6A /* AccessTokenResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */; };
-		E6985D2F2068FDDF00BE5F6A /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */; };
+		E6985D2F2068FDDF00BE5F6A /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* OAuth2Error.swift */; };
 		E6985D302068FDDF00BE5F6A /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E6985D312068FDDF00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */; };
 		E6985D322068FDDF00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */; };
@@ -132,7 +132,7 @@
 		E6985DE720690C5D00BE5F6A /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA21ED6B327000D7853 /* Scope.swift */; };
 		E6985DE820690C5D00BE5F6A /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E6985DE920690C5D00BE5F6A /* AccessTokenResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */; };
-		E6985DEA20690C5D00BE5F6A /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */; };
+		E6985DEA20690C5D00BE5F6A /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* OAuth2Error.swift */; };
 		E6985DEB20690C5D00BE5F6A /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E6985DEC20690C5D00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */; };
 		E6985DED20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */; };
@@ -161,7 +161,7 @@
 		E6985E0620690C5D00BE5F6A /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DBA21ED6B327000D7853 /* Scope.swift */; };
 		E6985E0720690C5D00BE5F6A /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */; };
 		E6985E0820690C5D00BE5F6A /* AccessTokenResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */; };
-		E6985E0920690C5D00BE5F6A /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */; };
+		E6985E0920690C5D00BE5F6A /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995CD1E51E9E69450024BFA4 /* OAuth2Error.swift */; };
 		E6985E0A20690C5D00BE5F6A /* AccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */; };
 		E6985E0B20690C5D00BE5F6A /* AccessTokenRefreshRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */; };
 		E6985E0C20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */; };
@@ -421,7 +421,7 @@
 		9954AE551E9D169700F2A73D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHIdentityKit.swift; sourceTree = "<group>"; };
 		9954AE711E9D249200F2A73D /* AuthorizationGrantFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationGrantFlow.swift; sourceTree = "<group>"; };
-		995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		995CD1E51E9E69450024BFA4 /* OAuth2Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Error.swift; sourceTree = "<group>"; };
 		998405CD1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlow.swift; sourceTree = "<group>"; };
 		E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseHandler.swift; sourceTree = "<group>"; };
 		E61974891EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponseHandlerTests.swift; sourceTree = "<group>"; };
@@ -691,7 +691,7 @@
 				E683DBA21ED6B327000D7853 /* Scope.swift */,
 				E683DB9A1ED4F4BE000D7853 /* AccessTokenResponse.swift */,
 				E61974871EE0B2E100DAFC15 /* AccessTokenResponseHandler.swift */,
-				995CD1E51E9E69450024BFA4 /* ErrorResponse.swift */,
+				995CD1E51E9E69450024BFA4 /* OAuth2Error.swift */,
 				E683DB9E1ED589C6000D7853 /* AccessTokenRefresher.swift */,
 				E61974971EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift */,
 				E61974951EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift */,
@@ -1411,7 +1411,7 @@
 				E6B57DE8230D960F00216421 /* SecKeyVerifySignatureVerifier.swift in Sources */,
 				E6985E8A206A588100BE5F6A /* UserAgent.swift in Sources */,
 				E645850D1EF7FA7800D34F98 /* UserDefaultsIdentityStorage.swift in Sources */,
-				995CD1E61E9E69450024BFA4 /* ErrorResponse.swift in Sources */,
+				995CD1E61E9E69450024BFA4 /* OAuth2Error.swift in Sources */,
 				E69D5EF21ED85BFC0099EE36 /* IdentityStorage.swift in Sources */,
 				E61974961EE17E7100DAFC15 /* AccessTokenRefreshRequest.swift in Sources */,
 				E6B57DD2230D936900216421 /* RS256SignatureVerifier.swift in Sources */,
@@ -1530,7 +1530,7 @@
 				E6B09FA721160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6FBAFAB231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6985D192068FDCA00BE5F6A /* URLEncodingUtilities.swift in Sources */,
-				E6985D2F2068FDDF00BE5F6A /* ErrorResponse.swift in Sources */,
+				E6985D2F2068FDDF00BE5F6A /* OAuth2Error.swift in Sources */,
 				E6B57DE4230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
 				E6985D322068FDDF00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6985D182068FDC700BE5F6A /* MHIdentityKitError.swift in Sources */,
@@ -1600,7 +1600,7 @@
 				E6B09FA821160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
 				E6FBAFAC231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6985DD420690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
-				E6985DEA20690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
+				E6985DEA20690C5D00BE5F6A /* OAuth2Error.swift in Sources */,
 				E6B57DE5230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
 				E6985DED20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
 				E6985DD320690C5D00BE5F6A /* MHIdentityKitError.swift in Sources */,
@@ -1694,7 +1694,7 @@
 				E6985DFC20690C5D00BE5F6A /* CredentialsProvider.swift in Sources */,
 				E6B57DD5230D936900216421 /* RS256SignatureVerifier.swift in Sources */,
 				E6985DF320690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */,
-				E6985E0920690C5D00BE5F6A /* ErrorResponse.swift in Sources */,
+				E6985E0920690C5D00BE5F6A /* OAuth2Error.swift in Sources */,
 				E6279C6422DA81C7002AF76C /* Scope+OpenID.swift in Sources */,
 				E6C96B5622E1DE9000C22298 /* JWTType.swift in Sources */,
 				E6985E0C20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,

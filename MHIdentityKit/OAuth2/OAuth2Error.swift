@@ -1,5 +1,5 @@
 //
-//  ErrorResponse.swift
+//  OAuth2Error.swift
 //  MHIdentityKit
 //
 //  Created by Milen Halachev on 4/12/17.
@@ -8,7 +8,8 @@
 
 import Foundation
 
-public struct ErrorResponse: LocalizedError {
+///An OAuth2 Error, returned from the server
+public struct OAuth2Error: LocalizedError {
     
     public enum Code: String {
         
@@ -41,9 +42,9 @@ public struct ErrorResponse: LocalizedError {
     public var code: Code
     public var description: String?
     public var uri: String?
-    public var state: AnyHashable?
+    public var state: String?
     
-    public init(code: Code, description: String? = nil, uri: String? = nil, state: Any? = nil) {
+    public init(code: Code, description: String? = nil, uri: String? = nil, state: String? = nil) {
         
         self.code = code
         self.description = description
@@ -63,10 +64,10 @@ public struct ErrorResponse: LocalizedError {
         self.code = code
         self.description = parameters["error_description"] as? String
         self.uri = parameters["error_uri"] as? String
-        self.state = parameters["state"] as? AnyHashable
+        self.state = parameters["state"] as? String
     }
     
     //MARK: - LocalizedError
-    public var errorDescription: String? { code.rawValue }
-    public var failureReason: String? { description }
+    public var errorDescription: String? { description ?? code.rawValue }
+    public var failureReason: String? { code.rawValue }
 }

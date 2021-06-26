@@ -476,7 +476,7 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch let error as ErrorResponse where error.code == .accessDenied {}
+        catch let error as OAuth2Error where error.code == .accessDenied {}
         
         XCTAssertEqual(userAgentCallCount, 1)
         XCTAssertEqual(networkClientCallCount, 0)
@@ -553,7 +553,7 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch let error as ErrorResponse where error.code == .invalidScope {}
+        catch let error as OAuth2Error where error.code == .invalidScope {}
         
         XCTAssertEqual(userAgentCallCount, 1)
         XCTAssertEqual(networkClientCallCount, 1)

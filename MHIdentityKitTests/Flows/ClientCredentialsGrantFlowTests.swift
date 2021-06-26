@@ -132,7 +132,7 @@ class ClientCredentialsGrantFlowTests: XCTestCase {
             _ = try await flow.authenticate()
             XCTFail("An error should be thrown")
         }
-        catch let error as ErrorResponse where error.code == .invalidGrant {}
+        catch let error as OAuth2Error where error.code == .invalidGrant {}
     }
     
     func testAdditionalParameters() async throws {

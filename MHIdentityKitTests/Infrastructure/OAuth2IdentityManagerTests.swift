@@ -35,7 +35,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 }
                 else {
                     
-                    throw ErrorResponse(code: .invalidGrant)
+                    throw OAuth2Error(code: .invalidGrant)
                 }
             }
         }
@@ -56,7 +56,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 else {
                     
                     XCTAssertEqual(requestModel.refreshToken, "trt3")
-                    throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant)))
+                    throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
                 }
             }
         }
@@ -82,7 +82,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             _ = try await manager.authorize(request: request, forceAuthenticate: true)
             XCTFail("An error should be thrown")
         }
-        catch let error as ErrorResponse where error.code == .invalidGrant {}
+        catch let error as OAuth2Error where error.code == .invalidGrant {}
         catch { throw error }
         
         XCTAssertEqual(flow.callCount, 3)
@@ -103,7 +103,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             
             func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
                 
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant)))
+                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
             }
         }
         
@@ -133,7 +133,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             
             func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
                 
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant)))
+                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
             }
         }
         
@@ -151,7 +151,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             XCTFail("An error should be thrown")
         }
 //        MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant)))
-        catch MHIdentityKitError.authenticationFailed(let reason) where (reason as? MHIdentityKitError)?.contains(error: ErrorResponse.self) == true {}
+        catch MHIdentityKitError.authenticationFailed(let reason) where (reason as? MHIdentityKitError)?.contains(error: OAuth2Error.self) == true {}
         catch { throw error }
     }
     
@@ -364,7 +364,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
                 
                 callCount += 1
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant)))
+                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
             }
         }
         
@@ -386,7 +386,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             _ = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
             XCTFail("An error should be thrown")
         }
-        catch MHIdentityKitError.authenticationFailed(let reason) where (reason as? MHIdentityKitError)?.contains(error: ErrorResponse.self) == true {}
+        catch MHIdentityKitError.authenticationFailed(let reason) where (reason as? MHIdentityKitError)?.contains(error: OAuth2Error.self) == true {}
         catch { throw error }
         
         XCTAssertEqual(flow.callCount, 1)
@@ -446,7 +446,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
     
     func testUsingIDToken() {
         
-        #warning("testUsingIDToken")
-//        XCTFail()
+        XCTFail()
     }
 }

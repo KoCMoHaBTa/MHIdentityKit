@@ -292,7 +292,7 @@ class ImplicitGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch let error as ErrorResponse where error.code == .accessDenied {}
+        catch let error as OAuth2Error where error.code == .accessDenied {}
     }
     
     func testAdditionalParameters() async throws {

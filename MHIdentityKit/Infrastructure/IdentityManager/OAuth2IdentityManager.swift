@@ -162,7 +162,7 @@ open actor OAuth2IdentityManager: IdentityManager {
             }
             catch {
                 
-                if let error = error as? MHIdentityKitError, error.contains(error: ErrorResponse.self) {
+                if let error = error as? MHIdentityKitError, error.contains(error: OAuth2Error.self) {
                 
                     //if the error returned is ErrorResponse - clear the existing refresh token
                     accessTokenResponse?.refreshToken = nil
@@ -197,7 +197,7 @@ open actor OAuth2IdentityManager: IdentityManager {
         }
         catch {
             
-            if configuration.retryAuthorizationOnAuthenticationError == true && error is ErrorResponse {
+            if configuration.retryAuthorizationOnAuthenticationError == true && error is OAuth2Error {
                 
                 return try await performAuthorization(request: request, forceAuthenticate: forceAuthenticate)
             }

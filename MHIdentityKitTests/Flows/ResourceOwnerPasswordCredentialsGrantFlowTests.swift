@@ -101,7 +101,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowTests: XCTestCase {
             
         }, didFailAuthenticatingHandler: { (error) in
             
-            XCTAssertEqual((error as? ErrorResponse)?.code, .invalidClient)
+            XCTAssertEqual((error as? OAuth2Error)?.code, .invalidClient)
         })
         
         let flow: AuthorizationGrantFlow = ResourceOwnerPasswordCredentialsGrantFlow(
@@ -116,7 +116,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowTests: XCTestCase {
             _ = try await flow.authenticate()
             XCTFail("An error should be thrown")
         }
-        catch let error as ErrorResponse where error.code == .invalidClient {}
+        catch let error as OAuth2Error where error.code == .invalidClient {}
     }
     
     func testAdditionalParameters() async throws {

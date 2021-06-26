@@ -42,7 +42,7 @@ class AccessTokenResponseHandlerTests: XCTestCase {
             _ = try AccessTokenResponseHandler().handle(response: NetworkResponse(data: data, response: response))
             XCTFail("An error should be thrown")
         }
-        catch let error as ErrorResponse where error.code == .invalidGrant {}
+        catch let error as OAuth2Error where error.code == .invalidGrant {}
     }
     
     func testServerError() async throws {
