@@ -30,7 +30,7 @@ public protocol IdentityManager {
     func revokeAuthorizationState() async
     
     ///Validates a network response based on whenever it requires authorization or not. Returns true if the response is valid and does not require authorization, otherwise return false. Default implementation checks whenever the HTTP status code != 401 for a valid response.
-    nonisolated var responseValidator: NetworkResponseValidator { get }
+    var responseValidator: NetworkResponseValidator { get }
 }
 
 extension IdentityManager {

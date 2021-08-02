@@ -108,9 +108,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
         }
         
         let manager = OAuth2IdentityManager(flow: Flow(), refresher: Refresher(), storage: InMemoryIdentityStorage(), authorizationMethod: .header)
-        await manager.configure { configuration in
-            configuration.forceAuthenticateOnRefreshError = true
-        }
+        manager.forceAuthenticateOnRefreshError = true
         
         let request1 = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
         XCTAssertEqual(request1.value(forHTTPHeaderField: "Authorization"), "Bearer tat1")
@@ -138,9 +136,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
         }
         
         let manager = OAuth2IdentityManager(flow: Flow(), refresher: Refresher(), storage: InMemoryIdentityStorage(), authorizationMethod: .header)
-        await manager.configure { configuration in
-            configuration.forceAuthenticateOnRefreshError = false
-        }
+        manager.forceAuthenticateOnRefreshError = false
         
         let request1 = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
         XCTAssertEqual(request1.value(forHTTPHeaderField: "Authorization"), "Bearer tat1")
@@ -371,13 +367,13 @@ class OAuth2IdentityManagerTests: XCTestCase {
         let flow = Flow()
         let refresher = Refresher()
         let manager = OAuth2IdentityManager(flow: flow, refresher: refresher, storage: InMemoryIdentityStorage(), authorizationMethod: .header)
-        await manager.configure { $0.forceAuthenticateOnRefreshError = false }
+        manager.forceAuthenticateOnRefreshError = false
         
-        await XCTAwait(await manager.refreshToken) { XCTAssertNil($0) }
+        XCTAssertNil(manager.refreshToken)
         
         //upon first authorization - we don't have refresh token - so it will call the flow and save 1
         _ = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
-        await XCTAwait(await manager.refreshToken) { XCTAssertEqual($0, "trt1") }
+        XCTAssertEqual(manager.refreshToken, "trt1")
         XCTAssertEqual(flow.callCount, 1)
         XCTAssertEqual(refresher.callCount, 0)
         
@@ -391,7 +387,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
         
         XCTAssertEqual(flow.callCount, 1)
         XCTAssertEqual(refresher.callCount, 1)
-        await XCTAwait(await manager.refreshToken) { XCTAssertNil($0) }
+        XCTAssertNil(manager.refreshToken)
     }
     
     func testRefreshTokenStateUponRefreshFailureWithUnknownError() async throws {
@@ -423,12 +419,12 @@ class OAuth2IdentityManagerTests: XCTestCase {
         let flow = Flow()
         let refresher = Refresher()
         let manager = OAuth2IdentityManager(flow: flow, refresher: refresher, storage: InMemoryIdentityStorage(), authorizationMethod: .header)
-        await manager.configure { $0.forceAuthenticateOnRefreshError = false }
-        await XCTAwait(await manager.refreshToken) { XCTAssertNil($0) }
+        manager.forceAuthenticateOnRefreshError = false
+        XCTAssertNil(manager.refreshToken)
         
         //upon first authorization - we don't have refresh token - so it will call the flow and save 1
         _ = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
-        await XCTAwait(await manager.refreshToken) { XCTAssertEqual($0, "trt1") }
+        XCTAssertEqual(manager.refreshToken, "trt1")
         XCTAssertEqual(flow.callCount, 1)
         XCTAssertEqual(refresher.callCount, 0)
         
@@ -439,7 +435,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
         }
         catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorNotConnectedToInternet {}
         
-        await XCTAwait(await manager.refreshToken) { XCTAssertEqual($0, "trt1") }
+        XCTAssertEqual(manager.refreshToken, "trt1")
         XCTAssertEqual(flow.callCount, 1)
         XCTAssertEqual(refresher.callCount, 1)
     }

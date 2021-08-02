@@ -202,7 +202,7 @@ class AuthorizationCodeGrantFlowInputViewController: UITableViewController, UITe
 
         if #available(iOS 15.0, *) {
             
-            async { [weak self] in
+            Task { [weak self] in
                 do {
                     
                     self?.accessTokenResponse = try await flow.authenticate()

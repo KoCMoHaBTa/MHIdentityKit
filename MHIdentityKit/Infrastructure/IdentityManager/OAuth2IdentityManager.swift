@@ -10,7 +10,7 @@ import Foundation
 
 ///Perform an authorization using an OAuth2 AuthorizationGrantFlow for authentication with a behaviour that refresh a token if possible and preserves a state.
 ///The core logic is ilustrated here - https://tools.ietf.org/html/rfc6749#section-1.5
-open actor OAuth2IdentityManager: IdentityManager {
+open class OAuth2IdentityManager: IdentityManager {
     
     //used for authentication - getting OAuth2 access token
     public let flow: AuthorizationGrantFlow
@@ -44,30 +44,17 @@ open actor OAuth2IdentityManager: IdentityManager {
     
     //MARK: - Configuration
     
-    public struct Configuration {
-        
-        ///Controls whenver an authentication should be forced if a refresh fails. If `true`, when a refresh token fails, an authentication will be performed automatically using the flow provided. If `false` an error will be returned. Default to `true`.
-        public var forceAuthenticateOnRefreshError = true
-        
-        /***
-         Controls whenever an authorization should be retried if an authentication fails. If `true`, when an authentication fails - the authorization will be retried automatically untill there is a successfull authentication. If `false` an error will be returned. Default to `false`.
-         
-         - note: This behaviour is needed when the authorization requires user input, like in the `ResourceOwnerPasswordCredentialsGrantFlow` where the `CredentialsProvider` is a login screen. As opposite it is not needed when user input is not involved, because it could lead to infinite loop of authorizations.
-         
-         */
-        
-        public var retryAuthorizationOnAuthenticationError = false
-        
-        public init() {}
-    }
+    ///Controls whenver an authentication should be forced if a refresh fails. If `true`, when a refresh token fails, an authentication will be performed automatically using the flow provided. If `false` an error will be returned. Default to `true`.
+    open var forceAuthenticateOnRefreshError = true
     
-    open var configuration: Configuration = .init()
+    /***
+     Controls whenever an authorization should be retried if an authentication fails. If `true`, when an authentication fails - the authorization will be retried automatically untill there is a successfull authentication. If `false` an error will be returned. Default to `false`.
+     
+     - note: This behaviour is needed when the authorization requires user input, like in the `ResourceOwnerPasswordCredentialsGrantFlow` where the `CredentialsProvider` is a login screen. As opposite it is not needed when user input is not involved, because it could lead to infinite loop of authorizations.
+     
+     */
     
-    ///Updates the recevier's configuration
-    open func configure(_ configurator: (_ configuration: inout Configuration) -> Void) {
-        
-        configurator(&configuration)
-    }
+    open var retryAuthorizationOnAuthenticationError = false
     
     //MARK: - State
     
@@ -125,19 +112,19 @@ open actor OAuth2IdentityManager: IdentityManager {
 
         if #available(iOS 15.0, *) {
 
-            if let authenticateTaskHandle = authenticateTaskHandle as? Task.Handle<AccessTokenResponse, Error> {
+            if let authenticateTask = authenticateTaskHandle as? Task<AccessTokenResponse, Error> {
 
-                return try await authenticateTaskHandle.get()
+                return try await authenticateTask.value
             }
 
-            let authenticateTaskHandle = async {
+            let authenticateTask = Task {
 
                 try await _authenticate(forced: forced)
             }
 
-            self.authenticateTaskHandle = authenticateTaskHandle
+            self.authenticateTaskHandle = authenticateTask
 
-            let response = try await authenticateTaskHandle.get()
+            let response = try await authenticateTask.value
             self.authenticateTaskHandle = nil
             return response
         }
@@ -168,7 +155,7 @@ open actor OAuth2IdentityManager: IdentityManager {
                     accessTokenResponse?.refreshToken = nil
                     
                     //if force authentication is enabled upon refresh error, and the error returned is ErrorResponse - perform a new authentication
-                    if configuration.forceAuthenticateOnRefreshError == true {
+                    if forceAuthenticateOnRefreshError == true {
                         
                         //authenticate
                         return try await performAuthentication()
@@ -197,7 +184,7 @@ open actor OAuth2IdentityManager: IdentityManager {
         }
         catch {
             
-            if configuration.retryAuthorizationOnAuthenticationError == true && error is OAuth2Error {
+            if retryAuthorizationOnAuthenticationError == true && error is OAuth2Error {
                 
                 return try await performAuthorization(request: request, forceAuthenticate: forceAuthenticate)
             }
