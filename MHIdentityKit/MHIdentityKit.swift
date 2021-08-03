@@ -9,3 +9,23 @@
 import Foundation
 
 let bundleIdentifier = Bundle(for: OAuth2IdentityManager.self).bundleIdentifier!
+
+extension TimeInterval {
+    
+    init?(_ value: Any?) {
+        
+        if let value = value as? TimeInterval {
+            
+            self = value
+            return
+        }
+        
+        if let string = value as? String, let value = TimeInterval(string) {
+            
+            self = value
+            return
+        }
+        
+        return nil
+    }
+}

@@ -63,17 +63,9 @@ public struct AccessTokenResponse {
         
         self.accessToken = accessToken
         self.tokenType = tokenType
-        self.expiresIn = parameters.removeValue(forKey: "expires_in") as? TimeInterval
+        self.expiresIn = TimeInterval(parameters.removeValue(forKey: "expires_in"))
         self.refreshToken = parameters.removeValue(forKey: "refresh_token") as? String
-        
-        if let scopeRawValue = parameters.removeValue(forKey: "scope") as? String {
-        
-            self.scope = Scope(rawValue: scopeRawValue)
-        }
-        else {
-            
-            self.scope = nil
-        }
+        self.scope = .init(parameters.removeValue(forKey: "scope"))
         
         self.additionalParameters = parameters
     }

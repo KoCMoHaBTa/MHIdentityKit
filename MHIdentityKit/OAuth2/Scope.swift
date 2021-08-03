@@ -38,5 +38,11 @@ public struct Scope: RawRepresentable, ExpressibleByStringLiteral, ExpressibleBy
         self.init(components: elements)
     }
     
+    init?(_ value: Any?) {
+        
+        guard let value = value as? String else { return nil }
+        self.init(rawValue: value)
+    }
+    
     public var description: String { rawValue }
 }

@@ -15,7 +15,7 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
     public let clientID: String
     public let redirectURI: URL
     public let scope: Scope?
-    public let state: AnyHashable?
+    public let state: String?
     public let userAgent: UserAgent
     
     ///You can specify additional authorization request parameters. If existing key is duplicated, the one specified by this property will be used.
@@ -35,7 +35,7 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
      
      */
     
-    public init(authorizationEndpoint: URL, clientID: String, redirectURI: URL, scope: Scope?, state: AnyHashable? = NSUUID().uuidString, userAgent: UserAgent) {
+    public init(authorizationEndpoint: URL, clientID: String, redirectURI: URL, scope: Scope?, state: String? = NSUUID().uuidString, userAgent: UserAgent) {
         
         self.authorizationEndpoint = authorizationEndpoint
         self.clientID = clientID
@@ -47,53 +47,30 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
     
     //MARK: - Flow logic
     
-    open func parameters(from authorizationRequest: AuthorizationRequest) -> [String: Any] {
+    ///Build the parameters used for the [Authorization Request](https://tools.ietf.org/html/rfc6749#section-4.2.1)
+    open func authorizationRequestParameters() -> [String: Any] {
         
-        authorizationRequest.dictionary.merging(additionalAuthorizationRequestParameters, uniquingKeysWith: { $1 })
+        var parameters = [String: Any]()
+        parameters["response_type"] = AuthorizationResponseType.token.rawValue
+        parameters["client_id"] = clientID
+        parameters["redirect_uri"] = redirectURI
+        parameters["scope"] = scope?.rawValue
+        parameters["state"] = state
+
+        //merge with any additionally provided parameteres
+        parameters.merge(additionalAuthorizationRequestParameters, uniquingKeysWith: { $1 })
+        
+        return parameters
     }
     
-    open func data(from parameters: [String: Any]) -> Data? {
+    ///Construct the [Authorization Request](https://tools.ietf.org/html/rfc6749#section-4.2.1) using the supplied parameters
+    open func authorizationRequest(withParameters parameters: [String: Any]) -> URLRequest {
         
-        parameters.urlEncodedParametersData
-    }
-    
-    open func urlRequest(from authorizationRequest: AuthorizationRequest) -> URLRequest {
-        
-        let parameters = parameters(from: authorizationRequest)
         let url = authorizationEndpoint +?! parameters
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
         return request
-    }
-    
-    open func perform(_ request: URLRequest, redirectURI: URL) async -> URLRequest? {
-        
-        await userAgent.perform(request, redirectURI: redirectURI)
-    }
-    
-    open func authorizationResponse(from request: URLRequest) throws -> AuthorizationResponse {
-        
-        guard
-        let url = request.url,
-        let parameters = url.fragment?.urlDecodedParameters
-        else {
-            
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse)
-        }
-        
-        //if the error is one of the defined in the OAuth2 framework - throw it
-        if let error = OAuth2Error(parameters: parameters) {
-            
-            throw error
-        }
-        
-        guard let response = AuthorizationResponse(parameters: parameters) else {
-            
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse)
-        }
-        
-        return response
     }
     
     open func validate(redirectRequest: URLRequest) async throws {
@@ -104,8 +81,7 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
         redirectURI.path == redirectRequest.url?.path
         else {
         
-            throw MHIdentityKitError.general(description: "Invalid redirect request", reason: "The redirect request does not match the redirectURI")
-
+            throw Error.redirectURIMismatch
         }
         
         //the request url must contain either (`access_token` and `token_type`) or `error` fragment parameter
@@ -113,28 +89,39 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
         let parameters = redirectRequest.url?.fragment?.urlDecodedParameters
         guard (parameters?["access_token"] != nil && parameters?["token_type"] != nil) || parameters?["error"] != nil else {
 
-            throw MHIdentityKitError.general(description: "Invalid redirect request", reason: nil)
+            throw Error.invalidRedirectRequestParameters
         }
     }
     
-    open func validate(_ authorizationResponse: AuthorizationResponse) async throws {
+    ///Retrieves and returns the parameters for the [Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.2.2) from the provided redirect request
+    open func accessTokenResponseParameters(fromRedirectRequest redirectRequest: URLRequest) throws -> [String: Any] {
         
-        guard authorizationResponse.state == state else {
+        let parameters = redirectRequest.url?.fragment?.urlDecodedParameters ?? [:]
+        
+        //if the error is one of the defined in the OAuth2 framework - throw it
+        if let error = OAuth2Error(parameters: parameters) {
             
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse)
+            throw error
         }
+        
+        return parameters
+    }
+    
+    open func validate(accessTokenResponseParameters parameters: [String: Any]) async throws {
+        
+        guard parameters["state"] as? String == state else { throw Error.accessTokenResponseStateMismatch }
     }
     
     //MARK: - AuthorizationGrantFlow
     
     public func authenticate() async throws -> AccessTokenResponse {
         
-        let authorizationRequest = AuthorizationRequest(clientID: clientID, redirectURI: redirectURI, scope: scope, state: state)
-        let authorizationURLRequest = urlRequest(from: authorizationRequest)
+        let authorizationRequestParameters = self.authorizationRequestParameters()
+        let authorizationRequest = self.authorizationRequest(withParameters: authorizationRequestParameters)
         
-        guard let redirectRequest = await perform(authorizationURLRequest, redirectURI: redirectURI) else {
+        guard let redirectRequest = await userAgent.perform(authorizationRequest, redirectURI: redirectURI) else {
             
-            throw MHIdentityKitError.general(description: "UserAgent has been cancelled", reason: "The UserAgent was unable to return a valid redirect request.")
+            throw Error.userAgentCancelled
         }
         
         do {
@@ -146,96 +133,30 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
             throw error
         }
         
-        let authorizationResponse = try authorizationResponse(from: redirectRequest)
-        let accessTokenResponse = AccessTokenResponse(accessToken: authorizationResponse.accessToken, tokenType: authorizationResponse.tokenType, expiresIn: authorizationResponse.expiresIn, refreshToken: nil, scope: authorizationResponse.scope)
+        let accessTokenResponseParameters = try accessTokenResponseParameters(fromRedirectRequest: redirectRequest)
+        try await validate(accessTokenResponseParameters: accessTokenResponseParameters)
+        
+        let accessTokenResponse = try AccessTokenResponse(parameters: accessTokenResponseParameters)
         return accessTokenResponse
     }
 }
 
 extension ImplicitGrantFlow {
     
-    //https://tools.ietf.org/html/rfc6749#section-4.2.1
-    public struct AuthorizationRequest {
+    enum Error: Swift.Error {
+
+        ///Indicates that the redirect request does not match the redirectURI
+        case redirectURIMismatch
         
-        public let responseType: AuthorizationResponseType = .token
-        public var clientID: String
-        public var redirectURI: URL?
-        public var scope: Scope?
-        public var state: AnyHashable?
+        ///Indicates that the redirect request parameters are not valid.
+        ///- note: The request url must contain either (`access_token` and `token_type`) or `error` fragment parameter
+        case invalidRedirectRequestParameters
         
-        public init(clientID: String, redirectURI: URL?, scope: Scope?, state: AnyHashable?) {
-            
-            self.clientID = clientID
-            self.redirectURI = redirectURI
-            self.scope = scope
-            self.state = state
-        }
+        ///Indicates that the authorization response state does not match with the provided one
+        case accessTokenResponseStateMismatch
         
-        public var dictionary: [String: Any] {
-            
-            var dictionary = [String: Any]()
-            dictionary["response_type"] = responseType.rawValue
-            dictionary["client_id"] = clientID
-            dictionary["redirect_uri"] = redirectURI
-            dictionary["scope"] = scope?.rawValue
-            dictionary["state"] = state
-            
-            return dictionary
-        }
-    }
-    
-    //https://tools.ietf.org/html/rfc6749#section-4.2.2
-    //In the implicit flow, the authorization response constains the access token
-    public struct AuthorizationResponse {
-        
-        public let accessToken: String
-        public let tokenType: String
-        public let expiresIn: TimeInterval?
-        public let scope: Scope?
-        public let state: AnyHashable?
-        
-        public init(accessToken: String, tokenType: String, expiresIn: TimeInterval?, scope: Scope?, state: AnyHashable?) {
-            
-            self.accessToken = accessToken
-            self.tokenType = tokenType
-            self.expiresIn = expiresIn
-            self.scope = scope
-            self.state = state
-        }
-        
-        public init?(parameters: [String: Any]) {
-            
-            guard
-            let accessToken = parameters["access_token"] as? String,
-            let tokenType = parameters["token_type"] as? String
-            else {
-                
-                return nil
-            }
-            
-            let expiresIn: TimeInterval?
-            if let value = parameters["expires_in"] as? String {
-                
-                expiresIn = TimeInterval(value)
-            }
-            else {
-                
-                expiresIn = nil
-            }
-            
-            let scope: Scope?
-            if let value = parameters["scope"] as? String {
-                
-                scope = Scope(rawValue: value)
-            }
-            else {
-                
-                scope = nil
-            }
-            
-            let state = parameters["state"] as? AnyHashable
-            
-            self.init(accessToken: accessToken, tokenType: tokenType, expiresIn: expiresIn, scope: scope, state: state)
-        }
+        ///Indicates that the user agent has been cancelled.
+        ///- note: This is usually a user action, but in most cases it might be caused due to the user agent was unable to return a valid redirect request.
+        case userAgentCancelled
     }
 }

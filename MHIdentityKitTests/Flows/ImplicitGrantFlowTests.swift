@@ -21,19 +21,19 @@ class ImplicitGrantFlowTests: XCTestCase {
         
         let url = URL(string: "http://example.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA&state=xyz&token_type=example&expires_in=3600&scope=sc1%20sc2")!
         let parameters = url.fragment!.urlDecodedParameters
-        let response = try XCTUnwrap(ImplicitGrantFlow.AuthorizationResponse(parameters: parameters))
+        let response = try XCTUnwrap(AccessTokenResponse(parameters: parameters))
         
         XCTAssertEqual(response.accessToken, "2YotnFZFEjr1zCsicMWpAA")
         XCTAssertEqual(response.tokenType, "example")
         XCTAssertEqual(response.expiresIn, 3600)
         XCTAssertEqual(response.scope, "sc1 sc2")
-        XCTAssertEqual(response.state, "xyz")
+        XCTAssertEqual(response.additionalParameters["state"] as? String, "xyz")
     }
     
     func testSuccessWithAllArguments() async throws {
         
         let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
-        let state: AnyHashable? = "obi one"
+        let state: String? = "obi one"
         
         var userAgentCallCount = 0
         let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
@@ -53,10 +53,10 @@ class ImplicitGrantFlowTests: XCTestCase {
             //simulate successfull redirection
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now#access_token=tat&token_type=ttt&expires_in=1234&scope=ts1%20ts2&state=obi%20one")!)
         }
-    finishHandler: { error in
-        
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            
+            XCTAssertNil(error)
+        }
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(
             authorizationEndpoint: authorizationEndpoint,
@@ -81,7 +81,7 @@ class ImplicitGrantFlowTests: XCTestCase {
     func testUserAgentCancel() async throws {
         
         let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
-        let state: AnyHashable? = "obi one"
+        let state: String? = "obi one"
         
         var userAgentCallCount = 0
         let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
@@ -100,9 +100,9 @@ class ImplicitGrantFlowTests: XCTestCase {
             //simulate cancel
             return nil
         }
-    finishHandler: { error in
-        XCTFail()
-    }
+        finishHandler: { error in
+            XCTFail()
+        }
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(
             authorizationEndpoint: authorizationEndpoint,
@@ -116,13 +116,13 @@ class ImplicitGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch MHIdentityKitError.general(description: "UserAgent has been cancelled", reason: "The UserAgent was unable to return a valid redirect request.") {}
+        catch ImplicitGrantFlow.Error.userAgentCancelled {}
     }
     
     func testSuccessWithoutOptionalArguments() async throws {
         
         let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
-        let state: AnyHashable? = nil
+        let state: String? = nil
         
         var userAgentCallCount = 0
         let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
@@ -141,10 +141,10 @@ class ImplicitGrantFlowTests: XCTestCase {
             //simulate successfull redirection
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now#access_token=tat&token_type=ttt&expires_in=1234&scope=ts1%20ts2")!)
         }
-    finishHandler: { error in
-        
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            
+            XCTAssertNil(error)
+        }
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(
             authorizationEndpoint: authorizationEndpoint,
@@ -170,7 +170,7 @@ class ImplicitGrantFlowTests: XCTestCase {
     func testErrorWithInvalidState() async throws  {
         
         let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
-        let state: AnyHashable? = "obi one"
+        let state: String? = "obi one"
         
         var userAgentCallCount = 0
         let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
@@ -190,10 +190,10 @@ class ImplicitGrantFlowTests: XCTestCase {
             //simulate fake redirection with wrong state
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now#access_token=tat&token_type=ttt&expires_in=1234&scope=ts1%20ts2&state=fake")!)
         }
-    finishHandler: { error in
-        
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            
+            XCTAssertNil(error)
+        }
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(
             authorizationEndpoint: authorizationEndpoint,
@@ -207,14 +207,14 @@ class ImplicitGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse) {}
+        catch ImplicitGrantFlow.Error.accessTokenResponseStateMismatch {}
     }
     
     //When the redirect uri mismatch, the flow should throw error
     func testErrorWithRedirectURIMismatch() async throws {
         
         let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
-        let state: AnyHashable? = "obi one"
+        let state: String? = "obi one"
         
         var userAgentCallCount = 0
         let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
@@ -234,10 +234,10 @@ class ImplicitGrantFlowTests: XCTestCase {
             //simulate fake redirection with wrong url
             return URLRequest(url: URL(string: "ik://my.scam.url/here/now#access_token=tat&token_type=ttt&expires_in=1234&scope=ts1%20ts2&state=obi%20one")!)
         }
-    finishHandler: { error in
-        
-        XCTAssertNotNil(error)
-    }
+        finishHandler: { error in
+            
+            XCTAssertNotNil(error)
+        }
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(
             authorizationEndpoint: authorizationEndpoint,
@@ -251,14 +251,14 @@ class ImplicitGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch MHIdentityKitError.general(description: "Invalid redirect request", reason: "The redirect request does not match the redirectURI") {}
+        catch ImplicitGrantFlow.Error.redirectURIMismatch {}
     }
     
     //when the state mismatch, the flow should complete with error
     func testErrorFromUserAgent() async throws {
         
         let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
-        let state: AnyHashable? = "obi one"
+        let state: String? = "obi one"
         
         var userAgentCallCount = 0
         let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
@@ -298,7 +298,7 @@ class ImplicitGrantFlowTests: XCTestCase {
     func testAdditionalParameters() async throws {
         
         let redirectURI = URL(string: "ik://my.redirect.url/here/now")!
-        let state: AnyHashable? = "obi one"
+        let state: String? = "obi one"
         
         var userAgentCallCount = 0
         let userAgent: UserAgent = AnyUserAgent { (request, redirectURI) in
