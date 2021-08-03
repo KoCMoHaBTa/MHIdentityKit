@@ -42,10 +42,10 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate successfull redirection
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
-    finishHandler: { error in
-        
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            
+            XCTAssertNil(error)
+        }
         
         var networkClientCallCount = 0
         let networkClient: NetworkClient = AnyNetworkClient { request in
@@ -122,10 +122,10 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate successfull redirection
             return  URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
-    finishHandler: { error in
-        
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            
+            XCTAssertNil(error)
+        }
         
         var networkClientCallCount = 0
         let networkClient: NetworkClient = AnyNetworkClient { request in
@@ -202,9 +202,9 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate cancel
             return nil
         }
-    finishHandler: { error in
-        XCTFail()
-    }
+        finishHandler: { error in
+            XCTFail()
+        }
         
         let networkClient: NetworkClient = AnyNetworkClient { request in
             
@@ -227,7 +227,7 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch MHIdentityKitError.general(description: "UserAgent has been cancelled", reason: "The UserAgent was unable to return a valid redirect request.") {}
+        catch AuthorizationCodeGrantFlow.Error.userAgentCancelled {}
         
         XCTAssertEqual(userAgentCallCount, 1)
     }
@@ -257,9 +257,9 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate successfull redirection
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc")!)
         }
-    finishHandler: { error in
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            XCTAssertNil(error)
+        }
         
         var networkClientCallCount = 0
         let networkClient: NetworkClient = AnyNetworkClient { request in
@@ -360,7 +360,7 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse) {}
+        catch AuthorizationCodeGrantFlow.Error.athorizationResponseStateMismatch {}
         
         XCTAssertEqual(userAgentCallCount, 1)
     }
@@ -391,10 +391,10 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate fake redirection with wrong url
             return URLRequest(url: URL(string: "ik://my.scam.url/here/now?code=abc&state=obi%20one")!)
         }
-    finishHandler: { error in
-        
-        XCTAssertNotNil(error)
-    }
+        finishHandler: { error in
+            
+            XCTAssertNotNil(error)
+        }
         
         var networkClientCallCount = 0
         let networkClient: NetworkClient = AnyNetworkClient { request in
@@ -418,7 +418,7 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
         do {
             _ = try await flow.authenticate()
         }
-        catch MHIdentityKitError.general(description: "Invalid redirect request", reason: "The redirect request does not match the redirectURI") {}
+        catch AuthorizationCodeGrantFlow.Error.redirectURIMismatch {}
         
         XCTAssertEqual(userAgentCallCount, 1)
         XCTAssertEqual(networkClientCallCount, 0)
@@ -450,9 +450,9 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate fake redirection with error
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?error=access_denied")!)
         }
-    finishHandler: { error in
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            XCTAssertNil(error)
+        }
         
         var networkClientCallCount = 0
         let networkClient: NetworkClient = AnyNetworkClient { request in
@@ -507,9 +507,9 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate successfull redirection
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
-    finishHandler: { error in
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            XCTAssertNil(error)
+        }
         
         var networkClientCallCount = 0
         let networkClient: NetworkClient = AnyNetworkClient { request in
@@ -585,9 +585,9 @@ class AuthorizationCodeGrantFlowTests: XCTestCase {
             //simulate successfull redirection
             return URLRequest(url: URL(string: "ik://my.redirect.url/here/now?code=abc&state=obi%20one")!)
         }
-    finishHandler: { error in
-        XCTAssertNil(error)
-    }
+        finishHandler: { error in
+            XCTAssertNil(error)
+        }
         
         var networkClientCallCount = 0
         let networkClient: NetworkClient = AnyNetworkClient { request in

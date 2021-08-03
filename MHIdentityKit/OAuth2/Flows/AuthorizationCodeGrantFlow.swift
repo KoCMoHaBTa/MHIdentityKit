@@ -118,29 +118,22 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         redirectURI.host == redirectRequest.url?.host,
         redirectURI.path == redirectRequest.url?.path
         else {
-        
-            throw MHIdentityKitError.general(description: "Invalid redirect request", reason: "The redirect request does not match the redirectURI")
-
+            
+            throw Error.redirectURIMismatch
         }
         
         //the request url must contain either `code` or `error` query parameter
         let parameters = redirectRequest.url?.query?.urlDecodedParameters
         guard parameters?["code"] != nil || parameters?["error"] != nil else {
             
-            throw MHIdentityKitError.general(description: "Invalid redirect request", reason: "Missing code or error parameter")
+            throw Error.invalidRedirectRequestParameters
         }
     }
     
     ///Retrieves and returns the parameters for the [Authorization Response](https://tools.ietf.org/html/rfc6749#section-4.1.2) from the provided redirect request
     open func authorizationResponseParameters(fromRedirectRequest redirectRequest: URLRequest) throws -> [String: Any] {
         
-        guard
-        let url = redirectRequest.url,
-        let parameters = url.query?.urlDecodedParameters
-        else {
-            
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse)
-        }
+        let parameters = redirectRequest.url?.query?.urlDecodedParameters ?? [:]
         
         //if the error is one of the defined in the OAuth2 framework - throw it
         if let error = OAuth2Error(parameters: parameters) {
@@ -154,11 +147,11 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     ///Validates the [Authorization Response](https://tools.ietf.org/html/rfc6749#section-4.1.2) parameters
     open func validate(authorizationResponseParameters parameters: [String: Any]) async throws {
         
-        //the 'code' should be present and the 'state' sohuld not be tampered
-        guard parameters["code"] != nil && parameters["state"] as? String == state else {
-            
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAuthorizationResponse)
-        }
+        //the 'code' should be present
+        guard parameters["code"] != nil else { throw Error.missingAuthorizationResponseCode }
+        
+        //the 'state' sohuld not be tampered
+        guard parameters["state"] as? String == state else { throw Error.athorizationResponseStateMismatch }
     }
     
     ///Build the parameteres used for the [Access Token Request](https://tools.ietf.org/html/rfc6749#section-4.1.3)
@@ -221,7 +214,7 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         
         guard let redirectRequest = await userAgent.perform(authorizationRequest, redirectURI: redirectURI) else {
             
-            throw MHIdentityKitError.general(description: "UserAgent has been cancelled", reason: "The UserAgent was unable to return a valid redirect request.")
+            throw Error.userAgentCancelled
         }
         
         do {
@@ -255,8 +248,21 @@ extension AuthorizationCodeGrantFlow {
     
     enum Error: Swift.Error {
         
-        enum Reason {
-            
-        }
+        ///Indicates that the redirect request does not match the redirectURI
+        case redirectURIMismatch
+        
+        ///Indicates that the redirect request parameters are not valid.
+        ///- note: Missing `code` or `error` parameter
+        case invalidRedirectRequestParameters
+        
+        ///Indicates that the authorization code parameter is missing
+        case missingAuthorizationResponseCode
+        
+        ///Indicates that the authorization response state does not match with the provided one
+        case athorizationResponseStateMismatch
+        
+        ///Indicates that the user agent has been cancelled.
+        ///- note: This is usually a user action, but in most cases it might be caused due to the user agent was unable to return a valid redirect request.
+        case userAgentCancelled
     }
 }
