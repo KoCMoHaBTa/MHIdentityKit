@@ -18,17 +18,17 @@ public struct AccessTokenResponse {
     public var scope: Scope?
     
     //Contains any additional parameters of the access token response.
-    public var additionalParameters: [Parameter: Any]
+    public var additionalParameters: [String: Any]
     
     //Contains all parameteres, including additional
-    public var parameters: [Parameter: Any] {
+    public var parameters: [String: Any] {
         
-        var parameters: [Parameter: Any] = [:]
-        parameters[.accessToken] = accessToken
-        parameters[.tokenType] = tokenType
-        parameters[.expiresIn] = expiresIn
-        parameters[.refreshToken] = refreshToken
-        parameters[.scope] = scope?.rawValue
+        var parameters: [String: Any] = [:]
+        parameters["access_token"] = accessToken
+        parameters["token_type"] = tokenType
+        parameters["expires_in"] = expiresIn
+        parameters["refresh_token"] = refreshToken
+        parameters["scope"] = scope?.rawValue
         
         return parameters.merging(additionalParameters, uniquingKeysWith: { $1 })
     }
@@ -47,26 +47,26 @@ public struct AccessTokenResponse {
     
     ///Creates an instance of the receiver from a parameters dictionary.
     ///- throws: An error if required parameters are invalid or missing.
-    public init(parameters: [Parameter: Any]) throws {
+    public init(parameters: [String: Any]) throws {
         
         var parameters = parameters
         
-        guard let accessToken = parameters.removeValue(forKey: .accessToken) as? String else {
+        guard let accessToken = parameters.removeValue(forKey: "access_token") as? String else {
          
             throw Error.invalidAccessToken
         }
             
-        guard let tokenType = parameters.removeValue(forKey: .tokenType) as? String else {
+        guard let tokenType = parameters.removeValue(forKey: "token_type") as? String else {
             
             throw Error.invalidTokenType
         }
         
         self.accessToken = accessToken
         self.tokenType = tokenType
-        self.expiresIn = parameters.removeValue(forKey: Parameter.expiresIn) as? TimeInterval
-        self.refreshToken = parameters.removeValue(forKey: Parameter.refreshToken) as? String
+        self.expiresIn = parameters.removeValue(forKey: "expires_in") as? TimeInterval
+        self.refreshToken = parameters.removeValue(forKey: "refresh_token") as? String
         
-        if let scopeRawValue = parameters.removeValue(forKey: Parameter.scope) as? String {
+        if let scopeRawValue = parameters.removeValue(forKey: "scope") as? String {
         
             self.scope = Scope(rawValue: scopeRawValue)
         }
@@ -93,26 +93,6 @@ public struct AccessTokenResponse {
         //compare the time interval since the creation of this object with the expiration time interval provided
         let timeIntervalPassed = Date().timeIntervalSince(self.responseCreationDate)
         return timeIntervalPassed >= expiresIn
-    }
-}
-
-extension AccessTokenResponse {
-    
-    ///A type representing known parameters for the access token response
-    public struct Parameter: RawRepresentable, Hashable, ExpressibleByStringLiteral, CustomStringConvertible {
-        
-        public var rawValue: String
-        
-        public init(rawValue: String) { self.rawValue = rawValue }
-        public init(stringLiteral value: StringLiteralType) { self.init(rawValue: value) }
-        
-        public var description: String { rawValue }
-        
-        public static let accessToken: Self = "access_token"
-        public static let tokenType: Self = "token_type"
-        public static let expiresIn: Self = "expires_in"
-        public static let refreshToken: Self = "refresh_token"
-        public static let scope: Self = "scope"
     }
 }
 
@@ -148,14 +128,14 @@ extension AccessTokenResponse {
         
         //parse the data
         guard
-        let parameters = (try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])?.map()
+        let parameters = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         else {
             
             throw Error.invalidParametersType
         }
         
         //if the error is one of the defined in the OAuth2 framework - throw it
-        if let error = OAuth2Error(parameters: parameters.map()) {
+        if let error = OAuth2Error(parameters: parameters) {
             
             throw error
         }
@@ -167,22 +147,6 @@ extension AccessTokenResponse {
         }
         
         self = try AccessTokenResponse(parameters: parameters)
-    }
-}
-
-extension Dictionary where Key == String {
-
-    public func map() -> [AccessTokenResponse.Parameter: Value] {
-        
-        reduce(into: [:]) { $0[.init(rawValue: $1.key)] = $1.value }
-    }
-}
-
-extension Dictionary where Key == AccessTokenResponse.Parameter {
-    
-    public func map() -> [String: Value] {
-        
-        reduce(into: [:]) { $0[$1.key.rawValue] = $1.value }
     }
 }
 
