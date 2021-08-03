@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available(*, deprecated)
 public enum MHIdentityKitError: LocalizedError {
     
     case wrapped(error: Error)
@@ -98,6 +99,7 @@ public enum MHIdentityKitError: LocalizedError {
 
 extension MHIdentityKitError {
     
+    @available(*, deprecated)
     public enum Reason: LocalizedError {
         
         case general(message: String)
@@ -227,6 +229,7 @@ extension MHIdentityKitError {
         }
     }
     
+    @available(*, deprecated)
     public enum IDTokenValidationError: LocalizedError {
         
         case invalidIssuer

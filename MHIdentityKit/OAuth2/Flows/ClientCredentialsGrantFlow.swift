@@ -71,7 +71,7 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
     
     open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
         
-        try AccessTokenResponseHandler().handle(response: networkResponse)
+        try AccessTokenResponse(from: networkResponse)
     }
     
     open func validate(_ accessTokenResponse: AccessTokenResponse) async throws {

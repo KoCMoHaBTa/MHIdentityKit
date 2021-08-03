@@ -28,7 +28,7 @@ open class DefaultAccessTokenRefresher: AccessTokenRefresher {
         request.httpBody = requestModel.dictionary.urlEncodedParametersData
         try await request.authorize(using: clientAuthorizer)
         let networkResponse = try await networkClient.perform(request)
-        let accessTokenResponse = try AccessTokenResponseHandler().handle(response: networkResponse)
+        let accessTokenResponse = try AccessTokenResponse(from: networkResponse)
         return accessTokenResponse
     }
 }

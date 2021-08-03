@@ -18,21 +18,22 @@ public struct AccessTokenResponse {
     public var scope: Scope?
     
     //Contains any additional parameters of the access token response.
-    public var additionalParameters: [String: Any]
+    public var additionalParameters: [Parameter: Any]
     
     //Contains all parameteres, including additional
-    public var parameters: [String: Any] {
+    public var parameters: [Parameter: Any] {
         
-        var parameters: [String: Any] = [:]
-        parameters[ParameterKey.accessToken] = self.accessToken
-        parameters[ParameterKey.tokenType] = self.tokenType
-        parameters[ParameterKey.expiresIn] = self.expiresIn
-        parameters[ParameterKey.refreshToken] = self.refreshToken
-        parameters[ParameterKey.scope] = self.scope?.rawValue
+        var parameters: [Parameter: Any] = [:]
+        parameters[.accessToken] = accessToken
+        parameters[.tokenType] = tokenType
+        parameters[.expiresIn] = expiresIn
+        parameters[.refreshToken] = refreshToken
+        parameters[.scope] = scope?.rawValue
         
-        return parameters.merging(self.additionalParameters, uniquingKeysWith: { $1 })
+        return parameters.merging(additionalParameters, uniquingKeysWith: { $1 })
     }
     
+    ///Creates an instance of the receiver with the minimum requred parameters
     public init(accessToken: String, tokenType: String, expiresIn: TimeInterval?, refreshToken: String?, scope: Scope?) {
         
         self.accessToken = accessToken
@@ -44,24 +45,28 @@ public struct AccessTokenResponse {
         self.additionalParameters = [:]
     }
     
-    public init(parameters: [String: Any]) throws {
+    ///Creates an instance of the receiver from a parameters dictionary.
+    ///- throws: An error if required parameters are invalid or missing.
+    public init(parameters: [Parameter: Any]) throws {
         
         var parameters = parameters
         
-        guard
-        let accessToken = parameters.removeValue(forKey: ParameterKey.accessToken) as? String,
-        let tokenType = parameters.removeValue(forKey: ParameterKey.tokenType) as? String
-        else {
+        guard let accessToken = parameters.removeValue(forKey: .accessToken) as? String else {
+         
+            throw Error.invalidAccessToken
+        }
             
-            throw MHIdentityKitError.Reason.invalidAccessTokenResponse
+        guard let tokenType = parameters.removeValue(forKey: .tokenType) as? String else {
+            
+            throw Error.invalidTokenType
         }
         
         self.accessToken = accessToken
         self.tokenType = tokenType
-        self.expiresIn = parameters.removeValue(forKey: ParameterKey.expiresIn) as? TimeInterval
-        self.refreshToken = parameters.removeValue(forKey: ParameterKey.refreshToken) as? String
+        self.expiresIn = parameters.removeValue(forKey: Parameter.expiresIn) as? TimeInterval
+        self.refreshToken = parameters.removeValue(forKey: Parameter.refreshToken) as? String
         
-        if let scopeRawValue = parameters.removeValue(forKey: ParameterKey.scope) as? String {
+        if let scopeRawValue = parameters.removeValue(forKey: Parameter.scope) as? String {
         
             self.scope = Scope(rawValue: scopeRawValue)
         }
@@ -74,7 +79,7 @@ public struct AccessTokenResponse {
     }
     
     ///The date when this object has been created - used to determine whenever the access token has expired
-    private let responseCreationDate = Date()
+    private var responseCreationDate = Date()
     
     ///determine whenever the access token has expired
     public var isExpired: Bool {
@@ -93,13 +98,21 @@ public struct AccessTokenResponse {
 
 extension AccessTokenResponse {
     
-    public struct ParameterKey {
+    ///A type representing known parameters for the access token response
+    public struct Parameter: RawRepresentable, Hashable, ExpressibleByStringLiteral, CustomStringConvertible {
         
-        public static let accessToken = "access_token"
-        public static let tokenType = "token_type"
-        public static let expiresIn = "expires_in"
-        public static let refreshToken = "refresh_token"
-        public static let scope = "scope"
+        public var rawValue: String
+        
+        public init(rawValue: String) { self.rawValue = rawValue }
+        public init(stringLiteral value: StringLiteralType) { self.init(rawValue: value) }
+        
+        public var description: String { rawValue }
+        
+        public static let accessToken: Self = "access_token"
+        public static let tokenType: Self = "token_type"
+        public static let expiresIn: Self = "expires_in"
+        public static let refreshToken: Self = "refresh_token"
+        public static let scope: Self = "scope"
     }
 }
 
@@ -114,3 +127,84 @@ extension AccessTokenResponse {
         return false
     }
 }
+
+extension AccessTokenResponse {
+    
+    //https://tools.ietf.org/html/rfc6749#section-5.1
+    //https://tools.ietf.org/html/rfc6749#section-5.2
+    
+    ///Creates an instance of the receiver from a `NetworkResponse`
+    ///Handles an HTTP response in attempt to produce an access token or error
+    ///- throws: An error if the creation fails
+    public init(from networkResponse: NetworkResponse) throws {
+        
+        //if response is unknown - throw an error
+        guard let response = networkResponse.response as? HTTPURLResponse else {
+            
+            throw Error.invalidURLResponseType
+        }
+        
+        let data = networkResponse.data
+        
+        //parse the data
+        guard
+        let parameters = (try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])?.map()
+        else {
+            
+            throw Error.invalidParametersType
+        }
+        
+        //if the error is one of the defined in the OAuth2 framework - throw it
+        if let error = OAuth2Error(parameters: parameters.map()) {
+            
+            throw error
+        }
+        
+        //make sure the response code is success 2xx
+        guard (200..<300).contains(response.statusCode) else {
+            
+            throw Error.invalidHTTPStatusCode(response.statusCode)
+        }
+        
+        self = try AccessTokenResponse(parameters: parameters)
+    }
+}
+
+extension Dictionary where Key == String {
+
+    public func map() -> [AccessTokenResponse.Parameter: Value] {
+        
+        reduce(into: [:]) { $0[.init(rawValue: $1.key)] = $1.value }
+    }
+}
+
+extension Dictionary where Key == AccessTokenResponse.Parameter {
+    
+    public func map() -> [String: Value] {
+        
+        reduce(into: [:]) { $0[$1.key.rawValue] = $1.value }
+    }
+}
+
+extension AccessTokenResponse {
+    
+    public enum Error: Swift.Error {
+        
+        ///Indicates that the `access_token` parameter is missing or invalid
+        case invalidAccessToken
+        
+        ///Indicates that the `token_type` parameter is missing or invalid
+        case invalidTokenType
+        
+        ///Indicates that the parsed parameters are not valid type. The expected type is [String: Any].
+        case invalidParametersType
+        
+        ///Indicates that the URLResponse is not of HTTPURLResponse type
+        case invalidURLResponseType
+        
+        ///Indicate that the HTTP Status code is not success 2xx.
+        ///The error contains the received status code
+        case invalidHTTPStatusCode(Int)
+    }
+}
+

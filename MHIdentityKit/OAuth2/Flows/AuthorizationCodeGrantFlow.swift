@@ -203,7 +203,7 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
     ///Retrieves and returns the parameters for the [Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.1.4) from the provided network response
     open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
      
-        try AccessTokenResponseHandler().handle(response: networkResponse)
+        try AccessTokenResponse(from: networkResponse)
     }
     
     ///Validates the [Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.1.4) parameters
@@ -248,5 +248,15 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         try await validate(accessTokenResponse: accessTokenResponse)
         
         return accessTokenResponse
+    }
+}
+
+extension AuthorizationCodeGrantFlow {
+    
+    enum Error: Swift.Error {
+        
+        enum Reason {
+            
+        }
     }
 }
