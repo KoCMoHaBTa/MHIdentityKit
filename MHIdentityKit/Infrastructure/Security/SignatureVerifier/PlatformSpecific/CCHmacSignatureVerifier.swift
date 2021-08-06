@@ -25,7 +25,7 @@ public struct CCHmacSignatureVerifier: SignatureVerifier {
         
         guard let keyNSData = self.secret.data(using: .utf8) as NSData? else {
             
-            throw MHIdentityKitError.signatureVerificationFailed(reason: MHIdentityKitError.Reason.unknown)
+            throw Error.unableToRetrieveSecretData
         }
         
         let inputNSData = input as NSData
@@ -37,7 +37,19 @@ public struct CCHmacSignatureVerifier: SignatureVerifier {
         
         guard Data(bytes: UnsafeRawPointer(result), count: resultLen) == signature else {
             
-            throw MHIdentityKitError.signatureVerificationFailed(reason: MHIdentityKitError.Reason.unknown)
+            throw Error.signatureMismatch
         }
+    }
+}
+
+extension CCHmacSignatureVerifier {
+    
+    enum Error: Swift.Error {
+        
+        ///Indicates that the operation was unable to retrieve the secret's data representation
+        case unableToRetrieveSecretData
+        
+        ///Indicates that the input signature does not match with the provided one
+        case signatureMismatch
     }
 }

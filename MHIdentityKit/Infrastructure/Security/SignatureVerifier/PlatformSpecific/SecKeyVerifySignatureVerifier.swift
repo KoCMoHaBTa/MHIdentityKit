@@ -28,7 +28,17 @@ public struct SecKeyVerifySignatureVerifier: SignatureVerifier {
         var error: Unmanaged<CFError>?
         guard SecKeyVerifySignature(self.key, self.algorithm, input as CFData, signature as CFData, &error) else {
             
-            throw error?.takeRetainedValue() as Error? ?? MHIdentityKitError.signatureVerificationFailed(reason: MHIdentityKitError.Reason.unknown)
+            throw error?.takeRetainedValue() as Swift.Error? ?? Error.unableToVerifySignature
         }
+    }
+}
+
+@available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
+extension SecKeyVerifySignatureVerifier {
+    
+    enum Error: Swift.Error {
+        
+        ///Indicates that signature verification has failed without known reason.
+        case unableToVerifySignature
     }
 }
