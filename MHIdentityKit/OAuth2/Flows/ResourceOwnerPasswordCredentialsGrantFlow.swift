@@ -45,53 +45,34 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
     
     //MARK: - Flow logic
     
-    open func parameters(from accessTokenRequest: AccessTokenRequest) -> [String: Any] {
+    ///Build the parameteres used for the [Access Token Request](https://tools.ietf.org/html/rfc6749#section-4.3.2)
+    open func accessTokenRequestParameters(username: String, password: String) throws -> [String: Any] {
+                
+        var parameters = [String: Any]()
+        parameters["grant_type"] = GrantType.password.rawValue
+        parameters["username"] = username
+        parameters["password"] = password
+        parameters["scope"] = scope?.rawValue
         
-        accessTokenRequest.dictionary.merging(self.additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
+        //merge with any additionally provided parameteres
+        parameters.merge(additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
+        
+        return parameters
     }
     
-    open func data(from parameters: [String: Any]) -> Data? {
-        
-        parameters.urlEncodedParametersData
-    }
-    
-    open func urlRequest(from accessTokenRequest: AccessTokenRequest) -> URLRequest {
+    ///Construct the [Access Token Request](https://tools.ietf.org/html/rfc6749#section-4.3.2) using the supplied parameters
+    open func accessTokenRequest(withParameteres parameteres: [String: Any]) -> URLRequest {
         
         var request = URLRequest(url: tokenEndpoint)
         request.httpMethod = "POST"
-        request.httpBody = data(from: parameters(from: accessTokenRequest))
+        request.httpBody = parameteres.urlEncodedParametersData
         
         return request
-    }
-    
-    open func authorize(_ request: URLRequest) async throws -> URLRequest {
-        
-        try await clientAuthorizer.authorize(request: request)
-    }
-    
-    open func perform(_ request: URLRequest) async throws -> NetworkResponse {
-        
-        try await networkClient.perform(request)
-    }
-    
-    open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
-        
-        try AccessTokenResponse(from: networkResponse)
     }
     
     open func validate(_ accessTokenResponse: AccessTokenResponse) async throws {
         
         //nothing to validate here
-    }
-    
-    open func authenticate(using request: URLRequest) async throws -> AccessTokenResponse {
-        
-        let request = try await authorize(request)
-        let netoworkRessponse = try await perform(request)
-        let accessTokenResponse = try accessTokenResponse(from: netoworkRessponse)
-        try await validate(accessTokenResponse)
-         
-        return accessTokenResponse
     }
     
     //MARK: - AuthorizationGrantFlow
@@ -104,14 +85,18 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
             let (username, password) = await credentialsProvider.credentials()
             
             //build & perform the request
-            let accessTokenRequest = AccessTokenRequest(username: username, password: password, scope: scope)
-            let request = urlRequest(from: accessTokenRequest)
-            let response = try await authenticate(using: request)
+            let accessTokenRequestParameters = try accessTokenRequestParameters(username: username, password: password)
+            let accessTokenRequest = try await accessTokenRequest(withParameteres: accessTokenRequestParameters).authorized(using: clientAuthorizer)
+            
+            let accessTokenNetworkResponse = try await networkClient.perform(accessTokenRequest)
+            let accessTokenResponse = try AccessTokenResponse(from: accessTokenNetworkResponse)
+            
+            try await validate(accessTokenResponse)
             
             //notify credentials provider about success
             credentialsProvider.didFinishAuthenticating()
             
-            return response
+            return accessTokenResponse
         }
         catch {
             
@@ -201,39 +186,4 @@ extension ResourceOwnerPasswordCredentialsGrantFlow {
             networkClient: networkClient
         )
     }
-}
-
-
-//MARK: - Models
-
-extension ResourceOwnerPasswordCredentialsGrantFlow {
-    
-    //https://tools.ietf.org/html/rfc6749#section-4.3.2
-    public struct AccessTokenRequest {
-        
-        public let grantType: GrantType = .password
-        public var username: String
-        public var password: String
-        public var scope: Scope?
-        
-        public init(username: String, password: String, scope: Scope? = nil) {
-            
-            self.username = username
-            self.password = password
-            self.scope = scope
-        }
-        
-        public var dictionary: [String: Any] {
-            
-            var dictionary = [String: Any]()
-            dictionary["grant_type"] = grantType.rawValue
-            dictionary["username"] = username
-            dictionary["password"] = password
-            dictionary["scope"] = scope?.rawValue
-            
-            return dictionary
-        }
-    }
-    
-    
 }
