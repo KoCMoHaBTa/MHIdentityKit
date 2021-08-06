@@ -26,11 +26,20 @@ public class JWSSignatureVerifierRegistry: JWSSignatureVerifier {
         
         guard let verifier = self.providers.compactMap({ $0.provideSignatureVerifier(for: token) }).first else {
             
-            throw MHIdentityKitError.signatureVerificationFailed(reason: MHIdentityKitError.Reason.general(message: "No JWSSignatureVerifierProvider provider for token"))
+            throw Error.unableToFindProviderForToken
         }
         
         try verifier.verify(token: token)
     }
     
     public static let `default`: JWSSignatureVerifierRegistry = JWSSignatureVerifierRegistry()
+}
+
+extension JWSSignatureVerifierRegistry {
+    
+    enum Error: Swift.Error {
+        
+        ///Indicates that no provider was found for the given token
+        case unableToFindProviderForToken
+    }
 }
