@@ -37,13 +37,13 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
                 //make sure the request content type is correct
                 guard request.value(forHTTPHeaderField: "Content-Type") == "application/x-www-form-urlencoded" else {
                     
-                    throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidContentType)
+                    throw Error.invalidContentType
                 }
             
                 //make sure the request method is supported
                 guard let method = request.httpMethod, method != "GET" else {
                 
-                    throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestMethod)
+                    throw Error.invalidRequestMethod
                 }
                 
                 //TODO: Add body validation
@@ -73,7 +73,7 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
                 else {
                     
-                    throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestURL)
+                    throw Error.invalidRequestURL
                 }
                 
                 var query = components.query ?? ""
@@ -114,5 +114,22 @@ extension RequestAuthorizer where Self == BearerAccessTokenAuthorizer {
     public static func bearer(token: String, method: Self.AuthorizationMethod = .header) -> Self {
         
         .init(token: token, method: method)
+    }
+}
+
+extension BearerAccessTokenAuthorizer {
+    
+    enum Error: Swift.Error {
+        
+        ///Indicates that the Content-Type header is not valid
+        ///For body authorization - this should be `application/x-www-form-urlencoded`
+        case invalidContentType
+        
+        ///Indicates that the request method is not valid
+        ///For body authorization - this should be different from GET
+        case invalidRequestMethod
+        
+        ///Indicates that the request URL is invalid or missing
+        case invalidRequestURL
     }
 }

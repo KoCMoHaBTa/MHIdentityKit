@@ -20,11 +20,16 @@ public struct HTTPBasicAuthorizer: RequestAuthorizer {
         self.password = password
     }
     
+    public init(clientID: String, secret: String) {
+        
+        self.init(username: clientID, password: secret)
+    }
+    
     public func authorize(request: URLRequest) async throws -> URLRequest {
         
         guard let credentials = (username + ":" + password).data(using: .utf8)?.base64EncodedString() else {
             
-            throw MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.buildAuthenticationHeaderFailed)
+            throw Error.unableToBuildAuthentiationHeader
         }
         
         var request = request
@@ -36,9 +41,9 @@ public struct HTTPBasicAuthorizer: RequestAuthorizer {
 
 extension HTTPBasicAuthorizer {
     
-    public init(clientID: String, secret: String) {
+    enum Error: Swift.Error {
         
-        self.init(username: clientID, password: secret)
+        case unableToBuildAuthentiationHeader
     }
 }
 

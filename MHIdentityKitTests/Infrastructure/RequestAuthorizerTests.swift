@@ -38,7 +38,7 @@ class RequestAuthorizerTests: XCTestCase {
             _ = try await authorizer.authorize(request: request)
             XCTFail("An error should be thrown")
         }
-        catch MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidContentType) {}
+        catch BearerAccessTokenAuthorizer.Error.invalidContentType {}
     }
     
     func testBearerAccessTokenAuthorizerUsingBodyWithInvalidRequestMethod() async throws {
@@ -50,7 +50,7 @@ class RequestAuthorizerTests: XCTestCase {
             _ = try await authorizer.authorize(request: request)
             XCTFail("An error should be thrown")
         }
-        catch MHIdentityKitError.authorizationFailed(reason: MHIdentityKitError.Reason.invalidRequestMethod) {}
+        catch BearerAccessTokenAuthorizer.Error.invalidRequestMethod {}
     }
     
     func testBearerAccessTokenAuthorizerUsingNilBody() async throws {
