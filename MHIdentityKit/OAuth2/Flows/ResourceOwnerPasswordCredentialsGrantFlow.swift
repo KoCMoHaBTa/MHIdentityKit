@@ -84,13 +84,15 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
             //get credentials
             let (username, password) = await credentialsProvider.credentials()
             
-            //build & perform the request
+            //build the request
             let accessTokenRequestParameters = try accessTokenRequestParameters(username: username, password: password)
             let accessTokenRequest = try await accessTokenRequest(withParameteres: accessTokenRequestParameters).authorized(using: clientAuthorizer)
             
+            //perform the request
             let accessTokenNetworkResponse = try await networkClient.perform(accessTokenRequest)
             let accessTokenResponse = try AccessTokenResponse(from: accessTokenNetworkResponse)
             
+            //validate the response
             try await validate(accessTokenResponse)
             
             //notify credentials provider about success

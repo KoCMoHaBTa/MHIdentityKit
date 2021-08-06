@@ -97,7 +97,7 @@ class ClientCredentialsGrantFlowTests: XCTestCase {
             _ = try await flow.authenticate()
             XCTFail("An error should be thrown")
         }
-        catch MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse) {}
+        catch ClientCredentialsGrantFlow.Error.accessTokenResponseContainsRefreshToken {}
     }
     
     func testErrorFromNetworkClient() async throws {

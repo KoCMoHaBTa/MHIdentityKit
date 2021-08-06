@@ -39,39 +39,27 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
     
     //MARK: - Flow logic
     
-    open func parameters(from accessTokenRequest: AccessTokenRequest) -> [String: Any] {
+    ///Build the parameteres used for the [Access Token Request](https://tools.ietf.org/html/rfc6749#section-4.4.2)
+    open func accessTokenRequestParameters() throws -> [String: Any] {
+                
+        var parameters = [String: Any]()
+        parameters["grant_type"] = GrantType.clientCredentials.rawValue
+        parameters["scope"] = scope?.rawValue
         
-        return accessTokenRequest.dictionary.merging(self.additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
+        //merge with any additionally provided parameteres
+        parameters.merge(additionalAccessTokenRequestParameters, uniquingKeysWith: { $1 })
+        
+        return parameters
     }
     
-    open func data(from parameters: [String: Any]) -> Data? {
+    ///Construct the [Access Token Request](https://tools.ietf.org/html/rfc6749#section-4.4.2) using the supplied parameters
+    open func accessTokenRequest(withParameteres parameteres: [String: Any]) -> URLRequest {
         
-        return parameters.urlEncodedParametersData
-    }
-    
-    open func urlRequest(from accessTokenRequest: AccessTokenRequest) -> URLRequest {
-        
-        var request = URLRequest(url: self.tokenEndpoint)
+        var request = URLRequest(url: tokenEndpoint)
         request.httpMethod = "POST"
-        request.httpBody = self.data(from: self.parameters(from: accessTokenRequest))
+        request.httpBody = parameteres.urlEncodedParametersData
         
         return request
-    }
-    
-    
-    open func authorize(_ request: URLRequest) async throws -> URLRequest {
-        
-        try await clientAuthorizer.authorize(request: request)
-    }
-    
-    open func perform(_ request: URLRequest) async throws -> NetworkResponse {
-        
-        try await networkClient.perform(request)
-    }
-    
-    open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
-        
-        try AccessTokenResponse(from: networkResponse)
     }
     
     open func validate(_ accessTokenResponse: AccessTokenResponse) async throws {
@@ -80,54 +68,34 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
         //A refresh token SHOULD NOT be included
         guard accessTokenResponse.refreshToken == nil else {
             
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse)
+            throw Error.accessTokenResponseContainsRefreshToken
         }
     }
-    
-    open func authenticate(using request: URLRequest) async throws -> AccessTokenResponse {
-        
-        let request = try await authorize(request)
-        let response = try await perform(request)
-        let accessTokenResponse = try accessTokenResponse(from: response)
-        try await validate(accessTokenResponse)
-        return accessTokenResponse
-    }
-    
+
     //MARK: - AuthorizationGrantFlow
     
     open func authenticate() async throws -> AccessTokenResponse {
         
         //build the request
-        let accessTokenRequest = AccessTokenRequest(scope: scope)
-        let request = urlRequest(from: accessTokenRequest)
-        return try await authenticate(using: request)
+        let accessTokenRequestParameters = try accessTokenRequestParameters()
+        let accessTokenRequest = try await accessTokenRequest(withParameteres: accessTokenRequestParameters).authorized(using: clientAuthorizer)
+        
+        //perform the request
+        let accessTokenNetworkResponse = try await networkClient.perform(accessTokenRequest)
+        let accessTokenResponse = try AccessTokenResponse(from: accessTokenNetworkResponse)
+        
+        //validate the response
+        try await validate(accessTokenResponse)
+        
+        return accessTokenResponse
     }
 }
 
-//MARK: - Models
-
 extension ClientCredentialsGrantFlow {
     
-    //https://tools.ietf.org/html/rfc6749#section-4.4.2
-    public struct AccessTokenRequest {
+    enum Error: Swift.Error {
         
-        public let grantType: GrantType = .clientCredentials
-        public var scope: Scope?
-        
-        public init(scope: Scope? = nil) {
-         
-            self.scope = scope
-        }
-        
-        public var dictionary: [String: Any] {
-            
-            var dictionary = [String: Any]()
-            dictionary["grant_type"] = grantType.rawValue
-            dictionary["scope"] = scope?.rawValue
-            
-            return dictionary
-        }
+        ///Indicates that the access token response contains a refresh token. This [ClientCredentialsGrantFlow](https://tools.ietf.org/html/rfc6749#section-4.4.3) does not allow refresh tokens.
+        case accessTokenResponseContainsRefreshToken
     }
-    
-    
 }
