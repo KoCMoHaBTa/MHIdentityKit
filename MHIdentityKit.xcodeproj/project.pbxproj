@@ -83,7 +83,6 @@
 		E6910B152682EA7300F1913F /* JWTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C96B5722E1E11500C22298 /* JWTTests.swift */; };
 		E6985D162068FDBC00BE5F6A /* MHIdentityKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9954AE481E9D169700F2A73D /* MHIdentityKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6985D172068FDC700BE5F6A /* MHIdentityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */; };
-		E6985D182068FDC700BE5F6A /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
 		E6985D192068FDCA00BE5F6A /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E6985D1A2068FDCA00BE5F6A /* OSStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC21781F0293D9008D182A /* OSStatus.swift */; };
 		E6985D1B2068FDCA00BE5F6A /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216D1F0292C9008D182A /* Keychain.swift */; };
@@ -113,7 +112,6 @@
 		E6985DA82069018600BE5F6A /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6985D9F2069018500BE5F6A /* MHIdentityKit.framework */; };
 		E6985DC4206901AE00BE5F6A /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6985DBB206901AD00BE5F6A /* MHIdentityKit.framework */; };
 		E6985DD220690C5D00BE5F6A /* MHIdentityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */; };
-		E6985DD320690C5D00BE5F6A /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
 		E6985DD420690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E6985DD520690C5D00BE5F6A /* OSStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC21781F0293D9008D182A /* OSStatus.swift */; };
 		E6985DD620690C5D00BE5F6A /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216D1F0292C9008D182A /* Keychain.swift */; };
@@ -141,7 +139,6 @@
 		E6985DEF20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998405CD1E9E194D00891FDC /* ResourceOwnerPasswordCredentialsGrantFlow.swift */; };
 		E6985DF020690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E619748B1EE1520C00DAFC15 /* ClientCredentialsGrantFlow.swift */; };
 		E6985DF120690C5D00BE5F6A /* MHIdentityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */; };
-		E6985DF220690C5D00BE5F6A /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
 		E6985DF320690C5D00BE5F6A /* URLEncodingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E675981A1F14D5BF008C1262 /* URLEncodingUtilities.swift */; };
 		E6985DF420690C5D00BE5F6A /* OSStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC21781F0293D9008D182A /* OSStatus.swift */; };
 		E6985DF520690C5D00BE5F6A /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC216D1F0292C9008D182A /* Keychain.swift */; };
@@ -238,7 +235,6 @@
 		E6B39C2C206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */; };
 		E6B39C2D206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */; };
 		E6B39C2E206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */; };
-		E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */; };
 		E6B57DCD230D931D00216421 /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DCC230D931D00216421 /* SignatureVerifier.swift */; };
 		E6B57DCE230D931D00216421 /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DCC230D931D00216421 /* SignatureVerifier.swift */; };
 		E6B57DCF230D931D00216421 /* SignatureVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B57DCC230D931D00216421 /* SignatureVerifier.swift */; };
@@ -504,7 +500,6 @@
 		E6B39C23206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B39C27206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
 		E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowTests.swift; sourceTree = "<group>"; };
-		E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHIdentityKitError.swift; sourceTree = "<group>"; };
 		E6B57DCC230D931D00216421 /* SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DD1230D936900216421 /* RS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RS256SignatureVerifier.swift; sourceTree = "<group>"; };
 		E6B57DD6230D93E200216421 /* HS256SignatureVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HS256SignatureVerifier.swift; sourceTree = "<group>"; };
@@ -662,7 +657,6 @@
 			children = (
 				9954AE481E9D169700F2A73D /* MHIdentityKit.h */,
 				9954AE6C1E9D1E8000F2A73D /* MHIdentityKit.swift */,
-				E6B493A11ED350DC00580178 /* MHIdentityKitError.swift */,
 				9954AE8F1E9E050C00F2A73D /* Infrastructure */,
 				9954AE5F1E9D16DB00F2A73D /* OAuth2 */,
 				E6279C3422D5D969002AF76C /* OpenID Connect */,
@@ -1421,7 +1415,6 @@
 				E6C96B5322E1DE9000C22298 /* JWTType.swift in Sources */,
 				E6DC216E1F0292C9008D182A /* Keychain.swift in Sources */,
 				E61974981EE17E8300DAFC15 /* DefaultAccessTokenRefresher.swift in Sources */,
-				E6B493A21ED350DC00580178 /* MHIdentityKitError.swift in Sources */,
 				9954AE721E9D249200F2A73D /* AuthorizationGrantFlow.swift in Sources */,
 				E6FBAFAA231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
 				E6B09F8D2115E0D1000A94C8 /* WebViewUserAgentViewController.swift in Sources */,
@@ -1533,7 +1526,6 @@
 				E6985D2F2068FDDF00BE5F6A /* OAuth2Error.swift in Sources */,
 				E6B57DE4230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
 				E6985D322068FDDF00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
-				E6985D182068FDC700BE5F6A /* MHIdentityKitError.swift in Sources */,
 				E6279D2422DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
 				E6985D332068FDE300BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
 				E6B57DCE230D931D00216421 /* SignatureVerifier.swift in Sources */,
@@ -1603,7 +1595,6 @@
 				E6985DEA20690C5D00BE5F6A /* OAuth2Error.swift in Sources */,
 				E6B57DE5230D95C600216421 /* SecKeyRawVerifySignatureVerifier.swift in Sources */,
 				E6985DED20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
-				E6985DD320690C5D00BE5F6A /* MHIdentityKitError.swift in Sources */,
 				E6279D2522DCC85F002AF76C /* AccessTokenResponse+IDToken.swift in Sources */,
 				E6985DEE20690C5D00BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
 				E6B57DCF230D931D00216421 /* SignatureVerifier.swift in Sources */,
@@ -1698,7 +1689,6 @@
 				E6279C6422DA81C7002AF76C /* Scope+OpenID.swift in Sources */,
 				E6C96B5622E1DE9000C22298 /* JWTType.swift in Sources */,
 				E6985E0C20690C5D00BE5F6A /* DefaultAccessTokenRefresher.swift in Sources */,
-				E6985DF220690C5D00BE5F6A /* MHIdentityKitError.swift in Sources */,
 				E6985E0D20690C5D00BE5F6A /* AuthorizationGrantFlow.swift in Sources */,
 				E6B57E20230F144000216421 /* SecKeyFactory+X509Certificate.swift in Sources */,
 				E6FBAFAD231505AE00AC51DF /* CCHmacSignatureVerifier.swift in Sources */,
