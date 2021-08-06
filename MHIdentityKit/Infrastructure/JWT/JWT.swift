@@ -106,23 +106,36 @@ public struct JWT: RawRepresentable {
     
     public func verify(using verifier: SignatureVerifier) throws {
 
-        switch self.type {
+        switch type {
             
             case .JWS:
-                let segments = self.rawValue.components(separatedBy: ".")
+                let segments = rawValue.components(separatedBy: ".")
+                
                 guard
                 let input = (segments[0] + "." + segments[1]).data(using: .utf8),
                 let signature = Data(base64UrlEncoded: segments[2])
                 else {
                     
-                    throw MHIdentityKitError.signatureVerificationFailed(reason: MHIdentityKitError.Reason.unknown)
+                    throw Error.invalidSegments
                 }
                 
                 try verifier.verify(input: input, withSignature: signature)
             
             case .JWE:
                 //not supported
-                throw MHIdentityKitError.signatureVerificationFailed(reason: MHIdentityKitError.Reason.typeMismatch(expected: "JWT token", actual: "JWE token"))
+                throw Error.unsupportedJWTType(type)
         }
+    }
+}
+
+extension JWT {
+    
+    enum Error: Swift.Error {
+        
+        ///Indicates that the segments for the given JWTType were invalid
+        case invalidSegments
+        
+        ///Indicates that the given JWTType is not supported by the library. Currently the library supports only JWS type
+        case unsupportedJWTType(JWTType)
     }
 }

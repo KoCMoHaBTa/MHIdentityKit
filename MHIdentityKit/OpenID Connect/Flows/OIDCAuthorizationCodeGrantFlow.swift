@@ -143,7 +143,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         //https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse
         guard let idToken = accessTokenResponse.idToken else {
             
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidAccessTokenResponse)
+            throw Error.invalidIDToken
         }
         
         //https://openid.net/specs/openid-connect-core-1_0.html#CodeIDToken
@@ -158,7 +158,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
         //2. The Issuer Identifier for the OpenID Provider (which is typically obtained during Discovery) MUST exactly match the value of the iss (issuer) Claim.
         guard idToken.iss == issuer else {
             
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidIDToken(reason: .invalidIssuer))
+            throw Error.issuerMismatch
         }
         
         //3. The Client MUST validate that the aud (audience) Claim contains its client_id value registered at the Issuer identified by the iss (issuer) Claim as an audience. The aud (audience) Claim MAY contain an array with more than one element. The ID Token MUST be rejected if the ID Token does not list the Client as a valid audience, or if it contains additional audiences not trusted by the Client.
@@ -167,7 +167,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
            && idToken.aud.validate(trusted: IDToken.Audience(trustedAudiences))
         else {
             
-            throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidIDToken(reason: .invalidAudience))
+            throw Error.invalidAudience
         }
         
         //4. If the ID Token contains multiple audiences, the Client SHOULD verify that an azp Claim is present.
@@ -175,7 +175,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
             
             guard idToken.azp != nil else {
                 
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidIDToken(reason: .invalidAuthorizedParty))
+                throw Error.missingAuthorizedParty
             }
         }
         
@@ -184,7 +184,7 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
             
             guard azp == clientID else {
                 
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.invalidIDToken(reason: .invalidAuthorizedParty))
+                throw Error.invalidAuthorizedParty
             }
         }
         
@@ -212,3 +212,23 @@ open class OIDCAuthorizationCodeGrantFlow: AuthorizationCodeGrantFlow {
     }
 }
 
+extension OIDCAuthorizationCodeGrantFlow {
+    
+    enum Error: Swift.Error {
+        
+        ///Indicates that the access token response has invalid or missing ID Token
+        case invalidIDToken
+        
+        ///Indicates that the `issuer` does match with ID Token `iss` claim.
+        case issuerMismatch
+        
+        ///Indicates that the ID Token `aud` claim does not contain the `client_id` or contains untrusted audiences.
+        case invalidAudience
+        
+        ///Indicates that the ID Token `aud` claim is an array, but the `azp` claim is missing
+        case missingAuthorizedParty
+        
+        ///Indicates that the `azp` claim is present, but does not contain the `client_id`
+        case invalidAuthorizedParty
+    }
+}
