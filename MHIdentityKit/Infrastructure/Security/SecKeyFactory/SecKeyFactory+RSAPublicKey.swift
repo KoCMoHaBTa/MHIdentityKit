@@ -84,12 +84,12 @@ extension SecKeyFactory {
         
         guard let resultRef = result else {
             
-            throw MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.unknown)
+            throw Error.misingResult
         }
         
         guard CFGetTypeID(resultRef) == SecKeyGetTypeID() else {
             
-            throw MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.typeMismatch(expected: "\(SecKeyGetTypeID())", actual: "\(CFGetTypeID(resultRef))"))
+            throw Error.typeMismatch(expected: "\(SecKeyGetTypeID())", actual: "\(CFGetTypeID(resultRef))")
         }
         
         let key = resultRef as! SecKey
@@ -108,7 +108,7 @@ extension SecKeyFactory {
         var error: Unmanaged<CFError>?
         guard let key = SecKeyCreateWithData(data as CFData, attributes, &error) else {
             
-            throw error?.takeRetainedValue() ?? MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.unknown)
+            throw error?.takeRetainedValue() ?? Error.unableToCreatePublicKey
         }
         
         return key

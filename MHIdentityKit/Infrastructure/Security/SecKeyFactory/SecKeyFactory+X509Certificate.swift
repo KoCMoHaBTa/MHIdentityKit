@@ -29,7 +29,7 @@ extension SecKeyFactory {
         
         guard let certificate = SecCertificateCreateWithData(nil, data as CFData) else {
             
-            throw MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.invalidCertificate)
+            throw Error.unableToImportCertificate
         }
         
         var trust: SecTrust?
@@ -42,12 +42,12 @@ extension SecKeyFactory {
         
         guard let trustRef = trust else {
             
-            throw MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.invalidCertificate)
+            throw Error.misingResult
         }
         
         guard let key = SecTrustCopyPublicKey(trustRef) else {
             
-            throw MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.invalidCertificate)
+            throw Error.unableToRetrievePublicKeyFromCertificate
         }
         
         return key
@@ -58,12 +58,12 @@ extension SecKeyFactory {
         
         guard let certificate = SecCertificateCreateWithData(nil, data as CFData) else {
             
-            throw MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.invalidCertificate)
+            throw Error.unableToImportCertificate
         }
         
         guard let key = SecCertificateCopyKey(certificate) else {
             
-            throw MHIdentityKitError.publicKeyCreationFailed(reason: MHIdentityKitError.Reason.invalidCertificate)
+            throw Error.unableToRetrievePublicKeyFromCertificate
         }
         
         return key

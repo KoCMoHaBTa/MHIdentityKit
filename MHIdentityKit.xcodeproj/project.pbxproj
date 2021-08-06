@@ -57,6 +57,10 @@
 		E662041322CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041222CA2CA6002F3404 /* ImplicitGrantFlowInputViewController.swift */; };
 		E662041522CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */; };
 		E662041822CA2E48002F3404 /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6985DBB206901AD00BE5F6A /* MHIdentityKit.framework */; };
+		E667B87426BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E667B87326BD1C1C0079B1AF /* SecKeyFactoryError.swift */; };
+		E667B87526BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E667B87326BD1C1C0079B1AF /* SecKeyFactoryError.swift */; };
+		E667B87626BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E667B87326BD1C1C0079B1AF /* SecKeyFactoryError.swift */; };
+		E667B87726BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E667B87326BD1C1C0079B1AF /* SecKeyFactoryError.swift */; };
 		E66CA2A823EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */; };
 		E66CA2A923EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */; };
 		E66CA2AA23EC3A0A0070DFB7 /* PresentableUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */; };
@@ -445,6 +449,7 @@
 		E662041422CA2CB5002F3404 /* ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowInputViewController.swift; sourceTree = "<group>"; };
 		E662042122CA3C8E002F3404 /* MHIdentityKit-macOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-macOSTestsHost.entitlements"; sourceTree = "<group>"; };
 		E662042322CA4998002F3404 /* WebViewUserAgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewUserAgentViewController.swift; sourceTree = "<group>"; };
+		E667B87326BD1C1C0079B1AF /* SecKeyFactoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyFactoryError.swift; sourceTree = "<group>"; };
 		E66CA2A723EC3A0A0070DFB7 /* PresentableUserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableUserAgent.swift; sourceTree = "<group>"; };
 		E66D60571ED85F590049657F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E675980D1F13A032008C1262 /* NetworkResponseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkResponseValidator.swift; sourceTree = "<group>"; };
@@ -973,6 +978,7 @@
 			isa = PBXGroup;
 			children = (
 				E6B57E0A230E9B4400216421 /* SecKeyFactory.swift */,
+				E667B87326BD1C1C0079B1AF /* SecKeyFactoryError.swift */,
 				E6B57E14230F137500216421 /* SecKeyFactory+RSAPublicKey.swift */,
 				E6B57E1C230F144000216421 /* SecKeyFactory+X509Certificate.swift */,
 			);
@@ -1427,6 +1433,7 @@
 				E6B09FAB21160873000A94C8 /* AnyUserAgent.swift in Sources */,
 				E6E83B5F211F10C60062CB99 /* AnyCredentialsProvider.swift in Sources */,
 				E675981B1F14D5BF008C1262 /* URLEncodingUtilities.swift in Sources */,
+				E667B87426BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */,
 				E61974AE1EE5683B00DAFC15 /* IdentityManager.swift in Sources */,
 				E6DC216C1F028FEA008D182A /* KeychainIdentityStorage.swift in Sources */,
 				E69D5EEC1ED85BA30099EE36 /* NetworkClient.swift in Sources */,
@@ -1568,6 +1575,7 @@
 				E6985D282068FDDB00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985D352068FDE300BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985D292068FDDB00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
+				E667B87526BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */,
 				E6E83B6C211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985D342068FDE300BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6FBAFBF23157C5A00AC51DF /* JWSSignatureVerifierRegistry.swift in Sources */,
@@ -1637,6 +1645,7 @@
 				E6985DE320690C5D00BE5F6A /* RequestAuthorizer.swift in Sources */,
 				E6985DF020690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6985DE420690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
+				E667B87626BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */,
 				E6E83B6D211F13AC0062CB99 /* AnyRequestAuthorizer.swift in Sources */,
 				E6985DEF20690C5D00BE5F6A /* ResourceOwnerPasswordCredentialsGrantFlow.swift in Sources */,
 				E6FBAFC023157C5A00AC51DF /* JWSSignatureVerifierRegistry.swift in Sources */,
@@ -1734,6 +1743,7 @@
 				E6985E0F20690C5D00BE5F6A /* ClientCredentialsGrantFlow.swift in Sources */,
 				E6279C3A22D5D9D4002AF76C /* OIDCAuthorizationCodeGrantFlow.swift in Sources */,
 				E6985E0320690C5D00BE5F6A /* HTTPBasicAuthorizer.swift in Sources */,
+				E667B87726BD1C1C0079B1AF /* SecKeyFactoryError.swift in Sources */,
 				E6B57DD0230D931D00216421 /* SignatureVerifier.swift in Sources */,
 				E6FBAFA82314141900AC51DF /* MockHS256.swift in Sources */,
 				E6B09FA921160851000A94C8 /* AnyNetworkResponseValidator.swift in Sources */,
