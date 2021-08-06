@@ -147,19 +147,16 @@ open class OAuth2IdentityManager: IdentityManager {
                 let request = AccessTokenRefreshRequest(refreshToken: refreshToken, scope: scope)
                 return try await refresher.refresh(using: request)
             }
-            catch {
+            catch let error as OAuth2Error {
                 
-                if let error = error as? MHIdentityKitError, error.contains(error: OAuth2Error.self) {
+                //if the error is OAuth2Error - clear the existing refresh token
+                accessTokenResponse?.refreshToken = nil
                 
-                    //if the error returned is ErrorResponse - clear the existing refresh token
-                    accessTokenResponse?.refreshToken = nil
+                //if force authentication is enabled upon refresh error, and the error returned is OAuth2Error - perform a new authentication
+                if forceAuthenticateOnRefreshError == true {
                     
-                    //if force authentication is enabled upon refresh error, and the error returned is ErrorResponse - perform a new authentication
-                    if forceAuthenticateOnRefreshError == true {
-                        
-                        //authenticate
-                        return try await performAuthentication()
-                    }
+                    //authenticate
+                    return try await performAuthentication()
                 }
                 
                 throw error

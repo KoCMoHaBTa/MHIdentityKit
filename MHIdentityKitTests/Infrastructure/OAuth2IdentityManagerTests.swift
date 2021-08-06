@@ -56,7 +56,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 else {
                     
                     XCTAssertEqual(requestModel.refreshToken, "trt3")
-                    throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
+                    throw OAuth2Error(code: .invalidGrant)
                 }
             }
         }
@@ -83,7 +83,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
             XCTFail("An error should be thrown")
         }
         catch let error as OAuth2Error where error.code == .invalidGrant {}
-        catch { throw error }
         
         XCTAssertEqual(flow.callCount, 3)
         XCTAssertEqual(refresher.callCount, 2)
@@ -103,7 +102,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             
             func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
                 
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
+                throw OAuth2Error(code: .invalidGrant)
             }
         }
         
@@ -131,7 +130,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             
             func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
                 
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
+                throw OAuth2Error(code: .invalidGrant)
             }
         }
         
@@ -141,14 +140,11 @@ class OAuth2IdentityManagerTests: XCTestCase {
         let request1 = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
         XCTAssertEqual(request1.value(forHTTPHeaderField: "Authorization"), "Bearer tat1")
         
-        #warning("Rethink errors and simplify them - should be flattened and as simple as possible")
         do {
             _ = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
             XCTFail("An error should be thrown")
         }
-//        MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: ErrorResponse(code: .invalidGrant)))
-        catch MHIdentityKitError.authenticationFailed(let reason) where (reason as? MHIdentityKitError)?.contains(error: OAuth2Error.self) == true {}
-        catch { throw error }
+        catch is OAuth2Error {}
     }
     
     func testSerialAuthorizationBehaviour() async throws {
@@ -360,7 +356,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
                 
                 callCount += 1
-                throw MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError(error: OAuth2Error(code: .invalidGrant)))
+                throw OAuth2Error(code: .invalidGrant)
             }
         }
         
@@ -382,8 +378,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             _ = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
             XCTFail("An error should be thrown")
         }
-        catch MHIdentityKitError.authenticationFailed(let reason) where (reason as? MHIdentityKitError)?.contains(error: OAuth2Error.self) == true {}
-        catch { throw error }
+        catch is OAuth2Error {}
         
         XCTAssertEqual(flow.callCount, 1)
         XCTAssertEqual(refresher.callCount, 1)
