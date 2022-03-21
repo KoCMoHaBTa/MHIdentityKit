@@ -22,7 +22,7 @@ public protocol IdentityManager {
      - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
      */
     
-    func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void)
+    func authorize(request: URLRequest, forceAuthenticate: Bool, skipRefresh: Bool, handler: @escaping (URLRequest, Error?) -> Void)
     
     ///Clears any authentication state, leading to next authorization to require authentication. (eg Logout)
     func revokeAuthenticationState()
@@ -47,7 +47,7 @@ extension IdentityManager {
     
     public func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void) {
         
-        self.authorize(request: request, forceAuthenticate: false, handler: handler)
+        self.authorize(request: request, forceAuthenticate: false, skipRefresh: false, handler: handler)
     }
     
     ///Performs forced authentication on a placeholder request. Can be used when you want to authenticate in advance, without authorizing a particular request
@@ -56,7 +56,7 @@ extension IdentityManager {
         let placeholderURL = URL(string: "http://foo.bar")!
         let placeholderRequest = URLRequest(url: placeholderURL)
         
-        self.authorize(request: placeholderRequest, forceAuthenticate: true) { (_, error) in
+        self.authorize(request: placeholderRequest, forceAuthenticate: true, skipRefresh: true) { (_, error) in
             
             handler?(error)
         }
@@ -76,9 +76,9 @@ extension URLRequest {
      - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
      
      */
-    public func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false, handler: @escaping (URLRequest, Error?) -> Void) {
+    public func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false, skipRefresh: Bool = false, handler: @escaping (URLRequest, Error?) -> Void) {
         
-        identityManager.authorize(request: self, forceAuthenticate: forceAuthenticate, handler: handler)
+        identityManager.authorize(request: self, forceAuthenticate: forceAuthenticate, skipRefresh: skipRefresh, handler: handler)
     }
     
     /**
@@ -158,9 +158,9 @@ extension IdentityManager {
      - note: The implementation of this menthod, simple checks if the HTTP response status code is 401 Unauthorized and if so - authorizes the request again by forcing the authentication. Then the request is retried.
      */
     
-    public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false, completion: @escaping (NetworkResponse) -> Void) {
+    public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false, skipRefresh: Bool = false, completion: @escaping (NetworkResponse) -> Void) {
         
-        self.authorize(request: request, forceAuthenticate: forceAuthenticate) { (request, error) in
+        self.authorize(request: request, forceAuthenticate: forceAuthenticate, skipRefresh: skipRefresh) { (request, error) in
             
             guard error == nil else {
                 

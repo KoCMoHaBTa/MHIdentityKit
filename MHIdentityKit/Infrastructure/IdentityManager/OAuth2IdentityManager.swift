@@ -110,10 +110,10 @@ open class OAuth2IdentityManager: IdentityManager {
         }
     }
     
-    private func authenticate(forced: Bool, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
+    private func authenticate(forced: Bool, skipRefresh: Bool, handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
         
         //force authenticate
-        if forced {
+        if forced && skipRefresh{
             
             //authenticate
             self.performAuthentication(handler: handler)
@@ -152,7 +152,7 @@ open class OAuth2IdentityManager: IdentityManager {
         self.performAuthentication(handler: handler)
     }
     
-    private func performAuthorization(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
+    private func performAuthorization(request: URLRequest, forceAuthenticate: Bool, skipRefresh: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
         
         if forceAuthenticate == false, let response = self.accessTokenResponse, response.isExpired == false   {
             
@@ -160,7 +160,7 @@ open class OAuth2IdentityManager: IdentityManager {
             return
         }
         
-        self.authenticate(forced: forceAuthenticate) { (response, error) in
+        self.authenticate(forced: forceAuthenticate, skipRefresh: skipRefresh) { (response, error) in
             
             guard
             error == nil,
@@ -169,7 +169,7 @@ open class OAuth2IdentityManager: IdentityManager {
                 
                 if self.retryAuthorizationOnAuthenticationError == true && error is ErrorResponse {
                     
-                    self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: handler)
+                    self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, skipRefresh: skipRefresh, handler: handler)
                 }
                 else {
                     
@@ -186,13 +186,13 @@ open class OAuth2IdentityManager: IdentityManager {
     
     //MARK: - IdentityManager
     
-    open func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
+    open func authorize(request: URLRequest, forceAuthenticate: Bool, skipRefresh: Bool, handler: @escaping (URLRequest, Error?) -> Void) {
         
         self.queue.addOperation {
             
             let semaphore = DispatchSemaphore(value: 0)
             
-            self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, handler: { (request, error) in
+            self.performAuthorization(request: request, forceAuthenticate: forceAuthenticate, skipRefresh: skipRefresh, handler: { (request, error) in
                 
                 handler(request, error)
                 
@@ -225,7 +225,7 @@ open class OAuth2IdentityManager: IdentityManager {
        
         struct PlaceholderIdentityManager: IdentityManager {
             
-            func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {}
+            func authorize(request: URLRequest, forceAuthenticate: Bool, skipRefresh: Bool, handler: @escaping (URLRequest, Error?) -> Void) {}
             func revokeAuthenticationState() {}
             func revokeAuthorizationState() {}
             
