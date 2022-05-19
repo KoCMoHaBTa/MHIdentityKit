@@ -771,9 +771,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9954AE591E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOS" */;
 			buildPhases = (
+				9954AE421E9D169700F2A73D /* Headers */,
 				9954AE401E9D169700F2A73D /* Sources */,
 				9954AE411E9D169700F2A73D /* Frameworks */,
-				9954AE421E9D169700F2A73D /* Headers */,
 				9954AE431E9D169700F2A73D /* Resources */,
 			);
 			buildRules = (
@@ -826,9 +826,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6985D132068FC7B00BE5F6A /* Build configuration list for PBXNativeTarget "MHIdentityKit-watchOS" */;
 			buildPhases = (
+				E6985D0B2068FC7B00BE5F6A /* Headers */,
 				E6985D092068FC7B00BE5F6A /* Sources */,
 				E6985D0A2068FC7B00BE5F6A /* Frameworks */,
-				E6985D0B2068FC7B00BE5F6A /* Headers */,
 				E6985D0C2068FC7B00BE5F6A /* Resources */,
 			);
 			buildRules = (
@@ -844,9 +844,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6985DB02069018600BE5F6A /* Build configuration list for PBXNativeTarget "MHIdentityKit-tvOS" */;
 			buildPhases = (
+				E6985D9C2069018500BE5F6A /* Headers */,
 				E6985D9A2069018500BE5F6A /* Sources */,
 				E6985D9B2069018500BE5F6A /* Frameworks */,
-				E6985D9C2069018500BE5F6A /* Headers */,
 				E6985D9D2069018500BE5F6A /* Resources */,
 			);
 			buildRules = (
@@ -881,9 +881,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6985DCC206901AE00BE5F6A /* Build configuration list for PBXNativeTarget "MHIdentityKit-macOS" */;
 			buildPhases = (
+				E6985DB8206901AD00BE5F6A /* Headers */,
 				E6985DB6206901AD00BE5F6A /* Sources */,
 				E6985DB7206901AD00BE5F6A /* Frameworks */,
-				E6985DB8206901AD00BE5F6A /* Headers */,
 				E6985DB9206901AD00BE5F6A /* Resources */,
 			);
 			buildRules = (
