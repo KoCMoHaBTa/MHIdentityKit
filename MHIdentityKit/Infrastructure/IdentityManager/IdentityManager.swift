@@ -19,6 +19,7 @@ public protocol IdentityManager {
      
      - parameter request: The request to authorize.
      - parameter forceAuthenticate: If true, an authentication is always performed, otherwise authentication is done only if internal state requires it, like the access token has expired
+     - parameter skipRefresh: If true, a refresh of the access token will be skipped, otherwise the refresh is performed only if internal state requires it, like the access token has expired.
      - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
      */
     
@@ -74,6 +75,7 @@ extension URLRequest {
      
      - parameter authorizer: The authorizer used to authorize the receiver.
      - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
+     - parameter skipRefresh: If true, a refresh of the access token will be skipped, otherwise the refresh is performed only if internal state requires it, like the access token has expired. Default value is false.
      
      */
     public func authorize(using identityManager: IdentityManager, forceAuthenticate: Bool = false, skipRefresh: Bool = false, handler: @escaping (URLRequest, Error?) -> Void) {
@@ -153,6 +155,7 @@ extension IdentityManager {
      - parameter retryAttempts: The number of times to retry the request if the validation fails.
      - parameter validator: The validator, used to determine if a request must be reauthorized with forced authentication and retried, based on the network response. Default to `responseValidator` if nil is passed.
      - parameter forceAuthenticate: Whenver to force authentication during authorization. Default to false.
+     - parameter skipRefresh: If true, a refresh of the access token will be skipped, otherwise the refresh is performed only if internal state requires it, like the access token has expired. Default value is false.
      - parameter completion: The completion handler called when the request completes.
      
      - note: The implementation of this menthod, simple checks if the HTTP response status code is 401 Unauthorized and if so - authorizes the request again by forcing the authentication. Then the request is retried.
