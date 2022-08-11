@@ -24,6 +24,9 @@ public protocol IdentityManager {
     
     func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void)
     
+    @available(iOS 13, *)
+    func authorizeAsync(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest
+    
     ///Clears any authentication state, leading to next authorization to require authentication. (eg Logout)
     func revokeAuthenticationState()
     
@@ -50,6 +53,12 @@ extension IdentityManager {
         self.authorize(request: request, forceAuthenticate: false, handler: handler)
     }
     
+    @available(iOS 13, *)
+    public func authorizeAsync(request: URLRequest) async throws -> URLRequest {
+        
+        return try await self.authorizeAsync(request: request, forceAuthenticate: false)
+    }
+    
     ///Performs forced authentication on a placeholder request. Can be used when you want to authenticate in advance, without authorizing a particular request
     public func forceAuthenticate(handler: ((Error?) -> Void)? = nil) {
         
@@ -60,6 +69,14 @@ extension IdentityManager {
             
             handler?(error)
         }
+    }
+    
+    @available(iOS 13, *)
+    public func forceAuthenticateAsync() async throws {
+        
+        let placeholderURL = URL(string: "http://foo.bar")!
+        let placeholderRequest = URLRequest(url: placeholderURL)
+        _ = try await self.authorizeAsync(request: placeholderRequest, forceAuthenticate: true)
     }
 }
 
@@ -178,6 +195,17 @@ extension IdentityManager {
                 }
                 
                 completion(response)
+            }
+        }
+    }
+    
+    @available(iOS 13, *)
+    public func performAsync(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async throws -> NetworkResponse {
+        
+        return await withCheckedContinuation { continuation in
+            
+            self.perform(request, using: networkClient, retryAttempts: retryAttempts, validator: validator, forceAuthenticate: forceAuthenticate) { response in
+                continuation.resume(returning: response)
             }
         }
     }

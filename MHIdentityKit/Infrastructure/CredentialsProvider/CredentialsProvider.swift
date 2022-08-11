@@ -17,6 +17,9 @@ public protocol CredentialsProvider {
     ///Provides credentials in an asynchronous manner. Can be implemented in a way to show a login screen.
     func credentials(handler: @escaping (Username, Password) -> Void)
     
+    @available(iOS 13, *)
+    func credentialsAsync() async -> (Username, Password)
+    
     ///(Optional) Called to notify the receiver that authentication has been successful with the suplied credentials.
     func didFinishAuthenticating()
     

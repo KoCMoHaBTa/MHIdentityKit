@@ -203,6 +203,21 @@ open class OAuth2IdentityManager: IdentityManager {
         }
     }
     
+    @available(iOS 13, *)
+    open func authorizeAsync(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            self.authorize(request: request, forceAuthenticate: forceAuthenticate) { request, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                }
+                else {
+                    continuation.resume(returning: request)
+                }
+            }
+        }
+    }
+    
     open func revokeAuthenticationState() {
         
         self.queue.addOperation {
@@ -226,6 +241,9 @@ open class OAuth2IdentityManager: IdentityManager {
         struct PlaceholderIdentityManager: IdentityManager {
             
             func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {}
+            
+            @available(iOS 13, *)
+            func authorizeAsync(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest { return request }
             func revokeAuthenticationState() {}
             func revokeAuthorizationState() {}
             

@@ -98,6 +98,22 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
                 request.url = components.url
         }
     }
+    
+    @available(iOS 13, *)
+    public func authorizeAsync(request: URLRequest) async throws -> URLRequest {
+        return try await withCheckedThrowingContinuation { continuation in
+            
+            self.authorize(request: request) { (request, error) in
+                
+                if let error = error {
+                    continuation.resume(throwing: error)
+                }
+                else {
+                    continuation.resume(returning: request)
+                }
+            }
+        }
+    }
 }
 
 extension BearerAccessTokenAuthorizer {

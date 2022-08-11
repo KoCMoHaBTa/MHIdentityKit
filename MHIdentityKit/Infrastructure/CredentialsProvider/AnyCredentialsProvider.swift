@@ -57,6 +57,16 @@ public struct AnyCredentialsProvider: CredentialsProvider {
         self.credentialsHandler(handler)
     }
     
+    @available(iOS 13, *)
+    public func credentialsAsync() async -> (Username, Password) {
+        
+        return await withCheckedContinuation { continuation in
+            self.credentials { (usernmae, password) in
+                continuation.resume(returning: (usernmae, password))
+            }
+        }
+    }
+    
     public func didFinishAuthenticating() {
         
         self.didFinishAuthenticatingHandler?()

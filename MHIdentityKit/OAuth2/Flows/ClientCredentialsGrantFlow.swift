@@ -63,9 +63,26 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
         self.clientAuthorizer.authorize(request: request, handler: handler)
     }
     
+    @available(iOS 13, *)
+    open func authorizeAsync(_ request: URLRequest) async throws -> URLRequest {
+        
+        return try await self.clientAuthorizer.authorizeAsync(request: request)
+    }
+    
     open func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
         
         self.networkClient.perform(request, completion: completion)
+    }
+    
+    @available(iOS 13, *)
+    open func performAsync(_ request: URLRequest) async -> NetworkResponse {
+        
+        return await withCheckedContinuation { continuation in
+            
+            self.networkClient.perform(request) { response in
+                continuation.resume(returning: response)
+            }
+        }
     }
     
     open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
@@ -116,6 +133,17 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
         })
     }
     
+    @available(iOS 13, *)
+    open func authenticateAsync(using request: URLRequest) async throws -> AccessTokenResponse? {
+        
+        let urlRequest = try await self.authorizeAsync(request)
+        let response = await self.performAsync(urlRequest)
+        let accessTokenResponse = try self.accessTokenResponse(from: response)
+        try self.validate(accessTokenResponse)
+        
+        return accessTokenResponse
+    }
+    
     //MARK: - AuthorizationGrantFlow
     
     open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
@@ -125,6 +153,16 @@ open class ClientCredentialsGrantFlow: AuthorizationGrantFlow {
         let request = self.urlRequest(from: accessTokenRequest)
         self.authenticate(using: request, handler: handler)
     }
+    
+    @available(iOS 13, *)
+    open func authenticateAsync() async throws -> AccessTokenResponse? {
+        
+        //build the request
+        let accessTokenRequest = AccessTokenRequest(scope: self.scope)
+        let request = self.urlRequest(from: accessTokenRequest)
+        return try await self.authenticateAsync(using: request)
+    }
+    
 }
 
 //MARK: - Models

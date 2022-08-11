@@ -63,6 +63,23 @@ open class DefaultAccessTokenRefresher: AccessTokenRefresher {
             }
         }
     }
+    
+    @available(iOS 13, *)
+    open func refreshAsync(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse? {
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            
+            self.refresh(using: requestModel) { response, error in
+                
+                if let error = error {
+                    continuation.resume(throwing: error)
+                }
+                else {
+                    continuation.resume(returning: response)
+                }
+            }
+        }
+    }
 }
 
 extension DefaultAccessTokenRefresher {

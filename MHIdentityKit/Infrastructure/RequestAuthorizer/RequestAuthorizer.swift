@@ -20,6 +20,9 @@ public protocol RequestAuthorizer {
      - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
      */
     func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void)
+    
+    @available(iOS 13, *)
+    func authorizeAsync(request: URLRequest) async throws -> URLRequest
 }
 
 extension URLRequest {
@@ -38,6 +41,12 @@ extension URLRequest {
     public func authorize(using authorizer: RequestAuthorizer, handler: @escaping (URLRequest, Error?) -> Void) {
         
         authorizer.authorize(request: self, handler: handler)
+    }
+    
+    @available(iOS 13, *)
+    public func authorizeAsync(using authorizer: RequestAuthorizer) async throws -> URLRequest {
+        
+        return try await authorizer.authorizeAsync(request: self)
     }
     
     /**

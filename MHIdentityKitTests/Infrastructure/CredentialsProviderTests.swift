@@ -26,4 +26,17 @@ class CredentialsProviderTests: XCTestCase {
             }
         }
     }
+    
+    @available(iOS 13, *)
+    func testDefaultCredentialsProviderAsync() async{
+        
+        let provider: CredentialsProvider = AnyCredentialsProvider(username: "tuname", password: "tpsswd")
+        
+        let credentials = await provider.credentialsAsync()
+        let username = credentials.0
+        let password = credentials.1
+             
+        XCTAssertEqual(username, "tuname")
+        XCTAssertEqual(password, "tpsswd")
+    }
 }
