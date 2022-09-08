@@ -28,7 +28,7 @@ public struct AnyRequestAuthorizer: RequestAuthorizer {
         self.handler(request, handler)
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorizeAsync(request: URLRequest) async throws -> URLRequest {
         
         return request

@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 @testable import MHIdentityKit
 
-@available(iOS 13, *)
+@available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
 class RequestAuthorizerAsyncTests: XCTestCase {
     
     func testHTTPBasicAuthorizerAsync() async {

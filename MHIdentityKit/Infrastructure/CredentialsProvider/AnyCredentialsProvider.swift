@@ -57,7 +57,7 @@ public struct AnyCredentialsProvider: CredentialsProvider {
         self.credentialsHandler(handler)
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func credentialsAsync() async -> (Username, Password) {
         
         return await withCheckedContinuation { continuation in

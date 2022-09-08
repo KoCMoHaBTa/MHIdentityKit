@@ -99,7 +99,7 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
         }
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorizeAsync(request: URLRequest) async throws -> URLRequest {
         return try await withCheckedThrowingContinuation { continuation in
             

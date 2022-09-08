@@ -18,6 +18,6 @@ public protocol AuthorizationGrantFlow {
      */
     func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void)
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     func authenticateAsync() async throws -> AccessTokenResponse?
 }

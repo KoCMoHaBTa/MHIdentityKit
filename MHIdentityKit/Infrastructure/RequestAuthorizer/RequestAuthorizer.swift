@@ -21,7 +21,7 @@ public protocol RequestAuthorizer {
      */
     func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void)
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     func authorizeAsync(request: URLRequest) async throws -> URLRequest
 }
 
@@ -43,7 +43,7 @@ extension URLRequest {
         authorizer.authorize(request: self, handler: handler)
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorizeAsync(using authorizer: RequestAuthorizer) async throws -> URLRequest {
         
         return try await authorizer.authorizeAsync(request: self)

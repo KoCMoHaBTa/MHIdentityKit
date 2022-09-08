@@ -24,7 +24,7 @@ public protocol IdentityManager {
     
     func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void)
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     func authorizeAsync(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest
     
     ///Clears any authentication state, leading to next authorization to require authentication. (eg Logout)
@@ -53,7 +53,7 @@ extension IdentityManager {
         self.authorize(request: request, forceAuthenticate: false, handler: handler)
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorizeAsync(request: URLRequest) async throws -> URLRequest {
         
         return try await self.authorizeAsync(request: request, forceAuthenticate: false)
@@ -71,7 +71,7 @@ extension IdentityManager {
         }
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func forceAuthenticateAsync() async throws {
         
         let placeholderURL = URL(string: "http://foo.bar")!
@@ -199,7 +199,7 @@ extension IdentityManager {
         }
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func performAsync(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async throws -> NetworkResponse {
         
         return await withCheckedContinuation { continuation in

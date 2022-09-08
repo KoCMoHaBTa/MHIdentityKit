@@ -203,7 +203,7 @@ open class OAuth2IdentityManager: IdentityManager {
         }
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     open func authorizeAsync(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -242,7 +242,7 @@ open class OAuth2IdentityManager: IdentityManager {
             
             func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void) {}
             
-            @available(iOS 13, *)
+            @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
             func authorizeAsync(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest { return request }
             func revokeAuthenticationState() {}
             func revokeAuthorizationState() {}

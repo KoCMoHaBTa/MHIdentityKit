@@ -64,7 +64,7 @@ open class DefaultAccessTokenRefresher: AccessTokenRefresher {
         }
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     open func refreshAsync(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse? {
         
         return try await withCheckedThrowingContinuation { continuation in

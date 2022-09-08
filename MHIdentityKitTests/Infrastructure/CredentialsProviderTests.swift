@@ -27,7 +27,7 @@ class CredentialsProviderTests: XCTestCase {
         }
     }
     
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     func testDefaultCredentialsProviderAsync() async{
         
         let provider: CredentialsProvider = AnyCredentialsProvider(username: "tuname", password: "tpsswd")

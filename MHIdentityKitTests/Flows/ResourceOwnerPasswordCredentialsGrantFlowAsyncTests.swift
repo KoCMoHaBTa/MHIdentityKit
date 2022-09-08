@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 @testable import MHIdentityKit
 
-@available(iOS 13.0.0, *)
+@available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
 class ResourceOwnerPasswordCredentialsGrantFlowAsyncTests: XCTestCase {
     
     let tokenEndpoint = URL(string: "http://foo.bar")!

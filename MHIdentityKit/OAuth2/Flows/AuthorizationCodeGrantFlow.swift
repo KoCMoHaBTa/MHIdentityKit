@@ -157,7 +157,7 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         self.networkClient.perform(request, completion: completion)
     }
     
-    @available(iOS 13.0.0, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     open func performAsync(_ request: URLRequest) async -> NetworkResponse {
         
         return await withCheckedContinuation { continuation in
@@ -322,7 +322,7 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         }
     }
         
-    @available(iOS 13, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     open func authenticateAsync() async throws -> AccessTokenResponse? {
         
         let authorizationRequest = AuthorizationRequest(clientID: self.clientID, redirectURI: self.redirectURI, scope: self.scope, state: self.state)
