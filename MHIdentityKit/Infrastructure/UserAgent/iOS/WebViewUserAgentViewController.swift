@@ -27,7 +27,7 @@ open class WebViewUserAgentViewController: UIViewController, WKNavigationDelegat
         self.view.addSubview(progressView)
         
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.init(item: progressView, attribute: .top, relatedBy: .equal, toItem: self.topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint.init(item: progressView, attribute: .top, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide.topAnchor, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint.init(item: progressView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint.init(item: progressView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1, constant: 0).isActive = true
         
@@ -212,7 +212,7 @@ extension WebViewUserAgentViewController {
      */
     
     @available(*, deprecated, message: "Use PresentableUserAgent instead.")
-    open func makePresentableUserAgent(present: @escaping (WebViewUserAgentViewController) -> Void, dismiss: @escaping (WebViewUserAgentViewController) -> Void) -> UserAgent {
+    public func makePresentableUserAgent(present: @escaping (WebViewUserAgentViewController) -> Void, dismiss: @escaping (WebViewUserAgentViewController) -> Void) -> UserAgent {
      
         return PresentableUserAgent(self, presentationHandler: present, dismissHandler: dismiss)
     }

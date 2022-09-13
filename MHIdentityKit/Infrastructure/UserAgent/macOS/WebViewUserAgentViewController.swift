@@ -288,7 +288,7 @@ extension WebViewUserAgentViewController {
      */
     
     @available(*, deprecated, message: "Use PresentableUserAgent instead.")
-    open func makePresentableUserAgent(present: @escaping (WebViewUserAgentViewController) -> Void, dismiss: @escaping (WebViewUserAgentViewController) -> Void) -> UserAgent {
+    public func makePresentableUserAgent(present: @escaping (WebViewUserAgentViewController) -> Void, dismiss: @escaping (WebViewUserAgentViewController) -> Void) -> UserAgent {
      
         return PresentableUserAgent(self, presentationHandler: present, dismissHandler: dismiss)
     }
