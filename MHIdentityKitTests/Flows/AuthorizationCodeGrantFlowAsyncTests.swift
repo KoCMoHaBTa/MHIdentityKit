@@ -19,7 +19,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
     let credentialsProvider = AnyCredentialsProvider(username: "tu", password: "tp")
     let scope: Scope = "read write"
     
-    func testSuccessWithAllArgumentsAsync() async {
+    func testSuccessWithAllArguments() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -80,7 +80,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -91,7 +91,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         XCTAssertEqual(response?.scope?.value, "ts1 ts2")
     }
     
-    func testSuccessWithoutClientAuthorizerAsync() async {
+    func testSuccessWithoutClientAuthorizer() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -151,7 +151,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -162,7 +162,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         XCTAssertEqual(response?.scope?.value, "ts1 ts2")
     }
     
-    func testSuccessWithoutRedirectURIAsync() async {
+    func testSuccessWithoutRedirectURI() async {
         
         let redirectURI: URL? = nil
         let state: AnyHashable? = "obi one"
@@ -222,7 +222,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -233,7 +233,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         XCTAssertEqual(response?.scope?.value, "ts1 ts2")
     }
     
-    func testSuccessWithoutOptionalArgumentsAsync() async {
+    func testSuccessWithoutOptionalArguments() async {
         
         let redirectURI: URL? = nil
         let state: AnyHashable? = nil
@@ -293,7 +293,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -305,7 +305,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
     }
     
     //when the state mismatch, the flow should complete with error
-    func testErrorWithInvalidStateAsync() async {
+    func testErrorWithInvalidState() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -344,13 +344,13 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNil(response)
     }
     
     //When the redirect uri mismatch, the flow should wait for matching uri
-    func testErrorWithRedirectURIMismatchAsync() {
+    func testErrorWithRedirectURIMismatch() {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -391,13 +391,13 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         Task.init {
             
-            _ = try? await flow.authenticateAsync()
+            _ = try? await flow.authenticate()
             XCTFail()
         }
     }
     
     //When the redirect uri mismatch, the flow should wait for matching uri
-    func testSuccessWithMultipleRedirectionsAsync() async {
+    func testSuccessWithMultipleRedirections() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -476,7 +476,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -488,7 +488,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
     }
     
     //when the state mismatch, the flow should complete with error
-    func testErrorFromUserAgentAsync() async {
+    func testErrorFromUserAgent() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -527,12 +527,12 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNil(response)
     }
     
-    func testErrorFromNetworkClientAsync() async {
+    func testErrorFromNetworkClient() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -592,12 +592,12 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = AuthorizationCodeGrantFlow(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, clientAuthorizer: clientAuthorizer, userAgent: userAgent, networkClient: networkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNil(response)
     }
     
-    func testAdditionalParametersAsync() async {
+    func testAdditionalParameters() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -663,7 +663,7 @@ class AuthorizationCodeGrantFlowAsyncTests: XCTestCase {
         flow.additionalAuthorizationRequestParameters = ["additional_parameter_1": "ap1", "client_id": "tampered jarjar"]
         flow.additionalAccessTokenRequestParameters = ["additional_parameter_2": "ap2", "code": "tampered abc"]
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         

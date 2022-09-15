@@ -17,7 +17,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowAsyncTests: XCTestCase {
     let scope: Scope = "read write"
     let clientAuthorizer = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
     
-    func testResourceOwnerPasswordCredentialsGrantFlowAsync() async {
+    func testResourceOwnerPasswordCredentialsGrantFlow() async {
         
         let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
             
@@ -54,7 +54,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
             
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
             
         XCTAssertNotNil(response)
         
@@ -65,7 +65,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowAsyncTests: XCTestCase {
         XCTAssertEqual(response?.scope?.value, "ts1 ts2")
     }
     
-    func testErrorFromNetworkClientAsync() async {
+    func testErrorFromNetworkClient() async {
         
         let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
             
@@ -104,12 +104,12 @@ class ResourceOwnerPasswordCredentialsGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ResourceOwnerPasswordCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, credentialsProvider: credentialsProvider, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
             
         XCTAssertNil(response)
     }
     
-    func testAdditionalParametersAsync() async {
+    func testAdditionalParameters() async {
         
         let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
             
@@ -149,7 +149,7 @@ class ResourceOwnerPasswordCredentialsGrantFlowAsyncTests: XCTestCase {
         
         flow.additionalAccessTokenRequestParameters = ["additional_parameter": "ap", "username": "tampered username"]
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
             
         XCTAssertNotNil(response)
             

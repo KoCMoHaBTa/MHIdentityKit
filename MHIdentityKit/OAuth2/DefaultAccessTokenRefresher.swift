@@ -65,7 +65,7 @@ open class DefaultAccessTokenRefresher: AccessTokenRefresher {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    open func refreshAsync(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse? {
+    open func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
         
         return try await withCheckedThrowingContinuation { continuation in
             
@@ -75,6 +75,12 @@ open class DefaultAccessTokenRefresher: AccessTokenRefresher {
                     continuation.resume(throwing: error)
                 }
                 else {
+                    
+                    guard let response = response else {
+                        continuation.resume(throwing: MHIdentityKitError.Reason.invalidAccessTokenResponse)
+                        return
+                    }
+                    
                     continuation.resume(returning: response)
                 }
             }

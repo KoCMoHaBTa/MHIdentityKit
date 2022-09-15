@@ -20,9 +20,26 @@ public protocol RequestAuthorizer {
      - parameter handler: The callback, executed when the authorization is complete. The callback takes 2 arguments - an URLRequest and an Error
      */
     func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void)
+}
+
+extension RequestAuthorizer {
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    func authorizeAsync(request: URLRequest) async throws -> URLRequest
+    func authorize(request: URLRequest) async throws -> URLRequest {
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            
+            self.authorize(request: request) { urlRequest, error in
+                
+                if let error = error {
+                    continuation.resume(throwing: error)
+                }
+                else {
+                    continuation.resume(returning: urlRequest)
+                }
+            }
+        }
+    }
 }
 
 extension URLRequest {
@@ -44,9 +61,9 @@ extension URLRequest {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func authorizeAsync(using authorizer: RequestAuthorizer) async throws -> URLRequest {
+    public func authorize(using authorizer: RequestAuthorizer) async throws -> URLRequest {
         
-        return try await authorizer.authorizeAsync(request: self)
+        return try await authorizer.authorize(request: self)
     }
     
     /**

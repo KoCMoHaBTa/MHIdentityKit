@@ -14,7 +14,7 @@ import XCTest
 @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
 class OAuth2IdentityManagerAsyncTests: XCTestCase {
     
-    func testOAuth2IdentityManagerAsync() async {
+    func testOAuth2IdentityManager() async throws {
         
         class Flow: AuthorizationGrantFlow {
             
@@ -46,28 +46,6 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
                     handler(nil, ErrorResponse(code: .invalidGrant))
                 }
             }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                e.fulfill()
-                callCount += 1
-                
-                if callCount == 1 {
-                    
-                    //simulate expired token
-                    return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil)
-                }
-                else if callCount == 2 {
-                    
-                    //simulate valid token
-                    return AccessTokenResponse(accessToken: "tat2", tokenType: "Bearer", expiresIn: 1234, refreshToken: "trt2", scope: nil)
-                }
-                else {
-                    
-                    throw ErrorResponse(code: .invalidGrant)
-                }
-            }
-            
         }
         
         class Refresher: AccessTokenRefresher {
@@ -100,23 +78,23 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
         
         let manager = OAuth2IdentityManager(flow: Flow(e: XCTestExpectation(description: "XCTestCase Default Expectation")), refresher: Refresher(e: XCTestExpectation(description: "XCTestCase Default Expectation")), storage: InMemoryIdentityStorage(), authorizationMethod: .header)
         
-        let request1 = try! await manager.authorizeAsync(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
+        let request1 = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
         XCTAssertEqual(request1.value(forHTTPHeaderField: "Authorization"), "Bearer tat1")
         
-        let request2 = try! await manager.authorizeAsync(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
+        let request2 = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
         XCTAssertEqual(request2.value(forHTTPHeaderField: "Authorization"), "Bearer rtat")
         
-        let request3 = try! await manager.authorizeAsync(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
+        let request3 = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
         XCTAssertEqual(request3.value(forHTTPHeaderField: "Authorization"), "Bearer tat2")
         
-        let request4 = try! await manager.authorizeAsync(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
+        let request4 = try await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: false)
         XCTAssertEqual(request4.value(forHTTPHeaderField: "Authorization"), "Bearer tat2")
         
-        let request5 = try? await manager.authorizeAsync(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: true)
+        let request5 = try? await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!), forceAuthenticate: true)
         XCTAssertNil(request5?.value(forHTTPHeaderField: "Authorization"))
     }
     
-    func testPerformingRequestsUsingCustomResponseValidatorAsync() async {
+    func testPerformingRequestsUsingCustomResponseValidator() async throws {
         
         struct Flow: AuthorizationGrantFlow {
             
@@ -126,12 +104,6 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
                 
                 e.fulfill()
                 handler(nil, nil)
-            }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                e.fulfill()
-                return nil
             }
         }
         
@@ -144,12 +116,6 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
                 
                 e.fulfill()
                 completion(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
-            }
-            
-            func performAsync(_ request: URLRequest) async -> NetworkResponse {
-                
-                e.fulfill()
-                return NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil)
             }
         }
         
@@ -170,7 +136,7 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
         
         //performing sohuld honor the instanace type
         //total of 3 fulfils should occur - 1 for flow, 1 for client and 1 for perform completion
-        _ = try! await manager.performAsync(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
+        _ = try await manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
         e.fulfill()
         
         //set the status code to fail
@@ -178,11 +144,11 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
         
         //3 x retry attemtps (9) = 10 fulfils
         
-        _ = try! await manager.performAsync(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
+        _ = try await manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
         e.fulfill()
     }
     
-    func testRefreshTokenStateUponRefreshFailureWithUnknownErrorAsync() async {
+    func testRefreshTokenStateUponRefreshFailureWithUnknownError() async {
         
         //When trying to perform a refresh and the server returns an oauth2 error - the refresh token should be deleted
         
@@ -191,11 +157,6 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
             func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
                 
                 handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
-            }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil)
             }
         }
         
@@ -216,13 +177,13 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
         XCTAssertNil(manager.refreshToken)
         
         //upon first authorization - we don't have refresh token - so it will call the flow and save 1
-        let request = try? await manager.authorizeAsync(request: URLRequest(url: URL(string: "http://foo.bar")!))
+        let request = try? await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
         XCTAssertNotNil(request)
         XCTAssertEqual(manager.refreshToken, "trt1")
         e.fulfill()
         
         //upon second authorization - we will have a refresh token and an error should be returned - the refresh token should be deleted
-        let secondRequest = try? await manager.authorizeAsync(request: URLRequest(url: URL(string: "http://foo.bar")!))
+        let secondRequest = try? await manager.authorize(request: URLRequest(url: URL(string: "http://foo.bar")!))
         XCTAssertNil(secondRequest)
         XCTAssertEqual(manager.refreshToken, "trt1")
         e.fulfill()

@@ -29,7 +29,7 @@ public struct AnyRequestAuthorizer: RequestAuthorizer {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func authorizeAsync(request: URLRequest) async throws -> URLRequest {
+    public func authorize(request: URLRequest) async throws -> URLRequest {
         
         return request
     }

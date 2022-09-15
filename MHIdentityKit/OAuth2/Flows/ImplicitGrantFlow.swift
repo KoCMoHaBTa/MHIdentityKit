@@ -199,7 +199,7 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func authenticateAsync() async throws -> AccessTokenResponse? {
+    public func authenticate() async throws -> AccessTokenResponse {
         
         let authorizationRequest = AuthorizationRequest(clientID: self.clientID, redirectURI: self.redirectURI, scope: self.scope, state: self.state)
         let authorizationURLRequest = self.urlRequest(from: authorizationRequest)

@@ -32,7 +32,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         XCTAssertEqual(response?.state, "xyz")
     }
     
-    func testSuccessWithAllArgumentsAsync() async {
+    func testSuccessWithAllArguments() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -65,7 +65,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -76,7 +76,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         XCTAssertEqual(response?.scope?.value, "ts1 ts2")
     }
     
-    func testSuccessWithoutRedirectURIAsync() async {
+    func testSuccessWithoutRedirectURI() async {
         
         let redirectURI: URL? = nil
         let state: AnyHashable? = "obi one"
@@ -109,7 +109,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -120,7 +120,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         XCTAssertEqual(response?.scope?.value, "ts1 ts2")
     }
     
-    func testSuccessWithoutOptionalArgumentsAsync() async {
+    func testSuccessWithoutOptionalArguments() async {
         
         let redirectURI: URL? = nil
         let state: AnyHashable? = nil
@@ -153,7 +153,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -197,13 +197,13 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
 
             let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
 
-            let response = try? await flow.authenticateAsync()
+            let response = try? await flow.authenticate()
 
             XCTAssertNil(response)
     }
 
     //When the redirect uri mismatch, the flow should wait for matching uri
-    func testErrorWithRedirectURIMismatchAsync() {
+    func testErrorWithRedirectURIMismatch() {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -238,13 +238,13 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
 
         Task.init {
         
-            _ = try? await flow.authenticateAsync()
+            _ = try? await flow.authenticate()
             XCTFail()
         }
     }
 
     //When the redirect uri mismatch, the flow should wait for matching uri
-    func testSuccessWithMultipleRedirectionsAsync() async {
+    func testSuccessWithMultipleRedirections() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -296,7 +296,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         
@@ -308,7 +308,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
     }
 
     //when the state mismatch, the flow should complete with error
-    func testErrorFromUserAgentAsync() async {
+    func testErrorFromUserAgent() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -340,12 +340,12 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ImplicitGrantFlow(authorizationEndpoint: authorizationEndpoint, clientID: clientID, redirectURI: redirectURI, scope: scope, state: state, userAgent: userAgent)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNil(response)
     }
 
-    func testAdditionalParametersAsync() async {
+    func testAdditionalParameters() async {
         
         let redirectURI: URL? = URL(string: "ik://my.redirect.url/here/now")
         let state: AnyHashable? = "obi one"
@@ -382,7 +382,7 @@ class ImplicitGrantFlowAsyncTests: XCTestCase {
         //set additional  parameters and override some of existing ones
         flow.additionalAuthorizationRequestParameters = ["additional_parameter_1": "ap1", "client_id": "tampered jarjar"]
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         

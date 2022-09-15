@@ -18,7 +18,7 @@ class ClientCredentialsGrantFlowAsyncTests: XCTestCase {
     let scope: Scope = "read write"
     let clientAuthorizer = HTTPBasicAuthorizer(clientID: "tcid", secret: "ts")
     
-    func testClientCredentialsGrantFlowAsync() async {
+    func testClientCredentialsGrantFlow() async {
         
         let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
             
@@ -45,7 +45,7 @@ class ClientCredentialsGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
             
         XCTAssertNotNil(response)
         
@@ -56,7 +56,7 @@ class ClientCredentialsGrantFlowAsyncTests: XCTestCase {
         XCTAssertNil(response?.scope)
     }
     
-    func testErrorDueToProvidedRefreshTokenAsync() async {
+    func testErrorDueToProvidedRefreshToken() async {
         
         let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
             
@@ -83,12 +83,12 @@ class ClientCredentialsGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
             
         XCTAssertNil(response)
     }
     
-    func testErrorFromNetworkClientAsync() async {
+    func testErrorFromNetworkClient() async {
         
         let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
             
@@ -115,12 +115,12 @@ class ClientCredentialsGrantFlowAsyncTests: XCTestCase {
         
         let flow: AuthorizationGrantFlow = ClientCredentialsGrantFlow(tokenEndpoint: tokenEndpoint, scope: scope, clientAuthorizer: clientAuthorizer, networkClient: netoworkClient)
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNil(response)
     }
     
-    func testAdditionalParametersAsync() async {
+    func testAdditionalParameters() async {
         
         let netoworkClient: NetworkClient = TestNetworkClient { (request, handler) in
             
@@ -150,7 +150,7 @@ class ClientCredentialsGrantFlowAsyncTests: XCTestCase {
         
         flow.additionalAccessTokenRequestParameters = ["additional_parameter": "ap", "scope": "tampered scope"]
         
-        let response = try? await flow.authenticateAsync()
+        let response = try? await flow.authenticate()
         
         XCTAssertNotNil(response)
         

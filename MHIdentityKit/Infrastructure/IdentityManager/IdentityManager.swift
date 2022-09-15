@@ -24,9 +24,6 @@ public protocol IdentityManager {
     
     func authorize(request: URLRequest, forceAuthenticate: Bool, handler: @escaping (URLRequest, Error?) -> Void)
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    func authorizeAsync(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest
-    
     ///Clears any authentication state, leading to next authorization to require authentication. (eg Logout)
     func revokeAuthenticationState()
     
@@ -35,6 +32,26 @@ public protocol IdentityManager {
     
     ///Validates a network response based on whenever it requires authorization or not. Returns true if the response is valid and does not require authorization, otherwise return false. Default implementation checks whenever the HTTP status code != 401 for a valid response.
     var responseValidator: NetworkResponseValidator { get }
+}
+
+extension IdentityManager {
+    
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            
+            self.authorize(request: request, forceAuthenticate: forceAuthenticate) { urlRequest, error in
+                
+                if let error = error {
+                    continuation.resume(throwing: error)
+                }
+                else {
+                    continuation.resume(returning: request)
+                }
+            }
+        }
+    }
 }
 
 extension IdentityManager {
@@ -54,9 +71,9 @@ extension IdentityManager {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func authorizeAsync(request: URLRequest) async throws -> URLRequest {
+    public func authorize(request: URLRequest) async throws -> URLRequest {
         
-        return try await self.authorizeAsync(request: request, forceAuthenticate: false)
+        return try await self.authorize(request: request, forceAuthenticate: false)
     }
     
     ///Performs forced authentication on a placeholder request. Can be used when you want to authenticate in advance, without authorizing a particular request
@@ -72,11 +89,17 @@ extension IdentityManager {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func forceAuthenticateAsync() async throws {
+    public func forceAuthenticate() async throws {
         
-        let placeholderURL = URL(string: "http://foo.bar")!
-        let placeholderRequest = URLRequest(url: placeholderURL)
-        _ = try await self.authorizeAsync(request: placeholderRequest, forceAuthenticate: true)
+        return try await withCheckedThrowingContinuation { continuation in
+            
+            self.forceAuthenticate { error in
+                
+                if let error = error {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 }
 
@@ -200,7 +223,7 @@ extension IdentityManager {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func performAsync(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async throws -> NetworkResponse {
+    public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async throws -> NetworkResponse {
         
         return await withCheckedContinuation { continuation in
             

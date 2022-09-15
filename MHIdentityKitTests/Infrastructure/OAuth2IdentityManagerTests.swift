@@ -46,28 +46,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
                     handler(nil, ErrorResponse(code: .invalidGrant))
                 }
             }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                e.fulfill()
-                callCount += 1
-                
-                if callCount == 1 {
-                    
-                    //simulate expired token
-                    return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil)
-                }
-                else if callCount == 2 {
-                    
-                    //simulate valid token
-                    return AccessTokenResponse(accessToken: "tat2", tokenType: "Bearer", expiresIn: 1234, refreshToken: "trt2", scope: nil)
-                }
-                else {
-                    
-                    throw ErrorResponse(code: .invalidGrant)
-                }
-            }
-            
         }
         
         class Refresher: AccessTokenRefresher {
@@ -149,11 +127,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 
                 handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
             }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil)
-            }
         }
         
         class Refresher: AccessTokenRefresher {
@@ -215,11 +188,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 
                 handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
             }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil)
-            }
         }
         
         let manager = OAuth2IdentityManager(flow: Flow(), refresher: nil, storage: InMemoryIdentityStorage(), authorizationMethod: .header)        
@@ -259,22 +227,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
                     handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 1234, refreshToken: "trt2", scope: nil), nil)
                 }
             }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                e.fulfill()
-                callCount += 1
-                
-                guard callCount == 1 else {
-                    
-                    XCTFail()
-                    throw ErrorResponse(code: .unsupportedResponseType)
-                }
-                
-                try! await Task.sleep(nanoseconds: UInt64((2 * Double(NSEC_PER_SEC)) / Double(NSEC_PER_SEC)))
-                
-                return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 1234, refreshToken: "trt2", scope: nil)
-            }
         }
         
         self.performExpectation(timeout: 4) { (e) in
@@ -298,10 +250,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
     func testPerformingRequestsUsingStandartResponseValidator() {
         
         struct Flow: AuthorizationGrantFlow {
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                return nil
-            }
-            
             
             let e: XCTestExpectation
             
@@ -313,10 +261,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
         }
         
         struct NClient: NetworkClient {
-            func performAsync(_ request: URLRequest) async -> NetworkResponse {
-                return NetworkResponse()
-            }
-            
             
             let e: XCTestExpectation
             var statusCode: Int
@@ -366,12 +310,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 e.fulfill()
                 handler(nil, nil)
             }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                e.fulfill()
-                return nil
-            }
         }
         
         struct NClient: NetworkClient {
@@ -383,12 +321,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 
                 e.fulfill()
                 completion(NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil))
-            }
-            
-            func performAsync(_ request: URLRequest) async -> NetworkResponse {
-                
-                e.fulfill()
-                return NetworkResponse(data: nil, response: HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: nil, headerFields: nil), error: nil)
             }
         }
         
@@ -436,11 +368,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
                 
                 handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
             }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil)
-            }
         }
         
         class Refresher: AccessTokenRefresher {
@@ -486,11 +413,6 @@ class OAuth2IdentityManagerTests: XCTestCase {
             func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
                 
                 handler(AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil), nil)
-            }
-            
-            func authenticateAsync() async throws -> AccessTokenResponse? {
-                
-                return AccessTokenResponse(accessToken: "tat1", tokenType: "Bearer", expiresIn: 0, refreshToken: "trt1", scope: nil)
             }
         }
         
