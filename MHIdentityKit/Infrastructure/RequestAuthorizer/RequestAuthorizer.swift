@@ -25,7 +25,7 @@ public protocol RequestAuthorizer {
 extension RequestAuthorizer {
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    func authorize(request: URLRequest) async throws -> URLRequest {
+    public func authorize(request: URLRequest) async throws -> URLRequest {
         
         return try await withCheckedThrowingContinuation { continuation in
             
@@ -61,7 +61,7 @@ extension URLRequest {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func authorize(using authorizer: RequestAuthorizer) async throws -> URLRequest {
+    public func authorized(using authorizer: RequestAuthorizer) async throws -> URLRequest {
         
         return try await authorizer.authorize(request: self)
     }
@@ -76,6 +76,8 @@ extension URLRequest {
      - throws: An authorization error.
      - returns: An authorized copy of the recevier.
      */
+    
+    @available(*, noasync)
     public func authorized(using authorizer: RequestAuthorizer) throws -> URLRequest {
         
         var request = self
@@ -114,9 +116,16 @@ extension URLRequest {
      - throws: An authorization error.
      */
     
+    @available(*, noasync)
     public mutating func authorize(using authorizer: RequestAuthorizer) throws {
         
         try self = self.authorized(using: authorizer)
+    }
+    
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    public mutating func authorize(using authorizer: RequestAuthorizer) async throws {
+        
+        self = try await authorized(using: authorizer)
     }
 }
 

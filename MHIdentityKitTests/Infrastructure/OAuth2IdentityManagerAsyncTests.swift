@@ -136,7 +136,7 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
         
         //performing sohuld honor the instanace type
         //total of 3 fulfils should occur - 1 for flow, 1 for client and 1 for perform completion
-        _ = try await manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
+        _ = await manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
         e.fulfill()
         
         //set the status code to fail
@@ -144,7 +144,7 @@ class OAuth2IdentityManagerAsyncTests: XCTestCase {
         
         //3 x retry attemtps (9) = 10 fulfils
         
-        _ = try await manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
+        _ = await manager.perform(URLRequest(url: URL(string: "http://foo.bar")!), using: networkClient, retryAttempts: 3)
         e.fulfill()
     }
     

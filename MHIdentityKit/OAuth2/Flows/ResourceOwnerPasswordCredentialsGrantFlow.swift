@@ -69,26 +69,9 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
         self.clientAuthorizer.authorize(request: request, handler: handler)
     }
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    open func authorize(_ request: URLRequest) async throws -> URLRequest {
-        
-        return try await self.clientAuthorizer.authorize(request: request)
-    }
-    
     open func perform(_ request: URLRequest, completion: @escaping (NetworkResponse) -> Void) {
         
         self.networkClient.perform(request, completion: completion)
-    }
-    
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    open func perform(_ request: URLRequest) async -> NetworkResponse {
-        
-        return await withCheckedContinuation { continuation in
-            
-            self.perform(request) { response in
-                continuation.resume(returning: response)
-            }
-        }
     }
     
     open func accessTokenResponse(from networkResponse: NetworkResponse) throws -> AccessTokenResponse {
@@ -134,16 +117,6 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
         })
     }
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    open func authenticate(using request: URLRequest) async throws -> AccessTokenResponse {
-         
-        let urlRequest = try await self.authorize(request)
-        let response = await self.perform(urlRequest)
-        let accessTokenResponse = try self.accessTokenResponse(from: response)
-        try self.validate(accessTokenResponse)
-        return accessTokenResponse
-    }
-    
     //MARK: - AuthorizationGrantFlow
     
     open func authenticate(handler: @escaping (AccessTokenResponse?, Error?) -> Void) {
@@ -167,31 +140,6 @@ open class ResourceOwnerPasswordCredentialsGrantFlow: AuthorizationGrantFlow {
                 
                 handler(response, error)
             })
-        }
-    }
-    
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    open func authenticate() async throws -> AccessTokenResponse {
-        
-        let credentials = await self.credentialsProvider.credentials()
-        
-        let username = credentials.0
-        let password = credentials.1
-        
-        //build the request
-        let accessTokenRequest = AccessTokenRequest(username: username, password: password, scope: self.scope)
-        let request = self.urlRequest(from: accessTokenRequest)
-        
-        do {
-            
-            let response = try await self.authenticate(using: request)
-            self.credentialsProvider.didFinishAuthenticating()
-            return response
-        }
-        catch {
-            
-            self.credentialsProvider.didFailAuthenticating(with: error)
-            throw error
         }
     }
 }

@@ -197,62 +197,6 @@ open class ImplicitGrantFlow: AuthorizationGrantFlow {
             return true
         }
     }
-    
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func authenticate() async throws -> AccessTokenResponse {
-        
-        let authorizationRequest = AuthorizationRequest(clientID: self.clientID, redirectURI: self.redirectURI, scope: self.scope, state: self.state)
-        let authorizationURLRequest = self.urlRequest(from: authorizationRequest)
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            self.perform(authorizationURLRequest, redirectURI: self.redirectURI) { [weak self] (redirectRequest) throws -> Bool in
-                
-                //utility to fail and complete
-                func fail(with error: Error) -> Error  {
-                    
-                    continuation.resume(throwing: error)
-                    return error
-                }
-                
-                //utility to try or fail and complete
-                func orFail<T>(_ closure: @autoclosure () throws -> T) throws -> T {
-                    
-                    do {
-                        
-                        return try closure()
-                    }
-                    catch {
-                        
-                        throw fail(with: error)
-                    }
-                }
-                
-                //if self was deallocated, there is no point to continue
-                guard let _self = self else {
-                    
-                    throw fail(with: MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.general(message: "Flow was deallocated")))
-                }
-                
-                //check if the redirectRequest can be handled
-                guard _self.canHandle(redirectRequest: redirectRequest) else {
-                    
-                    return false
-                }
-                
-                //create the access token response and validate it
-                let authorizationResponse1 = try orFail(_self.authorizationResponse(from: redirectRequest))
-                try orFail(_self.validate(authorizationResponse1))
-                
-                DispatchQueue.main.async {
-                    
-                    let accessTokenResponse = AccessTokenResponse(accessToken: authorizationResponse1.accessToken, tokenType: authorizationResponse1.tokenType, expiresIn: authorizationResponse1.expiresIn, refreshToken: nil, scope: authorizationResponse1.scope)
-                    continuation.resume(returning: accessTokenResponse)
-                }
-                
-                return true
-            }
-        }
-    }
 }
 
 extension ImplicitGrantFlow {

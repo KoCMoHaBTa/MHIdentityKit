@@ -37,7 +37,7 @@ public protocol IdentityManager {
 extension IdentityManager {
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
+    public func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
         
         return try await withCheckedThrowingContinuation { continuation in
             
@@ -47,7 +47,7 @@ extension IdentityManager {
                     continuation.resume(throwing: error)
                 }
                 else {
-                    continuation.resume(returning: request)
+                    continuation.resume(returning: urlRequest)
                 }
             }
         }
@@ -97,6 +97,9 @@ extension IdentityManager {
                 
                 if let error = error {
                     continuation.resume(throwing: error)
+                }
+                else {
+                    continuation.resume(returning: ())
                 }
             }
         }
@@ -223,7 +226,7 @@ extension IdentityManager {
     }
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async throws -> NetworkResponse {
+    public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async -> NetworkResponse {
         
         return await withCheckedContinuation { continuation in
             

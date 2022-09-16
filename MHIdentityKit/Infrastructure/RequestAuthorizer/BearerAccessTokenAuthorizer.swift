@@ -98,22 +98,6 @@ public struct BearerAccessTokenAuthorizer: RequestAuthorizer {
                 request.url = components.url
         }
     }
-    
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    public func authorize(request: URLRequest) async throws -> URLRequest {
-        return try await withCheckedThrowingContinuation { continuation in
-            
-            self.authorize(request: request) { (request, error) in
-                
-                if let error = error {
-                    continuation.resume(throwing: error)
-                }
-                else {
-                    continuation.resume(returning: request)
-                }
-            }
-        }
-    }
 }
 
 extension BearerAccessTokenAuthorizer {

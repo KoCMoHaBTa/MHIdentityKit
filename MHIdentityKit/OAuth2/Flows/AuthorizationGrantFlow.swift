@@ -22,7 +22,7 @@ public protocol AuthorizationGrantFlow {
 extension AuthorizationGrantFlow {
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    func authenticate() async throws -> AccessTokenResponse {
+    public func authenticate() async throws -> AccessTokenResponse {
         
         return try await withCheckedThrowingContinuation { continuation in
             
