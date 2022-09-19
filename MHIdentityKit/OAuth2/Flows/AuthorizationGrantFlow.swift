@@ -21,6 +21,13 @@ public protocol AuthorizationGrantFlow {
 
 extension AuthorizationGrantFlow {
     
+    /**
+     Asynchronously executes the flow that authenticates the user and upon success returns an access token that can be used to authorize client's requests
+     
+     - throws: If authentication fails
+     
+     - returns: The access token
+     */
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authenticate() async throws -> AccessTokenResponse {
         

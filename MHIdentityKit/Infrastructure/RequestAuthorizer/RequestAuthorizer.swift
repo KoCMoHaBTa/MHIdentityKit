@@ -24,6 +24,15 @@ public protocol RequestAuthorizer {
 
 extension RequestAuthorizer {
     
+    /**
+     Asynchronously authorizes an instance of URLRequest.
+     
+     - parameter request: The request to authorize.
+     
+     - throws: if authorization fails
+     
+     - returns: The authorized request
+     */
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorize(request: URLRequest) async throws -> URLRequest {
         
@@ -60,6 +69,18 @@ extension URLRequest {
         authorizer.authorize(request: self, handler: handler)
     }
     
+    /**
+     Authorize the receiver using a given authorizer.
+     
+     - note: The implementation of this method simply calls `authorize` on the `authorizer`. For more information see `URLRequestAuthorizer`.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: if authorization fails
+     
+     - returns: The request, which will be an authorized copy of the receiver.
+     
+     */
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorized(using authorizer: RequestAuthorizer) async throws -> URLRequest {
         
@@ -122,6 +143,13 @@ extension URLRequest {
         try self = self.authorized(using: authorizer)
     }
     
+    /**
+     Asynchronously authorize the receiver using a given authorizer.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: An authorization error.
+     */
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public mutating func authorize(using authorizer: RequestAuthorizer) async throws {
         

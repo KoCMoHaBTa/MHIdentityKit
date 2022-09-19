@@ -36,6 +36,17 @@ public protocol IdentityManager {
 
 extension IdentityManager {
     
+    /**
+     Asynchronously authorizes an instance of URLRequest.
+     
+     - parameter request: The request to authorize.
+     - parameter forceAuthenticate: If true, an authentication is always performed, otherwise authentication is done only if internal state requires it, like the access token has expired
+     
+     - throws: if authorization fails.
+     
+     - returns: The authorized request
+     */
+    
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
         
@@ -70,6 +81,16 @@ extension IdentityManager {
         self.authorize(request: request, forceAuthenticate: false, handler: handler)
     }
     
+    /**
+     Asynchronously authorizes an instance of URLRequest.
+          
+     - parameter request: The request to authorize.
+     
+     - throws: if authorization fails
+     
+     - returns: The authorized request
+     */
+    
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func authorize(request: URLRequest) async throws -> URLRequest {
         
@@ -88,6 +109,7 @@ extension IdentityManager {
         }
     }
     
+    ///Performs forced authentication on a placeholder request. Can be used when you want to authenticate in advance, without authorizing a particular request
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func forceAuthenticate() async throws {
         
@@ -224,6 +246,20 @@ extension IdentityManager {
             }
         }
     }
+    
+    /**
+     Performs an asynchronous request and validates if the response requires authentication.
+     
+     - parameter request: The request to be performed
+     - parameter networkClient: The client that should perform the request. Default to internal system client.
+     - parameter retryAttempts: The number of times to retry the request if the validation fails.
+     - parameter validator: The validator, used to determine if a request must be reauthorized with forced authentication and retried, based on the network response. Default to `responseValidator` if nil is passed.
+     - parameter forceAuthenticate: Whenver to force authentication during authorization. Default to false.
+     
+     - returns: The response when the requests has finished
+     
+     - note: The implementation of this menthod, simple checks if the HTTP response status code is 401 Unauthorized and if so - authorizes the request again by forcing the authentication. Then the request is retried.
+     */
     
     @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
     public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async -> NetworkResponse {
