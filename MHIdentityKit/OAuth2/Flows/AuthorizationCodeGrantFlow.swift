@@ -157,17 +157,6 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
         self.networkClient.perform(request, completion: completion)
     }
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    open func perform(_ request: URLRequest) async -> NetworkResponse {
-        
-        return await withCheckedContinuation { continuation in
-            
-            self.networkClient.perform(request) { response in
-                continuation.resume(returning: response)
-            }
-        }
-    }
-    
     open func authorizationResponse(from request: URLRequest) throws -> AuthorizationResponse {
         
         guard
@@ -319,97 +308,6 @@ open class AuthorizationCodeGrantFlow: AuthorizationGrantFlow {
             })
             
             return true
-        }
-    }
-        
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
-    open func authenticate() async throws -> AccessTokenResponse {
-        
-        let authorizationRequest = AuthorizationRequest(clientID: self.clientID, redirectURI: self.redirectURI, scope: self.scope, state: self.state)
-        let authorizationURLRequest = self.urlRequest(from: authorizationRequest)
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            self.perform(authorizationURLRequest, redirectURI: self.redirectURI) { [weak self] (redirectRequest) throws -> Bool in
-                
-                //utility to fail and complete
-                func fail(with error: Error) -> Error  {
-                    
-                    continuation.resume(throwing: error)
-                    return error
-                }
-                
-                //utility to try or fail and complete
-                func orFail<T>(_ closure: @autoclosure () throws -> T) throws -> T {
-                    
-                    do {
-                        
-                        return try closure()
-                    }
-                    catch {
-                        
-                        throw fail(with: error)
-                    }
-                }
-                
-                //if self was deallocated, there is no point to continue
-                guard let _self = self else {
-                    
-                    throw fail(with: MHIdentityKitError.authenticationFailed(reason: MHIdentityKitError.Reason.general(message: "Flow was deallocated")))
-                }
-                
-                //check if the redirectRequest can be handled
-                guard _self.canHandle(redirectRequest: redirectRequest) else {
-                    
-                    return false
-                }
-                
-                //create the authorizagtion response and validate it
-                let authorizationResponse = try orFail(_self.authorizationResponse(from: redirectRequest))
-                try orFail(_self.validate(authorizationResponse))
-                
-                //prepare for authentication
-                let clientID = _self.clientAuthorizer == nil ? _self.clientID : nil
-                let accesTokenRequest = AccessTokenRequest(code: authorizationResponse.code, redirectURI: _self.redirectURI, clientID: clientID)
-                let accesTokenURLRequest = _self.urlRequest(from: accesTokenRequest)
-                
-                //authorize the token request
-                _self.authorize(accesTokenURLRequest: accesTokenURLRequest, handler: { (accesTokenURLRequest, error) in
-                    
-                    guard error == nil else {
-                        
-                        DispatchQueue.main.async {
-                            
-                            continuation.resume(throwing: error!)
-                        }
-                        
-                        return
-                    }
-                    
-                    //perform the token request
-                    _self.perform(accesTokenURLRequest, completion: { (networkResponse) in
-                        
-                        do {
-                            
-                            let accessTokenResponse = try _self.accessTokenResponse(from: networkResponse)
-                            try _self.validate(accessTokenResponse)
-                            
-                            DispatchQueue.main.async {
-                                
-                                continuation.resume(returning: accessTokenResponse)
-                            }
-                        }
-                        catch {
-                            
-                            DispatchQueue.main.async {
-                                
-                                continuation.resume(throwing: error)
-                            }
-                        }
-                    })
-                })
-                
-                return true
-            }
         }
     }
 }
