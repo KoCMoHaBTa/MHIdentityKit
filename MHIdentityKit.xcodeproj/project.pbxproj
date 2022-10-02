@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1EEF02EB289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02EA289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift */; };
+		1EEF02EC289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02EA289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift */; };
+		1EEF02ED289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02EA289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift */; };
+		1EEF02EF289A5D0E0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02EE289A5D0D0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift */; };
+		1EEF02F0289A5D0E0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02EE289A5D0D0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift */; };
+		1EEF02F1289A5D0E0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02EE289A5D0D0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift */; };
+		1EEF02F3289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02F2289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift */; };
+		1EEF02F4289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02F2289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift */; };
+		1EEF02F5289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02F2289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift */; };
+		1EEF02F7289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02F6289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift */; };
+		1EEF02F8289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02F6289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift */; };
+		1EEF02F9289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02F6289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift */; };
+		1EEF02FB289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02FA289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift */; };
+		1EEF02FC289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02FA289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift */; };
+		1EEF02FD289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02FA289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift */; };
+		1EEF02FF289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02FE289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift */; };
+		1EEF0300289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02FE289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift */; };
+		1EEF0301289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEF02FE289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift */; };
 		9954AE4F1E9D169700F2A73D /* MHIdentityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9954AE451E9D169700F2A73D /* MHIdentityKit.framework */; };
 		9954AE541E9D169700F2A73D /* MHIdentityKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954AE531E9D169700F2A73D /* MHIdentityKitTests.swift */; };
 		9954AE561E9D169700F2A73D /* MHIdentityKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9954AE481E9D169700F2A73D /* MHIdentityKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -292,6 +310,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1EEF02EA289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2IdentityManagerAsyncTests.swift; sourceTree = "<group>"; };
+		1EEF02EE289A5D0D0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift; sourceTree = "<group>"; };
+		1EEF02F2289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrantFlowAsyncTests.swift; sourceTree = "<group>"; };
+		1EEF02F6289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantFlowAsyncTests.swift; sourceTree = "<group>"; };
+		1EEF02FA289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitGrantFlowAsyncTests.swift; sourceTree = "<group>"; };
+		1EEF02FE289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAuthorizerAsyncTests.swift; sourceTree = "<group>"; };
 		434E10062685CF1C00257D8A /* MHIdentityKit-iOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-iOSTestsHost.entitlements"; sourceTree = "<group>"; };
 		434E10082685FD5F00257D8A /* MHIdentityKit-tvOSTestsHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MHIdentityKit-tvOSTestsHost.entitlements"; sourceTree = "<group>"; };
 		9954AE451E9D169700F2A73D /* MHIdentityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MHIdentityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -713,6 +737,10 @@
 				E6B1956D22CA068C00954DED /* ImplicitGrantFlowTests.swift */,
 				E6B39C2B206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift */,
 				E6B39C27206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift */,
+				1EEF02EE289A5D0D0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift */,
+				1EEF02F2289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift */,
+				1EEF02F6289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift */,
+				1EEF02FA289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -725,6 +753,8 @@
 				E619748F1EE15F9C00DAFC15 /* IdentityStorageTests.swift */,
 				E61974911EE160F000DAFC15 /* RequestAuthorizerTests.swift */,
 				E61974B11EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift */,
+				1EEF02EA289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift */,
+				1EEF02FE289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -771,9 +801,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9954AE591E9D169700F2A73D /* Build configuration list for PBXNativeTarget "MHIdentityKit-iOS" */;
 			buildPhases = (
+				9954AE421E9D169700F2A73D /* Headers */,
 				9954AE401E9D169700F2A73D /* Sources */,
 				9954AE411E9D169700F2A73D /* Frameworks */,
-				9954AE421E9D169700F2A73D /* Headers */,
 				9954AE431E9D169700F2A73D /* Resources */,
 			);
 			buildRules = (
@@ -1182,12 +1212,18 @@
 				E683DCA81ED426BE0075B03B /* XCTestExtensions.swift in Sources */,
 				E6B1956E22CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
 				E619748E1EE15EAD00DAFC15 /* CredentialsProviderTests.swift in Sources */,
+				1EEF02FF289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift in Sources */,
 				E61974901EE15F9C00DAFC15 /* IdentityStorageTests.swift in Sources */,
+				1EEF02FB289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift in Sources */,
 				E6B39C2C206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */,
+				1EEF02F3289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift in Sources */,
+				1EEF02F7289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift in Sources */,
+				1EEF02EF289A5D0E0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift in Sources */,
 				E619748A1EE0B50000DAFC15 /* AccessTokenResponseHandlerTests.swift in Sources */,
 				E6B39C24206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */,
 				E61974B21EE5688800DAFC15 /* OAuth2IdentityManagerTests.swift in Sources */,
 				E6B39C28206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift in Sources */,
+				1EEF02EB289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift in Sources */,
 				E61974921EE160F000DAFC15 /* RequestAuthorizerTests.swift in Sources */,
 				9954AE541E9D169700F2A73D /* MHIdentityKitTests.swift in Sources */,
 			);
@@ -1306,12 +1342,18 @@
 				E6985E1220690C6800BE5F6A /* XCTestExtensions.swift in Sources */,
 				E6B1956F22CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
 				E6985E1520690C6800BE5F6A /* CredentialsProviderTests.swift in Sources */,
+				1EEF0300289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift in Sources */,
 				E6985E1620690C6800BE5F6A /* IdentityStorageTests.swift in Sources */,
+				1EEF02FC289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift in Sources */,
 				E6B39C2D206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */,
+				1EEF02F4289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift in Sources */,
+				1EEF02F8289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift in Sources */,
+				1EEF02F0289A5D0E0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift in Sources */,
 				E6985E1420690C6800BE5F6A /* AccessTokenResponseHandlerTests.swift in Sources */,
 				E6B39C25206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */,
 				E6985E1920690C6800BE5F6A /* OAuth2IdentityManagerTests.swift in Sources */,
 				E6B39C29206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift in Sources */,
+				1EEF02EC289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift in Sources */,
 				E6985E1720690C6800BE5F6A /* RequestAuthorizerTests.swift in Sources */,
 				E6985E1320690C6800BE5F6A /* MHIdentityKitTests.swift in Sources */,
 			);
@@ -1372,12 +1414,18 @@
 				E6985E1A20690C6900BE5F6A /* XCTestExtensions.swift in Sources */,
 				E6B1957022CA068C00954DED /* ImplicitGrantFlowTests.swift in Sources */,
 				E6985E1D20690C6900BE5F6A /* CredentialsProviderTests.swift in Sources */,
+				1EEF0301289D3DD00087B863 /* RequestAuthorizerAsyncTests.swift in Sources */,
 				E6985E1E20690C6900BE5F6A /* IdentityStorageTests.swift in Sources */,
+				1EEF02FD289D33CE0087B863 /* ImplicitGrantFlowAsyncTests.swift in Sources */,
 				E6B39C2E206BB24300CB1435 /* ResourceOwnerPasswordCredentialsGrantFlowTests.swift in Sources */,
+				1EEF02F5289D12CC0087B863 /* ClientCredentialsGrantFlowAsyncTests.swift in Sources */,
+				1EEF02F9289D167C0087B863 /* AuthorizationCodeGrantFlowAsyncTests.swift in Sources */,
+				1EEF02F1289A5D0E0087B863 /* ResourceOwnerPasswordCredentialsGrantFlowAsyncTests.swift in Sources */,
 				E6985E1C20690C6900BE5F6A /* AccessTokenResponseHandlerTests.swift in Sources */,
 				E6B39C26206BB22500CB1435 /* AuthorizationCodeGrantFlowTests.swift in Sources */,
 				E6985E2120690C6900BE5F6A /* OAuth2IdentityManagerTests.swift in Sources */,
 				E6B39C2A206BB23700CB1435 /* ClientCredentialsGrantFlowTests.swift in Sources */,
+				1EEF02ED289969B40087B863 /* OAuth2IdentityManagerAsyncTests.swift in Sources */,
 				E6985E1F20690C6900BE5F6A /* RequestAuthorizerTests.swift in Sources */,
 				E6985E1B20690C6900BE5F6A /* MHIdentityKitTests.swift in Sources */,
 			);
@@ -1489,6 +1537,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1559,6 +1608,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

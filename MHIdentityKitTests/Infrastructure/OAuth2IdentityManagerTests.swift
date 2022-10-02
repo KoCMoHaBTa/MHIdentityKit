@@ -5,7 +5,6 @@
 //  Created by Milen Halachev on 6/5/17.
 //  Copyright © 2017 Milen Halachev. All rights reserved.
 //
-
 import Foundation
 
 import XCTest
@@ -189,7 +188,7 @@ class OAuth2IdentityManagerTests: XCTestCase {
             }
         }
         
-        let manager = OAuth2IdentityManager(flow: Flow(), refresher: nil, storage: InMemoryIdentityStorage(), authorizationMethod: .header)        
+        let manager = OAuth2IdentityManager(flow: Flow(), refresher: nil, storage: InMemoryIdentityStorage(), authorizationMethod: .header)
         
         let request = try! URLRequest(url: URL(string: "http://foo.bar")!).authorized(using: manager)
         

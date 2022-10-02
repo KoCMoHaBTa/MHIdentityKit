@@ -25,6 +25,22 @@ public protocol CredentialsProvider {
 }
 
 extension CredentialsProvider {
+
+    ///Provides credentials asynchronously. Can be implemented in a way to show a login screen.
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    public func credentials() async -> (Username, Password) {
+        
+        return await withCheckedContinuation { continuation in
+            
+            self.credentials { (username, password) in
+                
+                continuation.resume(returning: (username, password))
+            }
+        }
+    }
+}
+
+extension CredentialsProvider {
     
     public func didFinishAuthenticating() {
         

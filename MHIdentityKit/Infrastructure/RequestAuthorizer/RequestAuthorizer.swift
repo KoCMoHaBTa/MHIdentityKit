@@ -22,6 +22,35 @@ public protocol RequestAuthorizer {
     func authorize(request: URLRequest, handler: @escaping (URLRequest, Error?) -> Void)
 }
 
+extension RequestAuthorizer {
+    
+    /**
+     Asynchronously authorizes an instance of URLRequest.
+     
+     - parameter request: The request to authorize.
+     
+     - throws: if authorization fails
+     
+     - returns: The authorized request
+     */
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    public func authorize(request: URLRequest) async throws -> URLRequest {
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            
+            self.authorize(request: request) { urlRequest, error in
+                
+                if let error = error {
+                    continuation.resume(throwing: error)
+                }
+                else {
+                    continuation.resume(returning: urlRequest)
+                }
+            }
+        }
+    }
+}
+
 extension URLRequest {
     
     /**
@@ -41,6 +70,24 @@ extension URLRequest {
     }
     
     /**
+     Authorize the receiver using a given authorizer.
+     
+     - note: The implementation of this method simply calls `authorize` on the `authorizer`. For more information see `URLRequestAuthorizer`.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: if authorization fails
+     
+     - returns: The request, which will be an authorized copy of the receiver.
+     
+     */
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    public func authorized(using authorizer: RequestAuthorizer) async throws -> URLRequest {
+        
+        return try await authorizer.authorize(request: self)
+    }
+    
+    /**
      Synchronously authorize the receiver using a given authorizer.
      
      - warning: This method could potentially perform a network request synchrnously. Because of this it is hihgly recommended to NOT use this method from the main thread.
@@ -50,6 +97,8 @@ extension URLRequest {
      - throws: An authorization error.
      - returns: An authorized copy of the recevier.
      */
+    
+    @available(*, noasync)
     public func authorized(using authorizer: RequestAuthorizer) throws -> URLRequest {
         
         var request = self
@@ -88,9 +137,23 @@ extension URLRequest {
      - throws: An authorization error.
      */
     
+    @available(*, noasync)
     public mutating func authorize(using authorizer: RequestAuthorizer) throws {
         
         try self = self.authorized(using: authorizer)
+    }
+    
+    /**
+     Asynchronously authorize the receiver using a given authorizer.
+     
+     - parameter authorizer: The authorizer used to authorize the receiver.
+     
+     - throws: An authorization error.
+     */
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    public mutating func authorize(using authorizer: RequestAuthorizer) async throws {
+        
+        self = try await authorized(using: authorizer)
     }
 }
 
