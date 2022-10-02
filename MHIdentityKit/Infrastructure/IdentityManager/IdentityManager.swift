@@ -47,7 +47,7 @@ extension IdentityManager {
      - returns: The authorized request
      */
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public func authorize(request: URLRequest, forceAuthenticate: Bool) async throws -> URLRequest {
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -91,7 +91,7 @@ extension IdentityManager {
      - returns: The authorized request
      */
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public func authorize(request: URLRequest) async throws -> URLRequest {
         
         return try await self.authorize(request: request, forceAuthenticate: false)
@@ -110,7 +110,7 @@ extension IdentityManager {
     }
     
     ///Performs forced authentication on a placeholder request. Can be used when you want to authenticate in advance, without authorizing a particular request
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public func forceAuthenticate() async throws {
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -261,7 +261,7 @@ extension IdentityManager {
      - note: The implementation of this menthod, simple checks if the HTTP response status code is 401 Unauthorized and if so - authorizes the request again by forcing the authentication. Then the request is retried.
      */
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13.0.0, macOS 10.15, watchOS 6, *)
     public func perform(_ request: URLRequest, using networkClient: NetworkClient = _defaultNetworkClient, retryAttempts: Int = 1, validator: NetworkResponseValidator? = nil, forceAuthenticate: Bool = false) async -> NetworkResponse {
         
         return await withCheckedContinuation { continuation in

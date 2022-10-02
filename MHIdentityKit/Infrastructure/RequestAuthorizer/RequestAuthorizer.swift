@@ -33,7 +33,7 @@ extension RequestAuthorizer {
      
      - returns: The authorized request
      */
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public func authorize(request: URLRequest) async throws -> URLRequest {
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -81,7 +81,7 @@ extension URLRequest {
      - returns: The request, which will be an authorized copy of the receiver.
      
      */
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public func authorized(using authorizer: RequestAuthorizer) async throws -> URLRequest {
         
         return try await authorizer.authorize(request: self)
@@ -150,7 +150,7 @@ extension URLRequest {
      
      - throws: An authorization error.
      */
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public mutating func authorize(using authorizer: RequestAuthorizer) async throws {
         
         self = try await authorized(using: authorizer)

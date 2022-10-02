@@ -28,7 +28,7 @@ extension AuthorizationGrantFlow {
      
      - returns: The access token
      */
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public func authenticate() async throws -> AccessTokenResponse {
         
         return try await withCheckedThrowingContinuation { continuation in

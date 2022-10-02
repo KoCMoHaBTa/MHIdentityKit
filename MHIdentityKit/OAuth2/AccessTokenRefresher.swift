@@ -16,7 +16,7 @@ public protocol AccessTokenRefresher {
 
 extension AccessTokenRefresher {
     
-    @available(iOS 13, tvOS 13.0.0, macOS 10.15, *)
+    @available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)
     public func refresh(using requestModel: AccessTokenRefreshRequest) async throws -> AccessTokenResponse {
         
         return try await withCheckedThrowingContinuation { continuation in
