@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.swift_version = "5.7"
   s.ios.deployment_target = "11.0"
   s.osx.deployment_target = "10.10"
-  s.watchos.deployment_target = "4.0"
+  #s.watchos.deployment_target = "4.0"
   s.tvos.deployment_target = "11.0"
 
   s.source_files  = "#{s.name}/**/*.swift", "#{s.name}/**/*.{h,m}"
@@ -20,6 +20,6 @@ Pod::Spec.new do |s|
   s.ios.exclude_files = "#{s.name}/**/macOS/*.swift", "#{s.name}/**/tvOS/*.swift", "#{s.name}/**/watchOS/*.swift"
   s.osx.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/tvOS/*.swift", "#{s.name}/**/watchOS/*.swift"
   s.tvos.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/watchOS/*.swift"
-  s.watchos.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/tvOS/*.swift"
+  #s.watchos.exclude_files = "#{s.name}/**/iOS/*.swift", "#{s.name}/**/macOS/*.swift", "#{s.name}/**/tvOS/*.swift"
 
 end
